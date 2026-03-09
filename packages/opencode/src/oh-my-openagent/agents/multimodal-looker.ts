@@ -1,6 +1,5 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolAllowlist } from "../shared/permission-compat"
 
 const MODE: AgentMode = "subagent"
 
@@ -12,15 +11,12 @@ export const MULTIMODAL_LOOKER_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createMultimodalLookerAgent(model: string): AgentConfig {
-  const restrictions = createAgentToolAllowlist(["read"])
-
   return {
     description:
       "Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extracts specific information or summaries from documents, describes visual content. Use when you need analyzed/extracted data rather than literal file contents. (Multimodal-Looker - OhMyOpenCode)",
     mode: MODE,
     model,
     temperature: 0.1,
-    ...restrictions,
     capabilities: {
       include: ["core", "media"],
       exclude: ["edit"],

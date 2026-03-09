@@ -74,7 +74,7 @@ export function get(id: string): Info | undefined {
 
 /**
  * Resolve capabilities for an agent based on its capabilities declaration.
- * If capabilities is undefined, returns all available capabilities (backward compat).
+ * Returns filtered capability IDs.
  */
 export function resolveForAgent(agentCapabilities?: Capabilities): Info[] {
   return resolve(all(), agentCapabilities)

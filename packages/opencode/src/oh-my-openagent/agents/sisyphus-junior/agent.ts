@@ -14,10 +14,7 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentMode } from "../types"
 import { isGptModel, isGeminiModel } from "../types"
 import type { AgentOverrideConfig } from "../../config/schema"
-import {
-  createAgentToolRestrictions,
-  type PermissionValue,
-} from "../../shared/permission-compat"
+import type { PermissionValue } from "../../shared/permission-compat"
 
 import { buildDefaultSisyphusJuniorPrompt } from "./default"
 import { buildGptSisyphusJuniorPrompt } from "./gpt"
@@ -26,10 +23,6 @@ import { buildGpt53CodexSisyphusJuniorPrompt } from "./gpt-5-3-codex"
 import { buildGeminiSisyphusJuniorPrompt } from "./gemini"
 
 const MODE: AgentMode = "subagent"
-
-// Core tools that Sisyphus-Junior must NEVER have access to
-// Note: call_omo_agent is ALLOWED so subagents can spawn explore/librarian
-const BLOCKED_TOOLS = ["task"]
 
 export const SISYPHUS_JUNIOR_DEFAULTS = {
   model: "anthropic/claude-sonnet-4-6",
@@ -92,16 +85,9 @@ export function createSisyphusJuniorAgentWithOverrides(
   const promptAppend = override?.prompt_append
   const prompt = buildSisyphusJuniorPrompt(model, useTaskSystem, promptAppend)
 
-  const baseRestrictions = createAgentToolRestrictions(BLOCKED_TOOLS)
-
   const userPermission = (override?.permission ?? {}) as Record<string, PermissionValue>
-  const basePermission = baseRestrictions.permission
   const merged: Record<string, PermissionValue> = { ...userPermission }
-  for (const tool of BLOCKED_TOOLS) {
-    merged[tool] = "deny"
-  }
   merged.call_omo_agent = "allow"
-  const toolsConfig = { permission: { ...merged, ...basePermission } }
 
   const base: AgentConfig = {
     description: override?.description ??
@@ -112,7 +98,7 @@ export function createSisyphusJuniorAgentWithOverrides(
     maxTokens: 64000,
     prompt,
     color: override?.color ?? "#20B2AA",
-    ...toolsConfig,
+    permission: merged,
     capabilities: {
       include: ["core", "edit", "search", "skill", "lsp", "ast", "meta", "mcp", "interactive"],
       deny: ["task"],

@@ -25,7 +25,6 @@ import {
   createTaskUpdateTool,
   createHashlineEditTool,
 } from "../tools"
-import { filterDisabledTools } from "../shared/disabled-tools"
 import { log } from "../shared"
 import { CapabilityRegistry, fromPluginTool } from "../../capability"
 
@@ -127,15 +126,17 @@ export function createToolRegistry(args: {
     ...hashlineToolsRecord,
   }
 
-  const filteredTools = filterDisabledTools(allTools, pluginConfig.disabled_tools)
-
-  // Register plugin tools into the unified CapabilityRegistry
+  // Register all plugin tools into CapabilityRegistry, marking disabled ones as unavailable
+  const disabledSet = new Set(pluginConfig.disabled_tools ?? [])
   CapabilityRegistry.registerAll(
-    Object.keys(filteredTools).map((id) => fromPluginTool(id)),
+    Object.keys(allTools).map((id) => ({
+      ...fromPluginTool(id),
+      available: !disabledSet.has(id),
+    })),
   )
 
   return {
-    filteredTools,
+    filteredTools: allTools,
     taskSystemEnabled,
   }
 }

@@ -30,6 +30,7 @@ import { Truncate } from "./truncation"
 import { ApplyPatchTool } from "./apply_patch"
 import { Glob } from "../util/glob"
 import { pathToFileURL } from "url"
+import { CapabilityRegistry, fromNativeTool } from "../capability"
 
 export namespace ToolRegistry {
   const log = Log.create({ service: "tool.registry" })
@@ -126,6 +127,11 @@ export namespace ToolRegistry {
 
   export async function ids() {
     return all().then((x) => x.map((t) => t.id))
+  }
+
+  export async function registerNativeTools() {
+    const tools = await all()
+    CapabilityRegistry.registerAll(tools.map((t) => fromNativeTool(t.id)))
   }
 
   export async function tools(

@@ -1,6 +1,5 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "../shared/permission-compat"
 
 const MODE: AgentMode = "subagent"
 
@@ -22,21 +21,12 @@ export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createLibrarianAgent(model: string): AgentConfig {
-  const restrictions = createAgentToolRestrictions([
-    "write",
-    "edit",
-    "apply_patch",
-    "task",
-    "call_omo_agent",
-  ])
-
   return {
     description:
       "Specialized codebase understanding agent for multi-repository analysis, searching remote codebases, retrieving official documentation, and finding implementation examples using GitHub CLI, Context7, and Web Search. MUST BE USED when users ask to look up code in remote repositories, explain library internals, or find usage examples in open source. (Librarian - OhMyOpenCode)",
     mode: MODE,
     model,
     temperature: 0.1,
-    ...restrictions,
     capabilities: {
       include: ["core", "search", "lsp", "ast"],
       exclude: ["edit"],

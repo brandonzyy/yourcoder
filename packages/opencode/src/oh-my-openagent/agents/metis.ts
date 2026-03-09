@@ -1,6 +1,5 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentMode, AgentPromptMetadata } from "./types"
-import { createAgentToolRestrictions } from "../shared/permission-compat"
 
 const MODE: AgentMode = "subagent"
 
@@ -289,13 +288,6 @@ call_omo_agent(subagent_type="librarian", prompt="I'm looking for proven impleme
 - Ensure acceptance criteria are agent-executable (commands, not human actions)
 `
 
-const metisRestrictions = createAgentToolRestrictions([
-  "write",
-  "edit",
-  "apply_patch",
-  "task",
-])
-
 export function createMetisAgent(model: string): AgentConfig {
   return {
     description:
@@ -303,7 +295,6 @@ export function createMetisAgent(model: string): AgentConfig {
     mode: MODE,
     model,
     temperature: 0.3,
-    ...metisRestrictions,
     capabilities: {
       include: ["core", "search", "lsp", "ast"],
       exclude: ["edit"],

@@ -23,6 +23,7 @@ import { BusEvent } from "../bus/bus-event"
 import { Bus } from "@/bus"
 import { TuiEvent } from "@/cli/cmd/tui/event"
 import open from "open"
+import { CapabilityRegistry, fromMcpTool } from "../capability"
 
 export namespace MCP {
   const log = Log.create({ service: "mcp" })
@@ -585,6 +586,21 @@ export namespace MCP {
         })
       }
       s.clients[name] = result.mcpClient
+
+      // Register MCP tools into CapabilityRegistry
+      const toolsResult = await result.mcpClient.listTools().catch((e) => {
+        log.error("Failed to list tools for registration", { name, error: e.message })
+        return undefined
+      })
+      if (toolsResult) {
+        const sanitizedServerName = name.replace(/[^a-zA-Z0-9_-]/g, "_")
+        CapabilityRegistry.registerAll(
+          toolsResult.tools.map((tool) => {
+            const sanitizedToolName = tool.name.replace(/[^a-zA-Z0-9_-]/g, "_")
+            return fromMcpTool(`${sanitizedServerName}_${sanitizedToolName}`, name)
+          }),
+        )
+      }
     }
   }
 
@@ -596,6 +612,8 @@ export namespace MCP {
         log.error("Failed to close MCP client", { name, error })
       })
       delete s.clients[name]
+      // Unregister MCP tools from CapabilityRegistry
+      CapabilityRegistry.unregisterMcpServer(name)
     }
     s.status[name] = { status: "disabled" }
   }

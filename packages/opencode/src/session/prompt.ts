@@ -27,8 +27,6 @@ import { MCP } from "../mcp"
 import { LSP } from "../lsp"
 import { ReadTool } from "../tool/read"
 import { FileTime } from "../file/time"
-import { fromNativeTool, fromMcpTool, resolve as resolveCapabilities } from "../capability"
-import type { Info as CapabilityInfo } from "../capability"
 import { Flag } from "../flag/flag"
 import { ulid } from "ulid"
 import { spawn } from "child_process"
@@ -750,18 +748,9 @@ export namespace SessionPrompt {
     // Build capability-based allowed set if agent declares capabilities
     let allowedIds: Set<string> | undefined
     if (input.agent.capabilities) {
-      const nativeToolIds = await ToolRegistry.ids()
-      const mcpToolEntries = await MCP.tools()
-      const capInfos: CapabilityInfo[] = [
-        ...nativeToolIds.map((id) => fromNativeTool(id)),
-        ...Object.keys(mcpToolEntries).map((key) => {
-          // Extract MCP server name from tool key: "{serverName}_{toolName}"
-          const underscoreIdx = key.indexOf("_")
-          const serverName = underscoreIdx > 0 ? key.substring(0, underscoreIdx) : key
-          return fromMcpTool(key, serverName)
-        }),
-      ]
-      const resolved = resolveCapabilities(capInfos, input.agent.capabilities)
+      const resolved = await import("../capability").then((m) =>
+        m.CapabilityRegistry.resolveForAgent(input.agent.capabilities),
+      )
       allowedIds = new Set(resolved.map((c) => c.id))
     }
 

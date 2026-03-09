@@ -11,7 +11,6 @@ import { PermissionNext } from "../../../permission/next"
 import { iife } from "../../../util/iife"
 import { bootstrap } from "../../bootstrap"
 import { cmd } from "../cmd"
-import { fromNativeTool, resolve as resolveCapabilities } from "../../../capability"
 
 export const AgentCommand = cmd({
   command: "agent <name>",
@@ -76,8 +75,9 @@ async function getAvailableTools(agent: Agent.Info) {
 
   // Apply capability filtering if agent declares capabilities
   if (agent.capabilities) {
-    const capInfos = allTools.map((t) => fromNativeTool(t.id))
-    const resolved = resolveCapabilities(capInfos, agent.capabilities)
+    const resolved = await import("../../../capability").then((m) =>
+      m.CapabilityRegistry.resolveForAgent(agent.capabilities),
+    )
     const allowedIds = new Set(resolved.map((c) => c.id))
     return allTools.filter((t) => allowedIds.has(t.id))
   }
