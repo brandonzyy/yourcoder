@@ -19,6 +19,7 @@ import { Global } from "@/global"
 import path from "path"
 import { Plugin } from "@/plugin"
 import { Skill } from "../skill"
+import { Capabilities, Tag } from "../capability/capability"
 
 export namespace Agent {
   export const Info = z
@@ -42,6 +43,7 @@ export namespace Agent {
       prompt: z.string().optional(),
       options: z.record(z.string(), z.any()),
       steps: z.number().int().positive().optional(),
+      capabilities: Capabilities,
     })
     .meta({
       ref: "Agent",
@@ -88,6 +90,7 @@ export namespace Agent {
         ),
         mode: "primary",
         native: true,
+        // build gets all tools (no capabilities filter)
       },
       plan: {
         name: "plan",
@@ -111,6 +114,10 @@ export namespace Agent {
         ),
         mode: "primary",
         native: true,
+        capabilities: {
+          include: ["core", "search", "lsp", "ast", "meta", "mcp"],
+          exclude: ["edit"],
+        },
       },
       general: {
         name: "general",
@@ -126,6 +133,7 @@ export namespace Agent {
         options: {},
         mode: "subagent",
         native: true,
+        // general gets all tools (no capabilities filter)
       },
       explore: {
         name: "explore",
@@ -153,6 +161,10 @@ export namespace Agent {
         options: {},
         mode: "subagent",
         native: true,
+        capabilities: {
+          include: ["core", "search", "lsp", "ast"],
+          exclude: ["edit"],
+        },
       },
       compaction: {
         name: "compaction",
@@ -229,6 +241,7 @@ export namespace Agent {
       item.steps = value.steps ?? item.steps
       item.options = mergeDeep(item.options, value.options ?? {})
       item.permission = PermissionNext.merge(item.permission, PermissionNext.fromConfig(value.permission ?? {}))
+      if (value.capabilities) item.capabilities = value.capabilities as typeof item.capabilities
     }
 
     // Ensure Truncate.GLOB is allowed unless explicitly configured

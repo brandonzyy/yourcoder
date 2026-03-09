@@ -27,6 +27,8 @@ import { MCP } from "../mcp"
 import { LSP } from "../lsp"
 import { ReadTool } from "../tool/read"
 import { FileTime } from "../file/time"
+import { fromNativeTool, fromMcpTool, resolve as resolveCapabilities } from "../capability"
+import type { Info as CapabilityInfo } from "../capability"
 import { Flag } from "../flag/flag"
 import { ulid } from "ulid"
 import { spawn } from "child_process"
@@ -745,6 +747,24 @@ export namespace SessionPrompt {
     using _ = log.time("resolveTools")
     const tools: Record<string, AITool> = {}
 
+    // Build capability-based allowed set if agent declares capabilities
+    let allowedIds: Set<string> | undefined
+    if (input.agent.capabilities) {
+      const nativeToolIds = await ToolRegistry.ids()
+      const mcpToolEntries = await MCP.tools()
+      const capInfos: CapabilityInfo[] = [
+        ...nativeToolIds.map((id) => fromNativeTool(id)),
+        ...Object.keys(mcpToolEntries).map((key) => {
+          // Extract MCP server name from tool key: "{serverName}_{toolName}"
+          const underscoreIdx = key.indexOf("_")
+          const serverName = underscoreIdx > 0 ? key.substring(0, underscoreIdx) : key
+          return fromMcpTool(key, serverName)
+        }),
+      ]
+      const resolved = resolveCapabilities(capInfos, input.agent.capabilities)
+      allowedIds = new Set(resolved.map((c) => c.id))
+    }
+
     const context = (args: any, options: ToolCallOptions): Tool.Context => ({
       sessionID: input.session.id,
       abort: options.abortSignal!,
@@ -784,6 +804,9 @@ export namespace SessionPrompt {
       { modelID: input.model.api.id, providerID: input.model.providerID },
       input.agent,
     )) {
+      // Capability filtering: skip tools not in allowed set
+      if (allowedIds && !allowedIds.has(item.id)) continue
+
       const schema = ProviderTransform.schema(input.model, z.toJSONSchema(item.parameters))
       tools[item.id] = tool({
         id: item.id as any,
@@ -828,6 +851,9 @@ export namespace SessionPrompt {
     }
 
     for (const [key, item] of Object.entries(await MCP.tools())) {
+      // Capability filtering: skip MCP tools not in allowed set
+      if (allowedIds && !allowedIds.has(key)) continue
+
       const execute = item.execute
       if (!execute) continue
 
