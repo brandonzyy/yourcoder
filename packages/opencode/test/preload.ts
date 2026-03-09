@@ -81,3 +81,17 @@ Log.init({
   dev: true,
   level: "DEBUG",
 })
+
+// oh-my-openagent test setup: reset state before each test
+// Only load when running oh-my-openagent tests to avoid import overhead for other tests
+import { beforeEach } from "bun:test"
+
+let _resetForTesting: (() => void) | undefined
+
+beforeEach(async () => {
+  if (_resetForTesting === undefined) {
+    const mod = await import("../src/oh-my-openagent/features/claude-code-session-state/state")
+    _resetForTesting = mod._resetForTesting
+  }
+  _resetForTesting()
+})

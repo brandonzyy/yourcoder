@@ -40,10 +40,12 @@
     "@tsconfig/bun": "catalog:",
     "@types/babel__core": "7.20.5",
     "@types/bun": "catalog:",
+    "@types/js-yaml": "^4.0.9",
     "@types/mime-types": "3.0.1",
+    "@types/picomatch": "^3.0.2",
     "@types/turndown": "5.0.5",
-    "@types/yargs": "17.0.33",
     "@types/which": "3.0.4",
+    "@types/yargs": "17.0.33",
     "@typescript/native-preview": "catalog:",
     "drizzle-kit": "1.0.0-beta.16-ea816b6",
     "drizzle-orm": "1.0.0-beta.16-ea816b6",
@@ -75,8 +77,11 @@
     "@ai-sdk/togetherai": "1.0.34",
     "@ai-sdk/vercel": "1.0.33",
     "@ai-sdk/xai": "2.0.51",
+    "@ast-grep/cli": "^0.40.0",
+    "@ast-grep/napi": "^0.40.0",
     "@aws-sdk/credential-providers": "3.993.0",
     "@clack/prompts": "1.0.0-alpha.1",
+    "@code-yeongyu/comment-checker": "^0.7.0",
     "@gitlab/gitlab-ai-provider": "3.6.0",
     "@gitlab/opencode-gitlab-auth": "1.3.3",
     "@hono/standard-validator": "0.1.5",
@@ -104,7 +109,9 @@
     "bun-pty": "0.4.8",
     "chokidar": "4.0.3",
     "clipboardy": "4.0.0",
+    "commander": "^14.0.2",
     "decimal.js": "10.5.0",
+    "detect-libc": "^2.0.0",
     "diff": "catalog:",
     "drizzle-orm": "1.0.0-beta.16-ea816b6",
     "fuzzysort": "3.1.0",
@@ -114,12 +121,15 @@
     "hono": "catalog:",
     "hono-openapi": "catalog:",
     "ignore": "7.0.5",
+    "js-yaml": "^4.1.1",
     "jsonc-parser": "3.3.1",
     "mime-types": "3.0.2",
     "minimatch": "10.0.3",
     "open": "10.1.2",
     "opentui-spinner": "0.0.6",
     "partial-json": "0.1.7",
+    "picocolors": "^1.1.1",
+    "picomatch": "^4.0.2",
     "remeda": "catalog:",
     "solid-js": "catalog:",
     "strip-ansi": "7.1.2",
@@ -136,5 +146,10 @@
   },
   "overrides": {
     "drizzle-orm": "1.0.0-beta.16-ea816b6"
-  }
+  },
+  "trustedDependencies": [
+    "@ast-grep/cli",
+    "@ast-grep/napi",
+    "@code-yeongyu/comment-checker"
+  ]
 }
