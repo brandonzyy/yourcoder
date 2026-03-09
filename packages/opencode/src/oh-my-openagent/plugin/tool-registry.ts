@@ -11,13 +11,11 @@ import {
   createBackgroundTools,
   createCallOmoAgent,
   createLookAt,
-  createSkillTool,
   createGrepTools,
   createGlobTools,
   createAstGrepTools,
   createSessionManagerTools,
   createDelegateTask,
-  discoverCommandsSync,
   interactive_bash,
   createTaskCreateTool,
   createTaskGetTool,
@@ -85,16 +83,6 @@ export function createToolRegistry(args: {
     },
   })
 
-  const commands = discoverCommandsSync(ctx.directory, {
-    pluginsEnabled: pluginConfig.claude_code?.plugins ?? true,
-    enabledPluginsOverride: pluginConfig.claude_code?.plugins_override,
-  })
-  const skillTool = createSkillTool({
-    commands,
-    skills: skillContext.mergedSkills,
-    gitMasterConfig: pluginConfig.git_master,
-  })
-
   const taskSystemEnabled = pluginConfig.experimental?.task_system ?? false
   const taskToolsRecord: Record<string, ToolDefinition> = taskSystemEnabled
     ? {
@@ -120,7 +108,6 @@ export function createToolRegistry(args: {
     call_omo_agent: callOmoAgent,
     ...(lookAt ? { look_at: lookAt } : {}),
     task: delegateTask,
-    skill: skillTool,
     interactive_bash,
     ...taskToolsRecord,
     ...hashlineToolsRecord,
