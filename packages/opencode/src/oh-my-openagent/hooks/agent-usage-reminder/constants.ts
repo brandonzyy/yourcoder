@@ -19,6 +19,14 @@ export const TARGET_TOOLS = new Set([
   "grep_app_searchgithub",
 ]);
 
+export const EXECUTION_TOOLS = new Set([
+  "edit",
+  "write",
+  "apply_patch",
+  "hashline_edit",
+  "bash",
+]);
+
 export const AGENT_TOOLS = new Set([
   "task",
   "call_omo_agent",
@@ -49,4 +57,24 @@ WHY:
 - Reduces context window usage in main session
 
 ALWAYS prefer: Multiple parallel task calls > Direct tool calls
+`;
+
+export const EXECUTION_REMINDER_MESSAGE = `
+[Orchestrator Enforcement Reminder]
+
+You called an execution tool (edit/write/bash) directly. As an orchestrator, you MUST delegate implementation to subagents.
+
+REQUIRED: Decompose and delegate via task():
+
+\`\`\`
+// Delegate implementation to specialized agents
+task(category="deep", load_skills=["relevant-skill"], prompt="TASK: ... EXPECTED OUTCOME: ... MUST DO: ... MUST NOT DO: ...")
+\`\`\`
+
+WHY:
+- Subagents have domain-specific configurations and loaded skills
+- Direct implementation by orchestrators produces measurably worse results
+- Your value is orchestration, decomposition, and quality control
+
+NEVER implement directly when delegation is possible. You write prompts, not code.
 `;

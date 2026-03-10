@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { Log } from "./log"
 
 export function fn<T extends z.ZodType, Result>(schema: T, cb: (input: z.infer<T>) => Result) {
   const result = (input: z.infer<T>) => {
@@ -6,7 +7,13 @@ export function fn<T extends z.ZodType, Result>(schema: T, cb: (input: z.infer<T
     try {
       parsed = schema.parse(input)
     } catch (e) {
-      console.trace("schema validation failure stack trace:")
+      try {
+        Log.Default.error("schema validation failure", {
+          stack: new Error().stack,
+        })
+      } catch {
+        // Log not initialized, silently skip trace
+      }
       throw e
     }
 

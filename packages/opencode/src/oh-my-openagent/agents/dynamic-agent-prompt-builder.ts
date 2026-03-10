@@ -360,10 +360,9 @@ Plan Agent returns a structured work breakdown with parallel execution opportuni
 }
 
 export function buildParallelDelegationSection(model: string, categories: AvailableCategory[]): string {
-  const isNonClaude = !model.toLowerCase().includes('claude')
   const hasDelegationCategory = categories.some(c => c.name === 'deep' || c.name === 'unspecified-high')
 
-  if (!isNonClaude || !hasDelegationCategory) return ""
+  if (!hasDelegationCategory) return ""
 
   return `### DECOMPOSE AND DELEGATE — YOU ARE NOT AN IMPLEMENTER
 

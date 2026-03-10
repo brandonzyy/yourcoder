@@ -209,7 +209,7 @@ describe("buildParallelDelegationSection", () => {
     expect(result).toContain("NEVER work sequentially")
   })
 
-  it("#given Claude model #when building #then returns empty", () => {
+  it("#given Claude model with deep category #when building #then returns delegation section", () => {
     //#given
     const model = "anthropic/claude-opus-4-6"
     const categories = [deepCategory]
@@ -218,7 +218,8 @@ describe("buildParallelDelegationSection", () => {
     const result = buildParallelDelegationSection(model, categories)
 
     //#then
-    expect(result).toBe("")
+    expect(result).toContain("DECOMPOSE AND DELEGATE")
+    expect(result).toContain("NOT AN IMPLEMENTER")
   })
 
   it("#given non-Claude model without deep or unspecified-high category #when building #then returns empty", () => {

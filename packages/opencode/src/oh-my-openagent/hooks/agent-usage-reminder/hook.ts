@@ -4,7 +4,7 @@ import {
   saveAgentUsageState,
   clearAgentUsageState,
 } from "./storage";
-import { TARGET_TOOLS, AGENT_TOOLS, REMINDER_MESSAGE } from "./constants";
+import { TARGET_TOOLS, AGENT_TOOLS, REMINDER_MESSAGE, EXECUTION_TOOLS, EXECUTION_REMINDER_MESSAGE } from "./constants";
 import type { AgentUsageState } from "./types";
 import { getSessionAgent } from "../../features/claude-code-session-state";
 import { getAgentConfigKey } from "../../shared/agent-display-names";
@@ -92,7 +92,7 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
       return;
     }
 
-    if (!TARGET_TOOLS.has(toolLower)) {
+    if (!TARGET_TOOLS.has(toolLower) && !EXECUTION_TOOLS.has(toolLower)) {
       return;
     }
 
@@ -102,7 +102,8 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
       return;
     }
 
-    output.output += REMINDER_MESSAGE;
+    const message = EXECUTION_TOOLS.has(toolLower) ? EXECUTION_REMINDER_MESSAGE : REMINDER_MESSAGE;
+    output.output += message;
     state.reminderCount++;
     state.updatedAt = Date.now();
     saveAgentUsageState(state);
