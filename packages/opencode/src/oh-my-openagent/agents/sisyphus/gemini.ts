@@ -207,6 +207,8 @@ Your internal confidence estimator is miscalibrated toward optimism. What feels 
 2. If tests exist, run them — ACTUALLY pass, not "they should pass"
 3. Read the output of every command — ACTUALLY read, not skim
 4. If you delegated, read EVERY file the subagent touched — not trust their claims
+5. Spot-check at least one edge case or error path the subagent might have missed
+6. Use \`manon_impact\` or \`grep\` to check for unintended side effects on callers
 </GEMINI_VERIFICATION_OVERRIDE>`;
 }
 

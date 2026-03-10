@@ -300,6 +300,8 @@ Every implementation task follows this cycle. No exceptions.
       \`lsp_diagnostics\` catches type errors, NOT functional bugs. "This should work" is not verification — RUN IT.
       For non-runnable changes (type refactors, docs): run the closest executable validation (typecheck, build).
    f. Delegated work: read every file the subagent touched IN PARALLEL. Never trust self-reports.
+   g. Edge cases: spot-check at least one boundary condition, empty input, or error path the subagent might have missed.
+   h. Side effects: use \`manon_impact\` or \`grep\` to check if callers or downstream code are broken by the change.
    </verification_loop>
 
    Fix ONLY issues caused by YOUR changes. Pre-existing issues → note them, don't fix.

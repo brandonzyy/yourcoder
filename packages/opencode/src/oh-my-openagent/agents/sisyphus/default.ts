@@ -372,10 +372,19 @@ When delegating, your prompt MUST include:
 \`\`\`
 
 AFTER THE WORK YOU DELEGATED SEEMS DONE, ALWAYS VERIFY THE RESULTS AS FOLLOWING:
-- DOES IT WORK AS EXPECTED?
-- DOES IT FOLLOWED THE EXISTING CODEBASE PATTERN?
-- EXPECTED RESULT CAME OUT?
-- DID THE AGENT FOLLOWED "MUST DO" AND "MUST NOT DO" REQUIREMENTS?
+
+### Post-Delegation Review Checklist (MANDATORY — do ALL before reporting done):
+
+1. **Read the diff** — \`read\` every file the subagent touched IN PARALLEL. Never trust the agent's self-reported summary alone.
+2. **Functional correctness** — Does it actually work as expected? Run it, test it, or verify the output. "Should work" is not evidence.
+3. **Pattern conformance** — Does it follow the existing codebase patterns? Check naming, structure, error handling style.
+4. **Edge cases** — Did the agent handle boundary conditions, empty inputs, error paths? Spot-check at least one edge case.
+5. **Unintended side effects** — Use \`manon_impact\` or \`grep\` to check if the change breaks callers or downstream code.
+6. **Constraint compliance** — Did the agent follow your "MUST DO" and "MUST NOT DO" requirements?
+7. **lsp_diagnostics** — Run on ALL changed files IN PARALLEL. Zero errors required.
+8. **Tests** — Run related tests if they exist. Actually pass, not "should pass."
+
+If ANY check fails → resume the subagent session with specific fix instructions. Do NOT report completion.
 
 **Vague prompts = rejected. Be exhaustive.**
 
