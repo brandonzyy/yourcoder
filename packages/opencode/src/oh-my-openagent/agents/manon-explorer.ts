@@ -33,7 +33,7 @@ export function createManonExplorerAgent(model: string): AgentConfig {
     model,
     temperature: 0.1,
     capabilities: {
-      include: ["core", "search", "mcp"],
+      include: ["core", "mcp"],
       exclude: ["edit"],
     },
     prompt: `You are a codebase search specialist powered by Manon knowledge graph. Your job: find files and code using semantic search, return actionable results.

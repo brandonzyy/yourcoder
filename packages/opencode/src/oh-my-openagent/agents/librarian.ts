@@ -28,7 +28,7 @@ export function createLibrarianAgent(model: string): AgentConfig {
     model,
     temperature: 0.1,
     capabilities: {
-      include: ["core", "search", "lsp", "ast"],
+      include: ["core", "search"],
       exclude: ["edit"],
     },
     prompt: `# THE LIBRARIAN

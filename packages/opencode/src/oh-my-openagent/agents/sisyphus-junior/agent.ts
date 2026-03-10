@@ -100,7 +100,7 @@ export function createSisyphusJuniorAgentWithOverrides(
     color: override?.color ?? "#20B2AA",
     permission: merged,
     capabilities: {
-      include: ["core", "edit", "search", "skill", "lsp", "ast", "meta", "mcp", "interactive"],
+      include: ["core", "edit", "skill", "lsp", "ast", "meta", "mcp", "interactive", "media"],
       deny: ["task"],
     },
   }
