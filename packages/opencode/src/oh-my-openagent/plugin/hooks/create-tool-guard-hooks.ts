@@ -15,6 +15,7 @@ import {
   createReadImageResizerHook,
   createJsonErrorRecoveryHook,
 } from "../../hooks"
+import { createManonPriorityHook } from "../../hooks/manon-priority"
 import {
   getOpenCodeVersion,
   isOpenCodeVersionAtLeast,
@@ -35,6 +36,7 @@ export type ToolGuardHooks = {
   hashlineReadEnhancer: ReturnType<typeof createHashlineReadEnhancerHook> | null
   jsonErrorRecovery: ReturnType<typeof createJsonErrorRecoveryHook> | null
   readImageResizer: ReturnType<typeof createReadImageResizerHook> | null
+  manonPriority: ReturnType<typeof createManonPriorityHook> | null
 }
 
 export function createToolGuardHooks(args: {
@@ -111,6 +113,9 @@ export function createToolGuardHooks(args: {
     ? safeHook("read-image-resizer", () => createReadImageResizerHook(ctx))
     : null
 
+  // Manon Priority Hook - Always enabled for maximum efficiency
+  const manonPriority = safeHook("manon-priority", () => createManonPriorityHook(ctx))
+
   return {
     commentChecker,
     toolOutputTruncator,
@@ -123,5 +128,6 @@ export function createToolGuardHooks(args: {
     hashlineReadEnhancer,
     jsonErrorRecovery,
     readImageResizer,
+    manonPriority,
   }
 }

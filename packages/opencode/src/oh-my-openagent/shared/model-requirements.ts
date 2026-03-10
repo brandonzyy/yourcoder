@@ -19,57 +19,15 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["opencode"], model: "kimi-k2.5" },
     ],
   },
-  hephaestus: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "kimi-k2.5" },
-      { providers: ["opencode"], model: "glm-5" },
-    ],
-  },
-  oracle: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-opus-4-6", variant: "max" },
-      { providers: ["opencode"], model: "glm-5" },
-    ],
-  },
   librarian: {
     fallbackChain: [
       { providers: ["opencode"], model: "claude-haiku-4-5" },
       { providers: ["opencode"], model: "glm-4.7-fp8" },
     ],
   },
-  explore: {
+  "manon-explorer": {
     fallbackChain: [
       { providers: ["opencode"], model: "claude-haiku-4-5" },
-      { providers: ["opencode"], model: "glm-4.7-fp8" },
-    ],
-  },
-  "multimodal-looker": {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-sonnet-4-6" },
-      { providers: ["opencode"], model: "glm-4.7-fp8" },
-    ],
-  },
-  prometheus: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-opus-4-6", variant: "max" },
-      { providers: ["opencode"], model: "glm-5" },
-    ],
-  },
-  metis: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-opus-4-6", variant: "max" },
-      { providers: ["opencode"], model: "kimi-k2.5" },
-    ],
-  },
-  momus: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "kimi-k2.5" },
-      { providers: ["opencode"], model: "claude-sonnet-4-6" },
-    ],
-  },
-  atlas: {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-sonnet-4-6" },
       { providers: ["opencode"], model: "glm-4.7-fp8" },
     ],
   },

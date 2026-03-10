@@ -30,11 +30,10 @@ import type {
 import {
   buildKeyTriggersSection,
   buildToolSelectionTable,
-  buildExploreSection,
+  buildManonExplorerSection,
   buildLibrarianSection,
   buildDelegationTable,
   buildCategorySkillsDelegationGuide,
-  buildOracleSection,
   buildHardBlocksSection,
   buildAntiPatternsSection,
   buildNonClaudePlannerSection,
@@ -89,14 +88,13 @@ export function buildGpt54SisyphusPrompt(
     availableTools,
     availableSkills,
   );
-  const exploreSection = buildExploreSection(availableAgents);
+  const exploreSection = buildManonExplorerSection(availableAgents);
   const librarianSection = buildLibrarianSection(availableAgents);
   const categorySkillsGuide = buildCategorySkillsDelegationGuide(
     availableCategories,
     availableSkills,
   );
   const delegationTable = buildDelegationTable(availableAgents);
-  const oracleSection = buildOracleSection(availableAgents);
   const hardBlocks = buildHardBlocksSection();
   const antiPatterns = buildAntiPatternsSection();
   const nonClaudePlannerSection = buildNonClaudePlannerSection(model);
@@ -112,7 +110,7 @@ You are a senior SF Bay Area engineer. You delegate, verify, and ship. Your code
 
 Core competencies: parsing implicit requirements from explicit requests, adapting to codebase maturity, delegating to the right subagents, parallel execution for throughput.
 
-You never work alone when specialists are available. Frontend → delegate. Deep research → parallel background agents. Architecture → consult Oracle.
+You never work alone when specialists are available. Frontend → delegate. Deep research → parallel background agents.
 
 You never start implementing unless the user explicitly asks you to implement something.
 
@@ -150,9 +148,9 @@ The user rarely says exactly what they mean. Your job is to read between the lin
 
 | What they say | What they probably mean | Your move |
 |---|---|---|
-| "explain X", "how does Y work" | Wants understanding, not changes | explore/librarian → synthesize → answer |
+| "explain X", "how does Y work" | Wants understanding, not changes | manon-explorer/librarian → synthesize → answer |
 | "implement X", "add Y", "create Z" | Wants code changes | plan → delegate or execute |
-| "look into X", "check Y" | Wants investigation, not fixes (unless they also say "fix") | explore → report findings → wait |
+| "look into X", "check Y" | Wants investigation, not fixes (unless they also say "fix") | manon-explorer → report findings → wait |
 | "what do you think about X?" | Wants your evaluation before committing | evaluate → propose → wait for go-ahead |
 | "X is broken", "seeing error Y" | Wants a minimal fix | diagnose → fix minimally → verify |
 | "refactor", "improve", "clean up" | Open-ended — needs scoping first | assess codebase → propose approach → wait |
@@ -162,7 +160,7 @@ The user rarely says exactly what they mean. Your job is to read between the lin
 Complexity:
 - Trivial (single file, known location) → direct tools, unless a Key Trigger fires
 - Explicit (specific file/line, clear command) → execute directly
-- Exploratory ("how does X work?") → fire explore agents (1-3) + direct tools ALL IN THE SAME RESPONSE
+- Exploratory ("how does X work?") → fire manon-explorer agents (1-3) + direct tools ALL IN THE SAME RESPONSE
 - Open-ended ("improve", "refactor") → assess codebase first, then propose
 - Ambiguous (multiple interpretations with 2x+ effort difference) → ask ONE question
 
@@ -224,19 +222,19 @@ ${librarianSection}
 
 <parallel_tools>
 - When multiple retrieval, lookup, or read steps are independent, issue them as parallel tool calls.
-- Independent: reading 3 files, Grep + Read on different files, firing 2+ explore agents, lsp_diagnostics on multiple files.
+- Independent: reading 3 files, Grep + Read on different files, firing 2+ manon-explorer agents, lsp_diagnostics on multiple files.
 - Dependent: needing a file path from Grep before Reading it. Sequence only these.
 - After parallel retrieval, pause to synthesize all results before issuing further calls.
 - Default bias: if unsure whether two calls are independent — they probably are. Parallelize.
 </parallel_tools>
 
 <tool_method>
-- Fire 2-5 explore/librarian agents in parallel for any non-trivial codebase question.
+- Fire 2-5 manon-explorer/librarian agents in parallel for any non-trivial codebase question.
 - Parallelize independent file reads — NEVER read files one at a time when you know multiple paths.
 - When delegating AND doing direct work: do both simultaneously.
 </tool_method>
 
-Explore and Librarian agents are background grep — always \`run_in_background=true\`, always parallel.
+Manon-Explorer and Librarian agents are background search — always \`run_in_background=true\`, always parallel.
 
 Each agent prompt should include:
 - [CONTEXT]: What task, which modules, what approach
@@ -259,7 +257,7 @@ Stop searching when: you have enough context, same info repeating, 2 iterations 
 
 Every implementation task follows this cycle. No exceptions.
 
-1. EXPLORE — Fire 2-5 explore/librarian agents + direct tools IN PARALLEL.
+1. EXPLORE — Fire 2-5 manon-explorer/librarian agents + direct tools IN PARALLEL.
    Goal: COMPLETE understanding of affected modules, not just "enough context."
    Follow \`<explore>\` protocol for tool usage and agent prompts.
 
@@ -316,8 +314,7 @@ Every implementation task follows this cycle. No exceptions.
    1. Stop all edits.
    2. Revert to last known working state.
    3. Document what was attempted.
-   4. Consult Oracle with full failure context.
-   5. If Oracle can't resolve → ask the user.
+   4. Ask the user before proceeding.
 
    Never leave code in a broken state. Never delete failing tests to "pass."
    </failure_recovery>
@@ -370,10 +367,6 @@ Every \`task()\` returns a session_id. Use it for all follow-ups:
 - Multi-turn → always \`session_id\`, never start fresh
 
 This preserves full context, avoids repeated exploration, saves 70%+ tokens.
-
-${oracleSection ? `### Oracle
-
-${oracleSection}` : ""}
 </delegation>`;
 
   const styleBlock = `<style>

@@ -11,41 +11,41 @@ const createConfig = (overrides: Partial<OhMyOpenCodeConfig> = {}): OhMyOpenCode
 describe("resolveRunAgent", () => {
   it("uses CLI agent over env and config", () => {
     // given
-    const config = createConfig({ default_run_agent: "prometheus" })
-    const env = { OPENCODE_DEFAULT_AGENT: "Atlas" }
+    const config = createConfig({ default_run_agent: "librarian" })
+    const env = { OPENCODE_DEFAULT_AGENT: "manon-explorer" }
 
     // when
     const agent = resolveRunAgent(
-      { message: "test", agent: "Hephaestus" },
+      { message: "test", agent: "Sisyphus" },
       config,
       env
     )
 
     // then
-    expect(agent).toBe("Hephaestus (Deep Agent)")
+    expect(agent).toBe("Sisyphus (Ultraworker)")
   })
 
   it("uses env agent over config", () => {
     // given
-    const config = createConfig({ default_run_agent: "prometheus" })
-    const env = { OPENCODE_DEFAULT_AGENT: "Atlas" }
+    const config = createConfig({ default_run_agent: "librarian" })
+    const env = { OPENCODE_DEFAULT_AGENT: "Sisyphus" }
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, env)
 
     // then
-    expect(agent).toBe("Atlas (Plan Executor)")
+    expect(agent).toBe("Sisyphus (Ultraworker)")
   })
 
   it("uses config agent over default", () => {
     // given
-    const config = createConfig({ default_run_agent: "Prometheus" })
+    const config = createConfig({ default_run_agent: "librarian" })
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, {})
 
     // then
-    expect(agent).toBe("Prometheus (Plan Builder)")
+    expect(agent).toBe("librarian")
   })
 
   it("falls back to sisyphus when none set", () => {
@@ -67,7 +67,7 @@ describe("resolveRunAgent", () => {
     const agent = resolveRunAgent({ message: "test" }, config, {})
 
     // then
-    expect(agent).toBe("Hephaestus (Deep Agent)")
+    expect(agent).toBe("librarian")
   })
 
   it("maps display-name style default_run_agent values to canonical display names", () => {

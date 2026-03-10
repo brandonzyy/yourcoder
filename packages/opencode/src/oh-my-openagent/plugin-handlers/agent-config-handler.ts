@@ -15,8 +15,6 @@ import { loadProjectAgents, loadUserAgents } from "../features/claude-code-agent
 import type { PluginComponents } from "./plugin-components-loader";
 import { reorderAgentsByPriority } from "./agent-priority-order";
 import { remapAgentKeysToDisplayNames } from "./agent-key-remapper";
-import { buildPrometheusAgentConfig } from "./prometheus-agent-config-builder";
-import { buildPlanDemoteConfig } from "./plan-model-inheritance";
 
 type AgentConfigRecord = Record<string, Record<string, unknown> | undefined> & {
   build?: Record<string, unknown>;
@@ -118,9 +116,6 @@ export async function applyAgentConfig(params: {
   const isSisyphusEnabled = params.pluginConfig.sisyphus_agent?.disabled !== true;
   const builderEnabled =
     params.pluginConfig.sisyphus_agent?.default_builder_enabled ?? false;
-  const plannerEnabled = params.pluginConfig.sisyphus_agent?.planner_enabled ?? true;
-  const replacePlan = params.pluginConfig.sisyphus_agent?.replace_plan ?? true;
-  const shouldDemotePlan = plannerEnabled && replacePlan;
   const configuredDefaultAgent = getConfiguredDefaultAgent(params.config);
 
   const configAgent = params.config.agent as AgentConfigRecord | undefined;
@@ -158,25 +153,11 @@ export async function applyAgentConfig(params: {
       agentConfig["OpenCode-Builder"] = override ? { ...base, ...override } : base;
     }
 
-    if (plannerEnabled) {
-      const prometheusOverride = params.pluginConfig.agents?.["prometheus"] as
-        | (Record<string, unknown> & { prompt_append?: string })
-        | undefined;
-
-      agentConfig["prometheus"] = await buildPrometheusAgentConfig({
-        configAgentPlan: configAgent?.plan,
-        pluginPrometheusOverride: prometheusOverride,
-        userCategories: params.pluginConfig.categories,
-        currentModel,
-      });
-    }
-
     const filteredConfigAgents = configAgent
       ? Object.fromEntries(
           Object.entries(configAgent)
             .filter(([key]) => {
               if (key === "build") return false;
-              if (key === "plan" && shouldDemotePlan) return false;
               if (key in builtinAgents) return false;
               return true;
             })
@@ -191,13 +172,6 @@ export async function applyAgentConfig(params: {
       ? migrateAgentConfig(configAgent.build as Record<string, unknown>)
       : {};
 
-    const planDemoteConfig = shouldDemotePlan
-      ? buildPlanDemoteConfig(
-          agentConfig["prometheus"] as Record<string, unknown> | undefined,
-          params.pluginConfig.agents?.plan as Record<string, unknown> | undefined,
-        )
-      : undefined;
-
     params.config.agent = {
       ...agentConfig,
       ...Object.fromEntries(
@@ -208,7 +182,6 @@ export async function applyAgentConfig(params: {
       ...filterDisabledAgents(pluginAgents),
       ...filteredConfigAgents,
       build: { ...migratedBuild, mode: "subagent", hidden: true },
-      ...(planDemoteConfig ? { plan: planDemoteConfig } : {}),
     };
   } else {
     params.config.agent = {

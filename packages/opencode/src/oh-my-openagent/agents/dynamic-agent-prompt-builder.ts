@@ -102,26 +102,26 @@ export function buildToolSelectionTable(
   }
 
   rows.push("")
-  rows.push("**Default flow**: explore/librarian (background) + tools → oracle (if required)")
+  rows.push("**Default flow**: manon-explorer/librarian (background) + tools → task (if implementation needed)")
 
   return rows.join("\n")
 }
 
-export function buildExploreSection(agents: AvailableAgent[]): string {
-  const exploreAgent = agents.find((a) => a.name === "explore")
-  if (!exploreAgent) return ""
+export function buildManonExplorerSection(agents: AvailableAgent[]): string {
+  const manonAgent = agents.find((a) => a.name === "manon-explorer")
+  if (!manonAgent) return ""
 
-  const useWhen = exploreAgent.metadata.useWhen || []
-  const avoidWhen = exploreAgent.metadata.avoidWhen || []
+  const useWhen = manonAgent.metadata.useWhen || []
+  const avoidWhen = manonAgent.metadata.avoidWhen || []
 
-  return `### Explore Agent = Contextual Grep
+  return `### Manon-Explorer Agent = Semantic Code Search
 
-Use it as a **peer tool**, not a fallback. Fire liberally.
+Use it as a **peer tool**, not a fallback. Fire liberally. Uses Manon knowledge graph for semantic search, call graphs, and dependency analysis.
 
 **Use Direct Tools when:**
 ${avoidWhen.map((w) => `- ${w}`).join("\n")}
 
-**Use Explore Agent when:**
+**Use Manon-Explorer Agent when:**
 ${useWhen.map((w) => `- ${w}`).join("\n")}`
 }
 
@@ -277,41 +277,6 @@ task(category="quick", load_skills=[], prompt="Redesign the sidebar layout with 
 **When in doubt about category, it is almost never \`quick\` or \`unspecified-*\`. Match the domain.**`
 }
 
-export function buildOracleSection(agents: AvailableAgent[]): string {
-  const oracleAgent = agents.find((a) => a.name === "oracle")
-  if (!oracleAgent) return ""
-
-  const useWhen = oracleAgent.metadata.useWhen || []
-  const avoidWhen = oracleAgent.metadata.avoidWhen || []
-
-  return `<Oracle_Usage>
-## Oracle — Read-Only High-IQ Consultant
-
-Oracle is a read-only, expensive, high-quality reasoning model for debugging and architecture. Consultation only.
-
-### WHEN to Consult (Oracle FIRST, then implement):
-
-${useWhen.map((w) => `- ${w}`).join("\n")}
-
-### WHEN NOT to Consult:
-
-${avoidWhen.map((w) => `- ${w}`).join("\n")}
-
-### Usage Pattern:
-Briefly announce "Consulting Oracle for [reason]" before invocation.
-
-**Exception**: This is the ONLY case where you announce before acting. For all other work, start immediately without status updates.
-
-### Oracle Background Task Policy:
-
-**Collect Oracle results before your final answer. No exceptions.**
-
-- Oracle takes minutes. When done with your own work: **end your response** — wait for the \`<system-reminder>\`.
-- Do NOT poll \`background_output\` on a running Oracle. The notification will come.
-- Never cancel Oracle.
-</Oracle_Usage>`
-}
-
 export function buildHardBlocksSection(): string {
   const blocks = [
     "- Type error suppression (`as any`, `@ts-ignore`) — **Never**",
@@ -319,7 +284,6 @@ export function buildHardBlocksSection(): string {
     "- Speculate about unread code — **Never**",
     "- Leave code in broken state after failures — **Never**",
     "- `background_cancel(all=true)` — **Never.** Always cancel individually by taskId.",
-    "- Delivering final answer before collecting Oracle result — **Never.**",
   ]
 
   return `## Hard Blocks (NEVER violate)
@@ -335,7 +299,6 @@ export function buildAntiPatternsSection(): string {
     "- **Search**: Firing agents for single-line typos or obvious syntax errors",
     "- **Debugging**: Shotgun debugging, random changes",
     "- **Background Tasks**: Polling `background_output` on running tasks — end response and wait for notification",
-    "- **Oracle**: Delivering answer without collecting Oracle results",
   ]
 
   return `## Anti-Patterns (BLOCKING violations)
@@ -432,7 +395,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["explore", "librarian", "plan", "oracle"]
+    const ultraworkAgentPriority = ["manon-explorer", "librarian", "plan"]
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name)
       const bIdx = ultraworkAgentPriority.indexOf(b.name)
@@ -445,7 +408,7 @@ export function buildUltraworkSection(
     lines.push("**Agents** (for specialized consultation/exploration):")
     for (const agent of sortedAgents) {
       const shortDesc = agent.description.length > 120 ? agent.description.slice(0, 120) + "..." : agent.description
-      const suffix = agent.name === "explore" || agent.name === "librarian" ? " (multiple)" : ""
+      const suffix = agent.name === "manon-explorer" || agent.name === "librarian" ? " (multiple)" : ""
       lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`)
     }
   }

@@ -21,6 +21,9 @@ export function createToolExecuteBeforeHandler(args: {
   const { ctx, hooks } = args
 
   return async (input, output): Promise<void> => {
+    // Manon Priority Hook - Must run first to enforce knowledge graph usage
+    await hooks.manonPriority?.["tool.execute.before"]?.(input, output)
+
     await hooks.writeExistingFileGuard?.["tool.execute.before"]?.(input, output)
     await hooks.questionLabelTruncator?.["tool.execute.before"]?.(input, output)
     await hooks.claudeCodeHooks?.["tool.execute.before"]?.(input, output)
@@ -30,9 +33,7 @@ export function createToolExecuteBeforeHandler(args: {
     await hooks.directoryReadmeInjector?.["tool.execute.before"]?.(input, output)
     await hooks.rulesInjector?.["tool.execute.before"]?.(input, output)
     await hooks.tasksTodowriteDisabler?.["tool.execute.before"]?.(input, output)
-    await hooks.prometheusMdOnly?.["tool.execute.before"]?.(input, output)
     await hooks.sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output)
-    await hooks.atlasHook?.["tool.execute.before"]?.(input, output)
 
     const normalizedToolName = input.tool.toLowerCase()
     if (

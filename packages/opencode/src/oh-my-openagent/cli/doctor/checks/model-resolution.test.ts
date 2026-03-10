@@ -15,7 +15,7 @@ describe("model-resolution check", () => {
       const sisyphus = info.agents.find((a) => a.name === "sisyphus")
       expect(sisyphus).toBeDefined()
       expect(sisyphus!.requirement.fallbackChain[0]?.model).toBe("claude-opus-4-6")
-      expect(sisyphus!.requirement.fallbackChain[0]?.providers).toContain("anthropic")
+      expect(sisyphus!.requirement.fallbackChain[0]?.providers).toContain("opencode")
     })
 
     it("returns category requirements with provider chains", async () => {
@@ -26,8 +26,8 @@ describe("model-resolution check", () => {
       // then: Should have category entries
       const visual = info.categories.find((c) => c.name === "visual-engineering")
       expect(visual).toBeDefined()
-      expect(visual!.requirement.fallbackChain[0]?.model).toBe("gemini-3.1-pro")
-      expect(visual!.requirement.fallbackChain[0]?.providers).toContain("google")
+      expect(visual!.requirement.fallbackChain[0]?.model).toBe("claude-opus-4-6")
+      expect(visual!.requirement.fallbackChain[0]?.providers).toContain("opencode")
     })
   })
 
@@ -39,20 +39,20 @@ describe("model-resolution check", () => {
     it("shows user override for agent when configured", async () => {
       const { getModelResolutionInfoWithOverrides } = await import("./model-resolution")
 
-      // given: User has override for oracle agent
+      // given: User has override for librarian agent
       const mockConfig = {
         agents: {
-          oracle: { model: "anthropic/claude-opus-4-6" },
+          librarian: { model: "opencode/claude-opus-4-6" },
         },
       }
 
       const info = getModelResolutionInfoWithOverrides(mockConfig)
 
-      // then: Oracle should show the override
-      const oracle = info.agents.find((a) => a.name === "oracle")
-      expect(oracle).toBeDefined()
-      expect(oracle!.userOverride).toBe("anthropic/claude-opus-4-6")
-      expect(oracle!.effectiveResolution).toBe("User override: anthropic/claude-opus-4-6")
+      // then: librarian should show the override
+      const librarian = info.agents.find((a) => a.name === "librarian")
+      expect(librarian).toBeDefined()
+      expect(librarian!.userOverride).toBe("opencode/claude-opus-4-6")
+      expect(librarian!.effectiveResolution).toBe("User override: opencode/claude-opus-4-6")
     })
 
     it("shows user override for category when configured", async () => {
@@ -87,27 +87,27 @@ describe("model-resolution check", () => {
       expect(sisyphus).toBeDefined()
       expect(sisyphus!.userOverride).toBeUndefined()
       expect(sisyphus!.effectiveResolution).toContain("Provider fallback:")
-      expect(sisyphus!.effectiveResolution).toContain("anthropic")
+      expect(sisyphus!.effectiveResolution).toContain("opencode")
     })
 
     it("captures user variant for agent when configured", async () => {
       const { getModelResolutionInfoWithOverrides } = await import("./model-resolution")
 
-      //#given User has model with variant override for oracle agent
+      //#given User has model with variant override for librarian agent
       const mockConfig = {
         agents: {
-          oracle: { model: "openai/gpt-5.4", variant: "xhigh" },
+          librarian: { model: "opencode/claude-haiku-4-5", variant: "xhigh" },
         },
       }
 
       //#when getting resolution info with config
       const info = getModelResolutionInfoWithOverrides(mockConfig)
 
-      //#then Oracle should have userVariant set
-      const oracle = info.agents.find((a) => a.name === "oracle")
-      expect(oracle).toBeDefined()
-      expect(oracle!.userOverride).toBe("openai/gpt-5.4")
-      expect(oracle!.userVariant).toBe("xhigh")
+      //#then librarian should have userVariant set
+      const librarian = info.agents.find((a) => a.name === "librarian")
+      expect(librarian).toBeDefined()
+      expect(librarian!.userOverride).toBe("opencode/claude-haiku-4-5")
+      expect(librarian!.userVariant).toBe("xhigh")
     })
 
     it("captures user variant for category when configured", async () => {

@@ -170,15 +170,15 @@ describe("fetchNpmDistTags", () => {
 })
 
 describe("generateOmoConfig - model fallback system", () => {
-  test("uses github-copilot sonnet fallback when only copilot available", () => {
-    // #given user has only copilot (no max plan)
+  test("resolves all agents via opencode provider when available", () => {
+    // #given user has opencode zen
     const config: InstallConfig = {
       hasClaude: false,
       isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
-      hasCopilot: true,
-      hasOpencodeZen: false,
+      hasCopilot: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     }
@@ -186,8 +186,13 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus uses Copilot (OR logic - copilot is in claude-opus-4-6 providers)
-    expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("github-copilot/claude-opus-4.6")
+    // #then Sisyphus uses opencode/claude-opus-4-6 with max variant
+    expect((result.agents as Record<string, { model: string; variant?: string }>).sisyphus.model).toBe("opencode/claude-opus-4-6")
+    expect((result.agents as Record<string, { model: string; variant?: string }>).sisyphus.variant).toBe("max")
+    // #then librarian uses opencode/claude-haiku-4-5
+    expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("opencode/claude-haiku-4-5")
+    // #then manon-explorer uses opencode/claude-haiku-4-5
+    expect((result.agents as Record<string, { model: string }>)["manon-explorer"].model).toBe("opencode/claude-haiku-4-5")
   })
 
   test("uses ultimate fallback when no providers configured", () => {
@@ -206,13 +211,15 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus is omitted (requires all fallback providers)
+    // #then all agents get ultimate fallback
     expect(result.$schema).toBe("https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json")
-    expect((result.agents as Record<string, { model: string }>).sisyphus).toBeUndefined()
+    expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("opencode/glm-4.7-fp8")
+    expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("opencode/glm-4.7-fp8")
+    expect((result.agents as Record<string, { model: string }>)["manon-explorer"].model).toBe("opencode/glm-4.7-fp8")
   })
 
-  test("uses ZAI model for librarian when Z.ai is available", () => {
-    // #given user has Z.ai and Claude max20
+  test("falls back to ultimate when only non-opencode providers available", () => {
+    // #given user has Claude but not opencode zen
     const config: InstallConfig = {
       hasClaude: true,
       isMax20: true,
@@ -220,52 +227,27 @@ describe("generateOmoConfig - model fallback system", () => {
       hasGemini: false,
       hasCopilot: false,
       hasOpencodeZen: false,
-      hasZaiCodingPlan: true,
+      hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     }
 
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then librarian should use ZAI model
-    expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("zai-coding-plan/glm-4.7")
-    // #then Sisyphus uses Claude (OR logic)
-    expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("anthropic/claude-opus-4-6")
+    // #then librarian gets ultimate fallback (opencode provider not available)
+    expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("opencode/glm-4.7-fp8")
+    // #then manon-explorer gets ultimate fallback
+    expect((result.agents as Record<string, { model: string }>)["manon-explorer"].model).toBe("opencode/glm-4.7-fp8")
   })
 
-  test("uses native OpenAI models when only ChatGPT available", () => {
-    // #given user has only ChatGPT subscription
+  test("sisyphus not created when only non-opencode provider and no chain match", () => {
+    // #given user has only copilot (not in opencode chain)
     const config: InstallConfig = {
       hasClaude: false,
       isMax20: false,
-      hasOpenAI: true,
-      hasGemini: false,
-      hasCopilot: false,
-      hasOpencodeZen: false,
-      hasZaiCodingPlan: false,
-      hasKimiForCoding: false,
-    }
-
-    // #when generating config
-    const result = generateOmoConfig(config)
-
-    // #then Sisyphus resolves to gpt-5.4 medium (openai is now in sisyphus chain)
-    expect((result.agents as Record<string, { model: string; variant?: string }>).sisyphus.model).toBe("openai/gpt-5.4")
-    expect((result.agents as Record<string, { model: string; variant?: string }>).sisyphus.variant).toBe("medium")
-    // #then Oracle should use native OpenAI (first fallback entry)
-    expect((result.agents as Record<string, { model: string }>).oracle.model).toBe("openai/gpt-5.4")
-    // #then multimodal-looker should use native OpenAI (first fallback entry is gpt-5.4)
-    expect((result.agents as Record<string, { model: string }>)["multimodal-looker"].model).toBe("openai/gpt-5.4")
-  })
-
-  test("uses haiku for explore when Claude max20", () => {
-    // #given user has Claude max20
-    const config: InstallConfig = {
-      hasClaude: true,
-      isMax20: true,
       hasOpenAI: false,
       hasGemini: false,
-      hasCopilot: false,
+      hasCopilot: true,
       hasOpencodeZen: false,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
@@ -274,19 +256,21 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then explore should use haiku (max20 plan uses Claude quota)
-    expect((result.agents as Record<string, { model: string }>).explore.model).toBe("anthropic/claude-haiku-4-5")
+    // #then Sisyphus is not created (special sisyphus path has no else fallback)
+    expect((result.agents as Record<string, { model: string }>).sisyphus).toBeUndefined()
+    // #then librarian still gets ultimate fallback
+    expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("opencode/glm-4.7-fp8")
   })
 
-  test("uses haiku for explore regardless of max20 flag", () => {
-    // #given user has Claude but not max20
+  test("manon-explorer uses haiku via opencode provider", () => {
+    // #given user has opencode zen
     const config: InstallConfig = {
-      hasClaude: true,
+      hasClaude: false,
       isMax20: false,
       hasOpenAI: false,
       hasGemini: false,
       hasCopilot: false,
-      hasOpencodeZen: false,
+      hasOpencodeZen: true,
       hasZaiCodingPlan: false,
       hasKimiForCoding: false,
     }
@@ -294,7 +278,29 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then explore should use haiku (isMax20 doesn't affect explore anymore)
-    expect((result.agents as Record<string, { model: string }>).explore.model).toBe("anthropic/claude-haiku-4-5")
+    // #then manon-explorer uses haiku (first in its chain)
+    expect((result.agents as Record<string, { model: string }>)["manon-explorer"].model).toBe("opencode/claude-haiku-4-5")
+  })
+
+  test("only 3 agents generated (sisyphus, librarian, manon-explorer)", () => {
+    // #given user has opencode zen
+    const config: InstallConfig = {
+      hasClaude: false,
+      isMax20: false,
+      hasOpenAI: false,
+      hasGemini: false,
+      hasCopilot: false,
+      hasOpencodeZen: true,
+      hasZaiCodingPlan: false,
+      hasKimiForCoding: false,
+    }
+
+    // #when generating config
+    const result = generateOmoConfig(config)
+
+    // #then only 3 agents exist (no oracle, explore, hephaestus, etc.)
+    const agentKeys = Object.keys(result.agents as Record<string, unknown>)
+    expect(agentKeys).toEqual(expect.arrayContaining(["sisyphus", "librarian", "manon-explorer"]))
+    expect(agentKeys).toHaveLength(3)
   })
 })
