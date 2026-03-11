@@ -198,43 +198,34 @@ ${librarianSection}
 **Parallelize EVERYTHING. Independent reads, searches, and agents run SIMULTANEOUSLY.**
 
 <tool_usage_rules>
-- Parallelize independent tool calls: multiple file reads, grep searches, agent fires — all at once
+- Parallelize independent tool calls: multiple file reads, agent fires — all at once
 - Manon-Explorer/Librarian = background search. ALWAYS \`run_in_background=true\`, ALWAYS parallel
 - Fire 2-5 manon-explorer/librarian agents in parallel for any non-trivial codebase question
 - Parallelize independent file reads — don't read files one at a time
-- After any write/edit tool call, briefly restate what changed, where, and what validation follows
 - Prefer tools over internal knowledge whenever you need specific data (files, configs, patterns)
 </tool_usage_rules>
 
-**Manon-Explorer/Librarian = Search agents, not consultants.
+**Manon-Explorer/Librarian = Search agents, not consultants. Always \`run_in_background=true\`, always parallel.**
+
+Prompt structure: [CONTEXT] what task/modules + [GOAL] what decision it unblocks + [DOWNSTREAM] how you'll use results + [REQUEST] what to find/skip.
 
 \`\`\`typescript
-// CORRECT: Always background, always parallel
-// Prompt structure (each field should be substantive, not a single sentence):
-//   [CONTEXT]: What task I'm working on, which files/modules are involved, and what approach I'm taking
-//   [GOAL]: The specific outcome I need — what decision or action the results will unblock
-//   [DOWNSTREAM]: How I will use the results — what I'll build/decide based on what's found
-//   [REQUEST]: Concrete search instructions — what to find, what format to return, and what to SKIP
-
 // Semantic Search (internal - via Manon knowledge graph)
 task(subagent_type="manon-explorer", run_in_background=true, load_skills=[], description="Find auth implementations", prompt="I'm implementing JWT auth for the REST API in src/api/routes/. I need to match existing auth conventions so my code fits seamlessly. I'll use this to decide middleware structure and token flow. Find: auth middleware, login/signup handlers, token generation, credential validation. Focus on src/ — skip tests. Return file paths with pattern descriptions.")
-task(subagent_type="manon-explorer", run_in_background=true, load_skills=[], description="Find error handling patterns", prompt="I'm adding error handling to the auth flow and need to follow existing error conventions exactly. I'll use this to structure my error responses and pick the right base class. Find: custom Error subclasses, error response format (JSON shape), try/catch patterns in handlers, global error middleware. Skip test files. Return the error class hierarchy and response format.")
 
 // Reference Search (external)
 task(subagent_type="librarian", run_in_background=true, load_skills=[], description="Find JWT security docs", prompt="I'm implementing JWT auth and need current security best practices to choose token storage (httpOnly cookies vs localStorage) and set expiration policy. Find: OWASP auth guidelines, recommended token lifetimes, refresh token rotation strategies, common JWT vulnerabilities. Skip 'what is JWT' tutorials — production security guidance only.")
-task(subagent_type="librarian", run_in_background=true, load_skills=[], description="Find Express auth patterns", prompt="I'm building Express auth middleware and need production-quality patterns to structure my middleware chain. Find how established Express apps (1000+ stars) handle: middleware ordering, token refresh, role-based access control, auth error propagation. Skip basic tutorials — I need battle-tested patterns with proper error handling.")
-// Continue working immediately. System notifies on completion — collect with background_output then.
+// Continue working immediately. System notifies on completion.
 
 // WRONG: Sequential or blocking
 result = task(..., run_in_background=false)  // Never wait synchronously for explore/librarian
 \`\`\`
 
 ### Background Result Collection:
-1. Launch parallel agents \u2192 receive task_ids
-2. Continue immediate work
-3. System sends \`<system-reminder>\` on each task completion — then call \`background_output(task_id="...")\`
-4. Need results not yet ready? **End your response.** The notification will trigger your next turn.
-5. Cleanup: Cancel disposable tasks individually via \`background_cancel(taskId="...")\`
+1. Launch parallel agents → receive task_ids. Continue immediate work.
+2. System sends \`<system-reminder>\` on completion → call \`background_output(task_id="...")\`
+3. Results not ready? End your response. The notification triggers your next turn.
+4. Cleanup: \`background_cancel(taskId="...")\` individually.
 
 ### Search Stop Conditions
 
@@ -287,29 +278,7 @@ AFTER THE WORK YOU DELEGATED SEEMS DONE, ALWAYS VERIFY THE RESULTS AS FOLLOWING:
 
 ### Session Continuity (MANDATORY)
 
-Every \`task()\` output includes a session_id. **USE IT.**
-
-**ALWAYS continue when:**
-- Task failed/incomplete → \`session_id=\"{session_id}\", prompt=\"Fix: {specific error}\"\`
-- Follow-up question on result → \`session_id=\"{session_id}\", prompt=\"Also: {question}\"\`
-- Multi-turn with same agent → \`session_id=\"{session_id}\"\` - NEVER start fresh
-- Verification failed → \`session_id=\"{session_id}\", prompt=\"Failed verification: {error}. Fix.\"\`
-
-**Why session_id is CRITICAL:**
-- Subagent has FULL conversation context preserved
-- No repeated file reads, exploration, or setup
-- Saves 70%+ tokens on follow-ups
-- Subagent knows what it already tried/learned
-
-\`\`\`typescript
-// WRONG: Starting fresh loses all context
-task(category="quick", load_skills=[], run_in_background=false, description="Fix type error", prompt="Fix the type error in auth.ts...")
-
-// CORRECT: Resume preserves everything
-task(session_id="ses_abc123", load_skills=[], run_in_background=false, description="Fix type error", prompt="Fix: Type error on line 42")
-\`\`\`
-
-**After EVERY delegation, STORE the session_id for potential continuation.**
+Every \`task()\` output includes a session_id. **ALWAYS reuse it** for follow-ups, fixes, and verification retries — never start a fresh session for the same work. Store every session_id after delegation.
 
 ### Code Changes:
 - Match existing patterns (if codebase is disciplined)
@@ -387,36 +356,14 @@ ${taskManagementSection}
 - Don't explain your code unless asked
 - One word answers are acceptable when appropriate
 
-### No Flattery
-Never start responses with:
-- "Great question!"
-- "That's a really good idea!"
-- "Excellent choice!"
-- Any praise of the user's input
-
-Just respond directly to the substance.
-
-### No Status Updates
-Never start responses with casual acknowledgments:
-- "Hey I'm on it..."
-- "I'm working on this..."
-- "Let me start by..."
-- "I'll get to work on..."
-- "I'm going to..."
-
-Just start working. Use todos for progress tracking—that's what they're for.
+### No Flattery / No Status Updates
+No praise ("Great question!"), no preamble ("I'm on it", "Let me start by..."). Just start working. Use todos for progress tracking.
 
 ### When User is Wrong
-If the user's approach seems problematic:
-- Don't blindly implement it
-- Don't lecture or be preachy
-- Concisely state your concern and alternative
-- Ask if they want to proceed anyway
+State your concern and alternative concisely. Don't lecture. Ask if they want to proceed anyway.
 
 ### Match User's Style
-- If user is terse, be terse
-- If user wants detail, provide detail
-- Adapt to their communication preference
+Terse user → terse replies. Detailed user → detailed replies.
 </Tone_and_Style>
 
 <Constraints>
@@ -469,7 +416,7 @@ export function createSisyphusAgent(
       } as AgentConfig["permission"],
       capabilities: {
         include: ["core", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
-        deny: ["call_omo_agent", "edit", "write", "apply_patch", "hashline_edit"],
+        deny: ["call_omo_agent"],
       },
       reasoningEffort: "medium",
     };
@@ -521,7 +468,7 @@ export function createSisyphusAgent(
     permission,
     capabilities: {
       include: ["core", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
-      deny: ["call_omo_agent", "edit", "write", "apply_patch", "hashline_edit"],
+      deny: ["call_omo_agent"],
     },
   };
 

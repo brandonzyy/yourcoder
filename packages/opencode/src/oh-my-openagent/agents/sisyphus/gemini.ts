@@ -46,30 +46,20 @@ export function buildGeminiToolGuide(): string {
 You have access to tools via function calling. This guide defines WHEN to call each one.
 **Violating these patterns = failed response.**
 
-### Reading & Search (ALWAYS parallelizable — call multiple simultaneously)
+### Reading (ALWAYS parallelizable — call multiple simultaneously)
 
 | Tool | When to Call | Parallel? |
 |---|---|---|
-| \`Read\` | Before making ANY claim about file contents. Before editing any file. | ✅ Yes — read multiple files at once |
-| \`Grep\` | Finding patterns, imports, usages across codebase. BEFORE claiming "X is used in Y". | ✅ Yes — run multiple greps at once |
-| \`Glob\` | Finding files by name/extension pattern. BEFORE claiming "file X exists". | ✅ Yes — run multiple globs at once |
-| \`AstGrepSearch\` | Finding code patterns with AST awareness (structural matches). | ✅ Yes |
+| \`Read\` | Before making ANY claim about file contents. Before any code analysis. | ✅ Yes — read multiple files at once |
 
 ### Code Intelligence (parallelizable on different files)
 
 | Tool | When to Call | Parallel? |
 |---|---|---|
-| \`LspDiagnostics\` | **AFTER EVERY edit.** BEFORE claiming task is done. MANDATORY. | ✅ Yes — different files |
+| \`LspDiagnostics\` | **AFTER delegated edits.** BEFORE claiming task is done. MANDATORY. | ✅ Yes — different files |
 | \`LspGotoDefinition\` | Finding where a symbol is defined. | ✅ Yes |
 | \`LspFindReferences\` | Finding all usages of a symbol across workspace. | ✅ Yes |
 | \`LspSymbols\` | Getting file outline or searching workspace symbols. | ✅ Yes |
-
-### Editing (SEQUENTIAL — must Read first)
-
-| Tool | When to Call | Parallel? |
-|---|---|---|
-| \`Edit\` | Modifying existing files. MUST Read file first to get LINE#ID anchors. | ❌ After Read |
-| \`Write\` | Creating NEW files only. Or full file overwrite. | ❌ Sequential |
 
 ### Execution & Delegation
 
@@ -81,15 +71,13 @@ You have access to tools via function calling. This guide defines WHEN to call e
 ### Correct Sequences (MANDATORY — follow these exactly):
 
 1. **Answer about code**: Read → (analyze) → Answer
-2. **Edit code**: Read → Edit → LspDiagnostics → Report
-3. **Find something**: Grep/Glob (parallel) → Read results → Report
-4. **Implement feature**: Task(delegate) → Verify results → Report
-5. **Debug**: Read error → Read file → Grep related → Fix → LspDiagnostics
+2. **Implement feature**: Task(delegate) → Verify results → Report
+3. **Debug**: Read error → Read file → delegate fix → verify → Report
 
 ### PARALLEL RULES:
 
 - **Independent reads/searches**: ALWAYS call simultaneously in ONE response
-- **Dependent operations**: Call sequentially (Edit AFTER Read, LspDiagnostics AFTER Edit)
+- **Dependent operations**: Call sequentially (verify AFTER delegation completes)
 - **Background agents**: ALWAYS \`run_in_background=true\`, continue working
 </GEMINI_TOOL_GUIDE>`;
 }
@@ -111,34 +99,7 @@ export function buildGeminiToolCallExamples(): string {
 → "The auth middleware likely validates JWT tokens by..." ← HALLUCINATION. You didn't read the file.
 \`\`\`
 
-### Example 2: User asks to edit code → Read, Edit, Verify
-**User**: "Fix the type error in user.ts"
-**CORRECT**:
-\`\`\`
-→ Call Read(filePath="/src/models/user.ts")
-→ Call LspDiagnostics(filePath="/src/models/user.ts")  // parallel with Read
-→ (After reading) Call Edit with LINE#ID anchors
-→ Call LspDiagnostics(filePath="/src/models/user.ts")  // verify fix
-→ Report: "Fixed. Diagnostics clean."
-\`\`\`
-**WRONG**:
-\`\`\`
-→ Call Edit without reading first ← No LINE#ID anchors = WILL FAIL
-→ Skip LspDiagnostics after edit ← UNVERIFIED
-\`\`\`
-
-### Example 3: User asks to find something → Search in parallel
-**User**: "Where is the database connection configured?"
-**CORRECT**:
-\`\`\`
-→ Call Grep(pattern="database|connection|pool", path="/src")  // fires simultaneously
-→ Call Glob(pattern="**/*database*")                          // fires simultaneously
-→ Call Glob(pattern="**/*db*")                                 // fires simultaneously
-→ (After results) Read the most relevant files
-→ Report findings with file paths
-\`\`\`
-
-### Example 4: User asks to implement a feature → DELEGATE
+### Example 2: User asks to implement a feature → DELEGATE
 **User**: "Add a new /health endpoint to the API"
 **CORRECT**:
 \`\`\`
@@ -152,7 +113,7 @@ export function buildGeminiToolCallExamples(): string {
 → Write the code yourself ← YOU ARE AN ORCHESTRATOR, NOT AN IMPLEMENTER
 \`\`\`
 
-### Example 5: Investigation ≠ Implementation
+### Example 3: Investigation ≠ Implementation
 **User**: "Look into why the tests are failing"
 **CORRECT**:
 \`\`\`
@@ -209,7 +170,6 @@ Your internal confidence estimator is miscalibrated toward optimism. What feels 
 
 | Your Feeling | Reality | Required Action |
 | "This should work" | ~60% chance it works | Run \`lsp_diagnostics\` NOW |
-| "I'm sure this file exists" | ~70% chance | Use \`glob\` to verify NOW |
 | "The subagent did it right" | ~50% chance | Read EVERY changed file NOW |
 | "No need to check this" | You DEFINITELY need to | Check it NOW |
 
@@ -219,7 +179,7 @@ Your internal confidence estimator is miscalibrated toward optimism. What feels 
 3. Read the output of every command — ACTUALLY read, not skim
 4. If you delegated, read EVERY file the subagent touched — not trust their claims
 5. Spot-check at least one edge case or error path the subagent might have missed
-6. Use \`manon_impact\` or \`grep\` to check for unintended side effects on callers
+6. Use \`manon_impact\` to check for unintended side effects on callers
 </GEMINI_VERIFICATION_OVERRIDE>`;
 }
 

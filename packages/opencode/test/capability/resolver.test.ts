@@ -16,11 +16,11 @@ describe("capability resolver", () => {
   const allCaps: Info[] = [
     cap("bash", { tags: ["core"] }),
     cap("read", { tags: ["core"] }),
-    cap("glob", { tags: ["core"] }),
-    cap("grep", { tags: ["core"] }),
-    cap("edit", { tags: ["core", "edit"] }),
-    cap("write", { tags: ["core", "edit"] }),
-    cap("apply_patch", { tags: ["core", "edit"] }),
+    cap("glob", { tags: ["filesearch"] }),
+    cap("grep", { tags: ["filesearch"] }),
+    cap("edit", { tags: ["edit"] }),
+    cap("write", { tags: ["edit"] }),
+    cap("apply_patch", { tags: ["edit"] }),
     cap("websearch", { tags: ["search"], source: "builtin" }),
     cap("webfetch", { tags: ["search"], source: "builtin" }),
     cap("task", { tags: ["delegation"], source: "plugin" }),
@@ -47,8 +47,13 @@ describe("capability resolver", () => {
   it("filters by include tags", () => {
     const caps: Capabilities = { include: ["core"] }
     const result = resolve(allCaps, caps)
-    // Should include bash, read, glob, grep, edit, write, apply_patch (all have "core" tag)
+    // Should include only bash, read (core tag) — not glob/grep (filesearch) or edit/write (edit)
     expect(result.every((c) => c.tags.includes("core"))).toBe(true)
+    expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "read")).toBeDefined()
+    expect(result.find((c) => c.id === "glob")).toBeUndefined()
+    expect(result.find((c) => c.id === "grep")).toBeUndefined()
+    expect(result.find((c) => c.id === "edit")).toBeUndefined()
     expect(result.find((c) => c.id === "websearch")).toBeUndefined()
     expect(result.find((c) => c.id === "task")).toBeUndefined()
   })
@@ -58,6 +63,7 @@ describe("capability resolver", () => {
     const result = resolve(allCaps, caps)
     expect(result.find((c) => c.id === "bash")).toBeDefined()
     expect(result.find((c) => c.id === "websearch")).toBeDefined()
+    expect(result.find((c) => c.id === "glob")).toBeUndefined() // filesearch tag, not included
     expect(result.find((c) => c.id === "task")).toBeUndefined()
   })
 
@@ -72,10 +78,12 @@ describe("capability resolver", () => {
   it("include + exclude interaction", () => {
     const caps: Capabilities = { include: ["core"], exclude: ["edit"] }
     const result = resolve(allCaps, caps)
-    // core but not edit: bash, read, glob, grep
+    // core only: bash, read (glob/grep are filesearch, edit/write are edit-only)
     expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "read")).toBeDefined()
     expect(result.find((c) => c.id === "edit")).toBeUndefined()
     expect(result.find((c) => c.id === "write")).toBeUndefined()
+    expect(result.find((c) => c.id === "glob")).toBeUndefined()
   })
 
   it("allow overrides exclude", () => {
@@ -120,7 +128,8 @@ describe("capability resolver", () => {
     const result = resolve(allCaps, caps)
     expect(result.find((c) => c.id === "bash")).toBeDefined()
     expect(result.find((c) => c.id === "read")).toBeDefined()
-    expect(result.find((c) => c.id === "edit")).toBeDefined() // edit has "core" tag
+    expect(result.find((c) => c.id === "edit")).toBeUndefined() // edit is standalone "edit" tag
+    expect(result.find((c) => c.id === "glob")).toBeUndefined() // glob is "filesearch" tag
     expect(result.find((c) => c.id === "websearch")).toBeDefined()
     expect(result.find((c) => c.id === "lsp_references")).toBeDefined()
     expect(result.find((c) => c.id === "ast_grep_search")).toBeDefined()
@@ -129,7 +138,7 @@ describe("capability resolver", () => {
     expect(result.find((c) => c.id === "mcp__manon__search")).toBeUndefined()
   })
 
-  it("explore agent: core + search, deny edit tools", () => {
+  it("explore agent: core + search, exclude edit (no-op since edit is separate tag)", () => {
     const caps: Capabilities = {
       include: ["core", "search", "lsp", "ast"],
       exclude: ["edit"],
@@ -143,7 +152,7 @@ describe("capability resolver", () => {
 
   it("sisyphus: everything", () => {
     const caps: Capabilities = {
-      include: ["core", "edit", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
+      include: ["core", "edit", "filesearch", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
     }
     const result = resolve(allCaps, caps)
     // Should have everything except disconnected
@@ -170,5 +179,73 @@ describe("capability resolver", () => {
     const caps: Capabilities = {}
     const result = resolve(allCaps, caps)
     expect(result.length).toBe(allCaps.filter((c) => c.available).length)
+  })
+
+  it("filesearch tag includes grep and glob", () => {
+    const caps: Capabilities = { include: ["filesearch"] }
+    const result = resolve(allCaps, caps)
+    expect(result.find((c) => c.id === "glob")).toBeDefined()
+    expect(result.find((c) => c.id === "grep")).toBeDefined()
+    expect(result.find((c) => c.id === "bash")).toBeUndefined()
+    expect(result.find((c) => c.id === "edit")).toBeUndefined()
+    expect(result.length).toBe(2)
+  })
+
+  it("sisyphus: no filesearch/edit tags → grep/glob/edit invisible", () => {
+    const caps: Capabilities = {
+      include: ["core", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
+      deny: ["call_omo_agent"],
+    }
+    const result = resolve(allCaps, caps)
+    expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "read")).toBeDefined()
+    expect(result.find((c) => c.id === "grep")).toBeUndefined()
+    expect(result.find((c) => c.id === "glob")).toBeUndefined()
+    expect(result.find((c) => c.id === "edit")).toBeUndefined()
+    expect(result.find((c) => c.id === "write")).toBeUndefined()
+    expect(result.find((c) => c.id === "apply_patch")).toBeUndefined()
+    expect(result.find((c) => c.id === "call_omo_agent")).toBeUndefined()
+  })
+
+  it("manon-explorer: core + mcp → no grep/glob/edit", () => {
+    const caps: Capabilities = {
+      include: ["core", "mcp"],
+    }
+    const result = resolve(allCaps, caps)
+    expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "read")).toBeDefined()
+    expect(result.find((c) => c.id === "mcp__manon__search")).toBeDefined()
+    expect(result.find((c) => c.id === "grep")).toBeUndefined()
+    expect(result.find((c) => c.id === "glob")).toBeUndefined()
+    expect(result.find((c) => c.id === "edit")).toBeUndefined()
+    expect(result.find((c) => c.id === "write")).toBeUndefined()
+  })
+
+  it("sisyphus-junior: core + edit + filesearch → grep/glob/edit visible", () => {
+    const caps: Capabilities = {
+      include: ["core", "edit", "filesearch", "skill", "lsp", "ast", "meta", "mcp", "interactive", "media"],
+      deny: ["task"],
+    }
+    const result = resolve(allCaps, caps)
+    expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "read")).toBeDefined()
+    expect(result.find((c) => c.id === "grep")).toBeDefined()
+    expect(result.find((c) => c.id === "glob")).toBeDefined()
+    expect(result.find((c) => c.id === "edit")).toBeDefined()
+    expect(result.find((c) => c.id === "write")).toBeDefined()
+    expect(result.find((c) => c.id === "task")).toBeUndefined()
+  })
+
+  it("librarian: core + search + filesearch → grep/glob visible, no edit", () => {
+    const caps: Capabilities = {
+      include: ["core", "search", "filesearch"],
+    }
+    const result = resolve(allCaps, caps)
+    expect(result.find((c) => c.id === "bash")).toBeDefined()
+    expect(result.find((c) => c.id === "grep")).toBeDefined()
+    expect(result.find((c) => c.id === "glob")).toBeDefined()
+    expect(result.find((c) => c.id === "websearch")).toBeDefined()
+    expect(result.find((c) => c.id === "edit")).toBeUndefined()
+    expect(result.find((c) => c.id === "write")).toBeUndefined()
   })
 })

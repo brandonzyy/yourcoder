@@ -377,7 +377,7 @@ describe("getSisyphusJuniorPromptSource", () => {
     expect(source).toBe("gpt-5-4")
   })
 
-  test("returns 'gpt-5-3-codex' for GPT 5.3 Codex models", () => {
+  test("returns 'gpt' for GPT 5.3 Codex models (uses generic GPT prompt)", () => {
     // given
     const model = "openai/gpt-5.3-codex"
 
@@ -385,10 +385,10 @@ describe("getSisyphusJuniorPromptSource", () => {
     const source = getSisyphusJuniorPromptSource(model)
 
     // then
-    expect(source).toBe("gpt-5-3-codex")
+    expect(source).toBe("gpt")
   })
 
-  test("returns 'gpt-5-3-codex' for GitHub Copilot GPT 5.3 Codex", () => {
+  test("returns 'gpt' for GitHub Copilot GPT 5.3 Codex", () => {
     // given
     const model = "github-copilot/gpt-5.3-codex"
 
@@ -396,7 +396,7 @@ describe("getSisyphusJuniorPromptSource", () => {
     const source = getSisyphusJuniorPromptSource(model)
 
     // then
-    expect(source).toBe("gpt-5-3-codex")
+    expect(source).toBe("gpt")
   })
 
   test("returns 'gpt' for generic GPT models", () => {

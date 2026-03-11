@@ -5,8 +5,10 @@ describe("capability tags", () => {
   it("resolves known tools to correct tags", () => {
     expect(resolveToolTags("bash")).toEqual(["core"])
     expect(resolveToolTags("read")).toEqual(["core"])
-    expect(resolveToolTags("edit")).toEqual(["core", "edit"])
-    expect(resolveToolTags("write")).toEqual(["core", "edit"])
+    expect(resolveToolTags("glob")).toEqual(["filesearch"])
+    expect(resolveToolTags("grep")).toEqual(["filesearch"])
+    expect(resolveToolTags("edit")).toEqual(["edit"])
+    expect(resolveToolTags("write")).toEqual(["edit"])
     expect(resolveToolTags("websearch")).toEqual(["search"])
     expect(resolveToolTags("task")).toEqual(["delegation"])
     expect(resolveToolTags("skill")).toEqual(["skill"])

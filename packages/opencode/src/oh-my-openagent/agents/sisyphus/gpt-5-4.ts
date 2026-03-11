@@ -212,17 +212,9 @@ ${librarianSection}
 
 ### Tool usage
 
-<code_search_priority>
-**Code search: Manon FIRST, grep/glob LAST.**
-- Understanding code, finding implementations, tracing dependencies → delegate to manon-explorer (manon_search, manon_graph, manon_deep_query).
-- NEVER use grep/glob for code understanding or architecture exploration. That is manon-explorer's job.
-- grep/glob ONLY for: confirming rename completeness, finding files by exact name, verifying string literals in configs.
-</code_search_priority>
-
 <tool_persistence>
 - Use tools whenever they materially improve correctness. Your internal reasoning about file contents is unreliable.
 - Do not stop early when another tool call would improve correctness.
-- Prefer Manon MCP tools over grep/glob for code structure and implementation search.
 - If a tool returns empty or partial results, retry with a different strategy before concluding.
 - Prefer reading MORE files over fewer. When investigating, read the full cluster of related files.
 </tool_persistence>

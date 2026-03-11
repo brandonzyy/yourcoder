@@ -5,17 +5,19 @@ import type { Tag } from "./capability"
  * Used by adapters to assign tags when registering capabilities.
  */
 const TOOL_TAG_MAP: Record<string, Tag[]> = {
-  // core
+  // core — basic execution and reading
   bash: ["core"],
   read: ["core"],
-  glob: ["core"],
-  grep: ["core"],
 
-  // edit
-  edit: ["core", "edit"],
-  write: ["core", "edit"],
-  apply_patch: ["core", "edit"],
-  hashline_edit: ["core", "edit"],
+  // filesearch — local file search (split from core)
+  glob: ["filesearch"],
+  grep: ["filesearch"],
+
+  // edit — file modification (standalone, no longer dual-tagged with core)
+  edit: ["edit"],
+  write: ["edit"],
+  apply_patch: ["edit"],
+  hashline_edit: ["edit"],
 
   // search
   websearch: ["search"],

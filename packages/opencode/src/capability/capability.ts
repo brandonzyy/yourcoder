@@ -5,8 +5,9 @@ import z from "zod"
  * Each tool is assigned one or more tags, used by agents to declare what they need.
  */
 export const Tag = z.enum([
-  "core",        // bash, read, glob, grep
+  "core",        // bash, read
   "edit",        // edit, write, apply_patch, hashline_edit
+  "filesearch",  // grep, glob
   "search",      // websearch, codesearch, webfetch
   "delegation",  // task, call_omo_agent, background_*, delegate_task
   "skill",       // skill tool
