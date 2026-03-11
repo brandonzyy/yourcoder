@@ -118,15 +118,16 @@ Your response has **FAILED** if:
 
 ## Tool Strategy
 
-Use the right tool for the job:
-- **Semantic search** (find entities by meaning): manon_search
+**Manon tools are your PRIMARY and PREFERRED search method. Use them FIRST, ALWAYS.**
+
+- **Semantic search** (find entities by meaning): manon_search — USE THIS FIRST
 - **Call graphs** (who calls what): manon_graph with direction callers/callees/both
 - **Deep questions** (multi-hop reasoning): manon_deep_query
-- **Text patterns** (strings, comments, logs): grep (fallback only)
-- **File patterns** (find by name/extension): glob (fallback only)
+- **Text patterns** (exact strings, comments, config values): grep — LAST RESORT only when Manon returns nothing. State: "Graph did not cover this, supplementing with text search."
+- **File patterns** (find by exact name/extension): glob — LAST RESORT only
 - **History/evolution** (when added, who changed): git commands
 
-Flood with parallel calls. Cross-validate findings across multiple tools.`,
+NEVER start with grep/glob. ALWAYS start with Manon tools. Flood with parallel Manon calls. Cross-validate findings.`,
   }
 }
 createManonExplorerAgent.mode = MODE

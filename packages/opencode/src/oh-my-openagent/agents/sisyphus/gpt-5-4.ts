@@ -212,18 +212,25 @@ ${librarianSection}
 
 ### Tool usage
 
+<code_search_priority>
+**Code search: Manon FIRST, grep/glob LAST.**
+- Understanding code, finding implementations, tracing dependencies → delegate to manon-explorer (manon_search, manon_graph, manon_deep_query).
+- NEVER use grep/glob for code understanding or architecture exploration. That is manon-explorer's job.
+- grep/glob ONLY for: confirming rename completeness, finding files by exact name, verifying string literals in configs.
+</code_search_priority>
+
 <tool_persistence>
 - Use tools whenever they materially improve correctness. Your internal reasoning about file contents is unreliable.
 - Do not stop early when another tool call would improve correctness.
-- Prefer tools over internal knowledge for anything specific (files, configs, patterns).
+- Prefer Manon MCP tools over grep/glob for code structure and implementation search.
 - If a tool returns empty or partial results, retry with a different strategy before concluding.
 - Prefer reading MORE files over fewer. When investigating, read the full cluster of related files.
 </tool_persistence>
 
 <parallel_tools>
 - When multiple retrieval, lookup, or read steps are independent, issue them as parallel tool calls.
-- Independent: reading 3 files, Grep + Read on different files, firing 2+ manon-explorer agents, lsp_diagnostics on multiple files.
-- Dependent: needing a file path from Grep before Reading it. Sequence only these.
+- Independent: reading 3 files, firing 2+ manon-explorer agents, lsp_diagnostics on multiple files.
+- Dependent: needing a file path from a search before Reading it. Sequence only these.
 - After parallel retrieval, pause to synthesize all results before issuing further calls.
 - Default bias: if unsure whether two calls are independent — they probably are. Parallelize.
 </parallel_tools>

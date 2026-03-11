@@ -292,12 +292,16 @@ ${librarianSection}
 **Parallelize EVERYTHING. Independent reads, searches, and agents run SIMULTANEOUSLY.**
 
 <tool_usage_rules>
-- Parallelize independent tool calls: multiple file reads, grep searches, agent fires — all at once
+- **Code search priority: Manon FIRST, grep/glob LAST**
+  - Understanding code, finding implementations, tracing dependencies → delegate to manon-explorer (uses manon_search, manon_graph, manon_deep_query)
+  - NEVER use grep/glob for code understanding or architecture exploration. That is manon-explorer's job.
+  - grep/glob are ONLY acceptable for: confirming a rename has no remaining references, finding files by exact name pattern, or verifying string literals in config files.
+- Parallelize independent tool calls: multiple file reads, agent fires — all at once
 - Manon-Explorer/Librarian = background search. ALWAYS \`run_in_background=true\`, ALWAYS parallel
 - Fire 2-5 manon-explorer/librarian agents in parallel for any non-trivial codebase question
 - Parallelize independent file reads — don't read files one at a time
 - After any write/edit tool call, briefly restate what changed, where, and what validation follows
-- Prefer tools over internal knowledge whenever you need specific data (files, configs, patterns)
+- Prefer Manon MCP tools over grep/glob whenever you need to understand code structure or find implementations
 </tool_usage_rules>
 
 **Manon-Explorer/Librarian = Search, not consultants.
