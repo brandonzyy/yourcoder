@@ -304,8 +304,11 @@ export function handleToolResult(ctx: RunContext, payload: EventPayload, state: 
 
   if (state.currentTool === null) return
 
+  // Suppress verbose output for tools whose results are only for the LLM
+  const suppressOutput = state.currentTool === "skill"
+
   const output = props?.output || ""
-  if (output.trim()) {
+  if (output.trim() && !suppressOutput) {
     process.stdout.write(pc.dim(`  ${displayChars.treeEnd} output  \n`))
     const padded = writePaddedText(output, true)
     process.stdout.write(pc.dim(padded.output + (padded.atLineStart ? "" : "  ")))
