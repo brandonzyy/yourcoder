@@ -5,50 +5,25 @@ export const AGENT_NAME_MAP: Record<string, string> = {
   Sisyphus: "sisyphus",
   sisyphus: "sisyphus",
 
-  // Prometheus variants → "prometheus"
-  "OmO-Plan": "prometheus",
-  "omo-plan": "prometheus",
-  "Planner-Sisyphus": "prometheus",
-  "planner-sisyphus": "prometheus",
-  "Prometheus (Planner)": "prometheus",
-  prometheus: "prometheus",
-
-  // Atlas variants → "atlas"
-  "orchestrator-sisyphus": "atlas",
-  Atlas: "atlas",
-  atlas: "atlas",
-
-  // Metis variants → "metis"
-  "plan-consultant": "metis",
-  "Metis (Plan Consultant)": "metis",
-  metis: "metis",
-
-  // Momus variants → "momus"
-  "Momus (Plan Reviewer)": "momus",
-  momus: "momus",
-
   // Sisyphus-Junior → "sisyphus-junior"
   "Sisyphus-Junior": "sisyphus-junior",
   "sisyphus-junior": "sisyphus-junior",
 
+  // Librarian → "librarian"
+  librarian: "librarian",
+
+  // Manon-Explorer (replaces explore) → "manon-explorer"
+  explore: "manon-explorer",
+  "manon-explorer": "manon-explorer",
+
   // Already lowercase - passthrough
   build: "build",
-  oracle: "oracle",
-  librarian: "librarian",
-  explore: "explore",
-  "multimodal-looker": "multimodal-looker",
 }
 
 export const BUILTIN_AGENT_NAMES = new Set([
-  "sisyphus", // was "Sisyphus"
-  "oracle",
+  "sisyphus",
   "librarian",
-  "explore",
-  "multimodal-looker",
-  "metis", // was "Metis (Plan Consultant)"
-  "momus", // was "Momus (Plan Reviewer)"
-  "prometheus", // was "Prometheus (Planner)"
-  "atlas", // was "Atlas"
+  "manon-explorer",
   "build",
 ])
 

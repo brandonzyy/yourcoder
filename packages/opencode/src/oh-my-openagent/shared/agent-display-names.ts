@@ -1,6 +1,6 @@
 /**
  * Agent config keys to display names mapping.
- * Config keys are lowercase (e.g., "sisyphus", "atlas").
+ * Config keys are lowercase (e.g., "sisyphus", "librarian").
  * Display names include suffixes for UI/logs (e.g., "Sisyphus (Ultraworker)").
  */
 export const AGENT_DISPLAY_NAMES: Record<string, string> = {
@@ -36,7 +36,7 @@ const REVERSE_DISPLAY_NAMES: Record<string, string> = Object.fromEntries(
 
 /**
  * Resolve an agent name (display name or config key) to its lowercase config key.
- * "Atlas (Plan Executor)" → "atlas", "atlas" → "atlas", "unknown" → "unknown"
+ * "Sisyphus (Ultraworker)" → "sisyphus", "sisyphus" → "sisyphus", "unknown" → "unknown"
  */
 export function getAgentConfigKey(agentName: string): string {
   const lower = agentName.toLowerCase()
