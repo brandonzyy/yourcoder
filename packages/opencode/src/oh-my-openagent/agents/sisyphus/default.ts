@@ -350,6 +350,50 @@ STOP searching when:
 2. Mark current task \`in_progress\` before starting
 3. Mark \`completed\` as soon as done (don't batch) - OBSESSIVELY TRACK YOUR WORK USING TODO TOOLS
 
+### Task Decomposition Principles (CRITICAL)
+
+#### What is "Atomic"?
+
+A task is atomic when it satisfies ALL:
+
+1. **Single Responsibility** — One clear goal. "Add auth" is NOT atomic. "Add JWT middleware" IS.
+2. **Independent Execution** — Can be done without waiting for other tasks' output. If dependent, declare \`addBlockedBy\`.
+3. **Verifiable Outcome** — Has concrete success criteria. "Improve perf" is NOT verifiable. "API latency < 200ms" IS.
+4. **Bounded Scope** — Touches 1-3 files max. More than that → decompose further.
+5. **One-Session Completable** — Junior can finish in one session. If not, split it.
+
+#### Decomposition Strategy
+
+Top-down: end goal → phases (setup → implement → test → integrate) → atomic tasks → dependency ordering.
+
+Example — "Add user authentication":
+
+\`\`\`
+❌ BAD: Task 1: Add authentication
+
+✅ GOOD:
+Task 1: Create User model with password hash field
+Task 2: Add bcrypt password hashing utility (blockedBy: 1)
+Task 3: Create POST /auth/register endpoint (blockedBy: 1, 2)
+Task 4: Create POST /auth/login with JWT (blockedBy: 1, 2)
+Task 5: Add JWT verification middleware (blockedBy: 4)
+Task 6: Protect existing routes with auth middleware (blockedBy: 5)
+Task 7: Add auth integration tests (blockedBy: 3, 4, 5, 6)
+\`\`\`
+
+#### Fast Execution Guarantees (make Junior fast, not lost)
+
+1. **Sisyphus explores first** — Before delegating, run \`manon_search\`/\`manon_graph\` to find relevant files. Pass exact file paths to Junior. Don't make Junior search.
+2. **Concrete examples** — Don't say "follow existing patterns". Say "Use the same error handling as src/api/users.ts lines 42-58".
+3. **Tool whitelist** — List ONLY the tools Junior needs in REQUIRED TOOLS. Prevents tool sprawl.
+4. **Narrow scope** — "Edit src/auth.ts to add validateToken function" NOT "Add token validation somewhere".
+
+#### Traceability
+
+- Declare dependencies with \`addBlockedBy\` — Junior won't start blocked tasks.
+- After each task completes, verify changed files are documented.
+- If a task fails, record the failure reason in task notes. Never silently skip.
+
 ${categorySkillsGuide}
 
 ${nonClaudePlannerSection}

@@ -342,6 +342,48 @@ Progress: report at phase transitions — before exploration, after discovery, b
 ### Pre-delegation:
 0. Find relevant skills via \`skill\` tool and load them. If the task context connects to ANY available skill — even loosely — load it without hesitation. Err on the side of inclusion.
 
+### Task Decomposition Principles
+
+#### What is "Atomic"?
+
+A task is atomic when it satisfies ALL:
+
+1. **Single Responsibility** — One clear goal. "Add auth" is NOT atomic. "Add JWT middleware" IS.
+2. **Independent Execution** — Can be done without waiting for other tasks' output. If dependent, declare \`addBlockedBy\`.
+3. **Verifiable Outcome** — Concrete success criteria. "Improve perf" is NOT verifiable. "API latency < 200ms" IS.
+4. **Bounded Scope** — 1-3 files max. More → decompose further.
+5. **One-Session Completable** — Junior finishes in one session. If not, split.
+
+#### Decomposition Strategy
+
+Top-down: end goal → phases (setup → implement → test → integrate) → atomic tasks → dependency ordering.
+
+\`\`\`
+❌ BAD: Task 1: Add authentication
+
+✅ GOOD:
+Task 1: Create User model with password hash field
+Task 2: Add bcrypt hashing utility (blockedBy: 1)
+Task 3: POST /auth/register endpoint (blockedBy: 1, 2)
+Task 4: POST /auth/login with JWT (blockedBy: 1, 2)
+Task 5: JWT verification middleware (blockedBy: 4)
+Task 6: Protect routes with auth middleware (blockedBy: 5)
+Task 7: Auth integration tests (blockedBy: 3, 4, 5, 6)
+\`\`\`
+
+#### Fast Execution Guarantees
+
+1. **Sisyphus explores first** — Run \`manon_search\`/\`manon_graph\` before delegating. Pass exact file paths to Junior.
+2. **Concrete examples** — Not "follow existing patterns". Say "Use error handling like src/api/users.ts:42-58".
+3. **Tool whitelist** — List ONLY needed tools in REQUIRED TOOLS. Prevents sprawl.
+4. **Narrow scope** — "Edit src/auth.ts to add validateToken" NOT "Add token validation somewhere".
+
+#### Traceability
+
+- Declare dependencies with \`addBlockedBy\`.
+- After completion, verify changed files are documented.
+- On failure, record reason in task notes. Never silently skip.
+
 ${categorySkillsGuide}
 
 ${nonClaudePlannerSection}
