@@ -40,7 +40,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
       const [agentStore, setAgentStore] = createStore<{
         current: string
       }>({
-        current: agents()[0].name,
+        current: agents()[0]?.name ?? "",
       })
       const { theme } = useTheme()
       const colors = createMemo(() => [
@@ -57,7 +57,18 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           return agents()
         },
         current() {
-          return agents().find((x) => x.name === agentStore.current)!
+          const list = agents()
+          if (list.length === 0) {
+            // Return a default agent when data is not loaded yet
+            return {
+              name: "",
+              mode: "general" as const,
+              hidden: false,
+              model: undefined,
+              color: undefined,
+            }
+          }
+          return list.find((x) => x.name === agentStore.current) ?? list[0]
         },
         set(name: string) {
           if (!agents().some((x) => x.name === name))
@@ -192,6 +203,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
 
       const currentModel = createMemo(() => {
         const a = agent.current()
+        if (!a || !a.name) return undefined // Guard against default empty agent
         return (
           getFirstValidModel(
             () => modelStore.model[a.name],
@@ -381,6 +393,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
     // Automatically update model when agent changes
     createEffect(() => {
       const value = agent.current()
+      if (!value || !value.name) return // Guard against default empty agent
       if (value.model) {
         if (isModelValid(value.model))
           model.set({
@@ -397,6 +410,9 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
     })
 
     const result = {
+      get ready() {
+        return sync.ready
+      },
       model,
       agent,
       mcp,

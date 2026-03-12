@@ -45,6 +45,11 @@ async function getTerminalBackgroundColor(): Promise<"dark" | "light"> {
   // can't set raw mode if not a TTY
   if (!process.stdin.isTTY) return "dark"
 
+  // Windows CMD doesn't support OSC queries, skip detection
+  if (process.platform === "win32" && !process.env.WT_SESSION) {
+    return "dark"
+  }
+
   return new Promise((resolve) => {
     let timeout: NodeJS.Timeout
 
@@ -181,12 +186,15 @@ export function tui(input: {
         )
       },
       {
+        stdin: process.stdin,
+        stdout: process.stdout,
         targetFps: 60,
         gatherStats: false,
         exitOnCtrlC: false,
         useKittyKeyboard: {},
         autoFocus: false,
         openConsoleOnError: false,
+        useAlternateScreen: true,
         consoleOptions: {
           keyBindings: [{ name: "y", ctrl: true, action: "copy-selection" }],
           onCopySelection: (text) => {
@@ -256,10 +264,6 @@ function App() {
     renderer.clearSelection()
   }
   const [terminalTitleEnabled, setTerminalTitleEnabled] = createSignal(kv.get("terminal_title_enabled", true))
-
-  createEffect(() => {
-    console.log(JSON.stringify(route.data))
-  })
 
   // Update terminal window title based on current route and session
   createEffect(() => {
