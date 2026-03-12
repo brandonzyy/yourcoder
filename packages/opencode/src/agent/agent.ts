@@ -90,6 +90,7 @@ export namespace Agent {
         ),
         mode: "primary",
         native: true,
+        hidden: true,
         // build gets all tools (no capabilities filter)
       },
       plan: {
@@ -114,6 +115,7 @@ export namespace Agent {
         ),
         mode: "primary",
         native: true,
+        hidden: true,
         capabilities: {
           include: ["core", "search", "lsp", "ast", "meta", "mcp"],
           exclude: ["edit"],
