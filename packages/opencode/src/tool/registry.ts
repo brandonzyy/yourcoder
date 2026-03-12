@@ -129,9 +129,31 @@ export namespace ToolRegistry {
     return all().then((x) => x.map((t) => t.id))
   }
 
-  export async function registerNativeTools() {
-    const tools = await all()
-    CapabilityRegistry.registerAll(tools.map((t) => fromNativeTool(t.id)))
+  export function registerNativeTools() {
+    // Register statically-known native tools without going through state(),
+    // which depends on Plugin.list() and would deadlock when called during
+    // plugin initialization.
+    const nativeTools: Tool.Info[] = [
+      InvalidTool,
+      QuestionTool,
+      BashTool,
+      ReadTool,
+      GlobTool,
+      GrepTool,
+      EditTool,
+      WriteTool,
+      TaskTool,
+      WebFetchTool,
+      TodoWriteTool,
+      WebSearchTool,
+      CodeSearchTool,
+      SkillTool,
+      ApplyPatchTool,
+      LspTool,
+      BatchTool,
+      PlanExitTool,
+    ]
+    CapabilityRegistry.registerAll(nativeTools.map((t) => fromNativeTool(t.id)))
   }
 
   export async function tools(

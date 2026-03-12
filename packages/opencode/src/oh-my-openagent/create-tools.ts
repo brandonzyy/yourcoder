@@ -28,7 +28,7 @@ export async function createTools(args: {
   const { ctx, pluginConfig, managers } = args
 
   // Register native tools into CapabilityRegistry
-  await ToolRegistry.registerNativeTools()
+  ToolRegistry.registerNativeTools()
 
   const skillContext = await createSkillContext({
     directory: ctx.directory,
