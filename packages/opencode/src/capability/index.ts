@@ -1,4 +1,4 @@
-export type { Info, Capabilities, Tag, Source } from "./capability"
+export type { Info } from "./capability"
 export { Tag, Source, Capabilities } from "./capability"
 export { resolveToolTags, registerToolTags } from "./tags"
 export { resolve } from "./resolver"
