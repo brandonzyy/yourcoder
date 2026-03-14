@@ -2,11 +2,19 @@
 
 基于源码分析报告，按风险从低到高排序。每步完成后标记 ✅。
 
-tsc 基线：82 个 pre-existing 错误。
+tsc 基线：源码 0 错误，测试文件 82 个 pre-existing 错误（待全面重写）。
 
 ---
 
-## Phase 1: 单文件目录合并（低风险，纯文件移动）
+## Phase 1: 单文件目录合并 — ⏸️ DEFERRED
+
+122+ import 路径变更，收益低。等后续有需要时再做。
+
+---
+
+## Phase 2: 通知系统合并 — ✅ DONE
+
+5 个平铺文件合并为 `hooks/session-notification/` 目录（notification.ts + index.ts）。
 
 14 个单文件目录合并为 4 个逻辑分组。~3,000 行代码不变，只改 import 路径。
 
@@ -74,7 +82,9 @@ hooks/session-notification/
 
 ---
 
-## Phase 3: 模型解析管线合并（中风险，广泛引用）
+## Phase 3: 模型解析管线合并 — ⏸️ DEFERRED
+
+38 处直接 import 变更，文件都很小（8-30 行），职责分离清晰。合并收益有限，风险较高。
 
 13 个源文件（1,243 行源码 + 3,310 行测试）→ 移入 `provider/model/`
 

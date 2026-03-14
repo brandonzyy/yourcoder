@@ -5,8 +5,7 @@ export { hasIncompleteTodos } from "./session-todo-status";
 export { createSessionRecoveryHook, type SessionRecoveryHook, type SessionRecoveryOptions } from "./session-recovery";
 export { createCommentCheckerHooks } from "./comment-checker";
 export { createToolOutputTruncatorHook } from "./tool-output-truncator";
-export { createDirectoryAgentsInjectorHook } from "./directory-agents-injector";
-export { createDirectoryReadmeInjectorHook } from "./directory-readme-injector";
+export { createDirectoryAgentsInjectorHook, createDirectoryReadmeInjectorHook } from "./content-injector";
 export { createEmptyTaskResponseDetectorHook } from "./empty-task-response-detector";
 export { createAnthropicContextWindowLimitRecoveryHook, type AnthropicContextWindowLimitRecoveryOptions } from "./anthropic-context-window-limit-recovery";
 
