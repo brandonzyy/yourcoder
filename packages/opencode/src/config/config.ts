@@ -10,8 +10,8 @@ import { Global } from "../global"
 import fs from "fs/promises"
 import { lazy } from "../util/lazy"
 import { NamedError } from "@opencode-ai/util/error"
-import { Flag } from "../flag/flag"
-import { Auth } from "../auth"
+import { Flag } from "../config/flag"
+import { Auth } from "../server/auth"
 import {
   type ParseError as JsoncParseError,
   applyEdits,

@@ -5,7 +5,7 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import { MESSAGE_STORAGE, PART_STORAGE } from "./constants"
 import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } from "./types"
 import { log } from "../../shared/logger"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { createInternalAgentTextPart, normalizeSDKResponse } from "../../shared"
 
 export interface StoredMessage {

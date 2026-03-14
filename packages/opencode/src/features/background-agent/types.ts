@@ -1,4 +1,4 @@
-import type { FallbackEntry } from "../../shared/model-requirements"
+import type { FallbackEntry } from "../../model/model-requirements"
 
 export type BackgroundTaskStatus =
   | "pending"

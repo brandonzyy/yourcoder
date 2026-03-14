@@ -4,7 +4,7 @@ import z from "zod"
 import { type ParseError as JsoncParseError, parse as parseJsonc, printParseErrorCode } from "jsonc-parser"
 import { NamedError } from "@opencode-ai/util/error"
 import { Filesystem } from "@/util/filesystem"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { Global } from "@/global"
 
 export namespace ConfigPaths {

@@ -3,7 +3,7 @@ import type { ImageAttachment, ImageDimensions } from "./types"
 import { parseImageDimensions } from "./image-dimensions"
 import { calculateTargetDimensions, resizeImage } from "./image-resizer"
 import { log } from "../../shared"
-import { getSessionModel } from "../../shared/session-model-state"
+import { getSessionModel } from "../../session/session-model-state"
 const SUPPORTED_IMAGE_MIMES = new Set(["image/png", "image/jpeg", "image/gif", "image/webp"])
 const TOKEN_DIVISOR = 750
 interface ResizeEntry {

@@ -12,7 +12,7 @@ import {
   type ToolPermission,
 } from "../../features/hook-message-injector"
 import { log } from "../../shared/logger"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { getAgentConfigKey } from "../../shared/agent-display-names"
 
 import {

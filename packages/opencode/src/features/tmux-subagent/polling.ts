@@ -3,7 +3,7 @@ import type { TmuxConfig } from "../../config/plugin-schema"
 import {
   POLL_INTERVAL_BACKGROUND_MS,
   SESSION_MISSING_GRACE_MS,
-} from "../../shared/tmux"
+} from "./shared"
 import { log } from "../../shared"
 import type { TrackedSession } from "./types"
 import { queryWindowState } from "./pane-state-querier"

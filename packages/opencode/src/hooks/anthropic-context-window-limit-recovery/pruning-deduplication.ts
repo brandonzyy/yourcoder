@@ -5,7 +5,7 @@ import type { PruningState, ToolCallSignature } from "./pruning-types"
 import { estimateTokens } from "./pruning-types"
 import { log } from "../../shared/logger"
 import { getMessageDir } from "../../shared/opencode-message-dir"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { normalizeSDKResponse } from "../../shared"
 
 type OpencodeClient = PluginInput["client"]

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__manon__manon_deep_query"
+    ]
+  }
+}

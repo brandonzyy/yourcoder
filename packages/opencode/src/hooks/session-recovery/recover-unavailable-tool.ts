@@ -3,7 +3,7 @@ import { extractUnavailableToolName } from "./detect-error-type"
 import { readParts } from "./storage"
 import type { MessageData } from "./types"
 import { normalizeSDKResponse } from "../../shared"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 
 type Client = ReturnType<typeof createOpencodeClient>
 

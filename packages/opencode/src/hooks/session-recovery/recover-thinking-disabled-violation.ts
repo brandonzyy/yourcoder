@@ -1,7 +1,7 @@
 import type { createOpencodeClient } from "@opencode-ai/sdk"
 import type { MessageData } from "./types"
 import { findMessagesWithThinkingBlocks, stripThinkingParts } from "./storage"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { stripThinkingPartsAsync } from "./storage/thinking-strip"
 import { THINKING_TYPES } from "./constants"
 import { log } from "../../shared/logger"

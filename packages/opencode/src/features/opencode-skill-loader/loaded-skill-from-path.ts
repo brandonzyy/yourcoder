@@ -1,7 +1,7 @@
 import { promises as fs } from "fs"
 import { basename } from "path"
 import { parseFrontmatter } from "../../shared/frontmatter"
-import { sanitizeModelField } from "../../shared/model-sanitizer"
+import { sanitizeModelField } from "../../model/model-sanitizer"
 import { resolveSkillPathReferences } from "../../shared/skill-path-resolver"
 import type { CommandDefinition } from "../builtin-commands/command-types"
 import { parseAllowedTools } from "./allowed-tools-parser"

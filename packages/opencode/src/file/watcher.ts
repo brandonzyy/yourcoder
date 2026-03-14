@@ -12,7 +12,7 @@ import { lazy } from "@/util/lazy"
 import { withTimeout } from "@/util/timeout"
 import type ParcelWatcher from "@parcel/watcher"
 import { $ } from "bun"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { readdir } from "fs/promises"
 
 const SUBSCRIBE_TIMEOUT_MS = 10_000

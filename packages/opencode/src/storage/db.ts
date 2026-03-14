@@ -13,7 +13,7 @@ import path from "path"
 import { readFileSync, readdirSync, existsSync } from "fs"
 import * as schema from "./schema"
 import { Installation } from "../installation"
-import { Flag } from "../flag/flag"
+import { Flag } from "../config/flag"
 import { iife } from "@/util/iife"
 
 declare const OPENCODE_MIGRATIONS: { sql: string; timestamp: number; name: string }[] | undefined

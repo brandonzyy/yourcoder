@@ -2,7 +2,7 @@ import { getOpenCodeConfigPaths } from "../../shared"
 import type {
   OpenCodeBinaryType,
   OpenCodeConfigPaths,
-} from "../../shared/opencode-config-dir-types"
+} from "../../config/opencode-config-dir-types"
 
 export interface ConfigContext {
   binary: OpenCodeBinaryType

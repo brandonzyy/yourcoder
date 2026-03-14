@@ -5,7 +5,7 @@ import z from "zod"
 import { fn } from "@/util/fn"
 import type { AuthOuathResult, Hooks } from "@opencode-ai/plugin"
 import { NamedError } from "@opencode-ai/util/error"
-import { Auth } from "@/auth"
+import { Auth } from "@/server/auth"
 
 export namespace ProviderAuth {
   const state = Instance.state(async () => {

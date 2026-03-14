@@ -5,7 +5,7 @@ import { normalizeAgentName, resolveAgentForSession } from "./agent-resolver"
 import { getSessionAgent } from "../../features/claude-code-session-state"
 import { getFallbackModelsForSession } from "./fallback-models"
 import { prepareFallback } from "./fallback-state"
-import { SessionCategoryRegistry } from "../../shared/session-category-registry"
+import { SessionCategoryRegistry } from "../../session/session-category-registry"
 
 const SESSION_TTL_MS = 30 * 60 * 1000
 

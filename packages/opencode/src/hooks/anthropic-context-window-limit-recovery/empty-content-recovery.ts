@@ -4,7 +4,7 @@ import {
   injectTextPart,
   replaceEmptyTextParts,
 } from "../session-recovery/storage"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import type { AutoCompactState } from "./types"
 import type { Client } from "./client"
 import { PLACEHOLDER_TEXT } from "./message-builder"

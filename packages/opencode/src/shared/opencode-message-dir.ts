@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from "node:fs"
 import { join } from "node:path"
-import { MESSAGE_STORAGE } from "./opencode-storage-paths"
-import { isSqliteBackend } from "./opencode-storage-detection"
+import { MESSAGE_STORAGE } from "../config/opencode-storage-paths"
+import { isSqliteBackend } from "../config/opencode-storage-detection"
 import { log } from "./logger"
 
 export function getMessageDir(sessionID: string): string | null {

@@ -156,7 +156,7 @@ describe("file/time", () => {
       await Instance.provide({
         directory: tmp.path,
         fn: async () => {
-          const { Flag } = await import("../../src/flag/flag")
+          const { Flag } = await import("../../src/config/flag")
           const original = Flag.OPENCODE_DISABLE_FILETIME_CHECK
           ;(Flag as { OPENCODE_DISABLE_FILETIME_CHECK: boolean }).OPENCODE_DISABLE_FILETIME_CHECK = true
 

@@ -1,5 +1,5 @@
 import type { BackgroundTask, LaunchInput } from "./types"
-import type { FallbackEntry } from "../../shared/model-requirements"
+import type { FallbackEntry } from "../../model/model-requirements"
 import type { ConcurrencyManager } from "./concurrency"
 import type { OpencodeClient, QueueItem } from "./constants"
 import { log, readConnectedProvidersCache, readProviderModelsCache } from "../../shared"
@@ -8,7 +8,7 @@ import {
   getNextFallback,
   hasMoreFallbacks,
   selectFallbackProvider,
-} from "../../shared/model-error-classifier"
+} from "../../model/model-error-classifier"
 import { transformModelForProvider } from "../../shared/provider-model-id-transform"
 
 export function tryFallbackRetry(args: {

@@ -1,4 +1,4 @@
-import { Auth } from "../../auth"
+import { Auth } from "../../server/auth"
 import { cmd } from "./cmd"
 import * as prompts from "@clack/prompts"
 import { UI } from "../ui"

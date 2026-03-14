@@ -183,7 +183,7 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       let modelInfo: import("../../features/task-toast-manager/types").ModelFallbackInfo | undefined
       let actualModel: string | undefined
       let isUnstableAgent = false
-      let fallbackChain: import("../../shared/model-requirements").FallbackEntry[] | undefined
+      let fallbackChain: import("../../model/model-requirements").FallbackEntry[] | undefined
       let maxPromptTokens: number | undefined
 
       if (args.category) {

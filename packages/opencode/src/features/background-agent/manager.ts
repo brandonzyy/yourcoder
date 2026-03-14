@@ -14,15 +14,15 @@ import {
   resolveInheritedPromptTools,
   createInternalAgentTextPart,
 } from "../../shared"
-import { setSessionTools } from "../../shared/session-tools-store"
-import { SessionCategoryRegistry } from "../../shared/session-category-registry"
+import { setSessionTools } from "../../session/session-tools-store"
+import { SessionCategoryRegistry } from "../../session/session-category-registry"
 import { ConcurrencyManager } from "./concurrency"
 import type { BackgroundTaskConfig, TmuxConfig } from "../../config/plugin-schema"
-import { isInsideTmux } from "../../shared/tmux"
+import { isInsideTmux } from "../tmux-subagent/shared"
 import {
   shouldRetryError,
   hasMoreFallbacks,
-} from "../../shared/model-error-classifier"
+} from "../../model/model-error-classifier"
 import {
   POLLING_INTERVAL_MS,
   TASK_CLEANUP_DELAY_MS,

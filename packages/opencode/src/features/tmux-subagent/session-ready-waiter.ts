@@ -2,7 +2,7 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import {
   SESSION_READY_POLL_INTERVAL_MS,
   SESSION_READY_TIMEOUT_MS,
-} from "../../shared/tmux"
+} from "./shared"
 import { log } from "../../shared"
 import { parseSessionStatusMap } from "./session-status-parser"
 

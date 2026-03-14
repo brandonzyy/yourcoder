@@ -1,6 +1,6 @@
 import { Instance } from "../project/instance"
 import { Log } from "../util/log"
-import { Flag } from "../flag/flag"
+import { Flag } from "../config/flag"
 import { Filesystem } from "../util/filesystem"
 
 export namespace FileTime {

@@ -19,9 +19,9 @@ import type { Agent } from "@/agent/agent"
 import type { MessageV2 } from "./message-v2"
 import { Plugin } from "@/plugin"
 import { SystemPrompt } from "./system"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { PermissionNext } from "@/permission/next"
-import { Auth } from "@/auth"
+import { Auth } from "@/server/auth"
 
 export namespace LLM {
   const log = Log.create({ service: "llm" })

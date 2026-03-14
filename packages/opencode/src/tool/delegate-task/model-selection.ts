@@ -1,6 +1,6 @@
-import type { FallbackEntry } from "../../shared/model-requirements"
-import { normalizeModel } from "../../shared/model-normalization"
-import { fuzzyMatchModel } from "../../shared/model-availability"
+import type { FallbackEntry } from "../../model/model-requirements"
+import { normalizeModel } from "../../model/model-normalization"
+import { fuzzyMatchModel } from "../../model/model-availability"
 import { transformModelForProvider } from "../../shared/provider-model-id-transform"
 
 function isExplicitHighModel(model: string): boolean {

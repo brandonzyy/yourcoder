@@ -1,6 +1,6 @@
 import { Bus } from "@/bus"
 import { Config } from "@/config/config"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { Installation } from "@/installation"
 
 export async function upgrade() {

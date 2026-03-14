@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 
 import { OPENCODE_STORAGE } from "../../shared";
-import { createInjectedPathsStorage } from "../../shared/session-injected-paths";
+import { createInjectedPathsStorage } from "../../session/session-injected-paths";
 import { createDynamicTruncator } from "../../shared/dynamic-truncator";
 
 // ── Config per injector type ──

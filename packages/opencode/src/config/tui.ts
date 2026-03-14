@@ -6,7 +6,7 @@ import { ConfigPaths } from "./paths"
 import { migrateTuiConfig } from "./migrate-tui-config"
 import { TuiInfo } from "./tui-schema"
 import { Instance } from "@/project/instance"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { Log } from "@/util/log"
 import { Global } from "@/global"
 

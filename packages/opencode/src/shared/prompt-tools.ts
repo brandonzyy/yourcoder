@@ -1,4 +1,4 @@
-import { getSessionTools } from "./session-tools-store"
+import { getSessionTools } from "../session/session-tools-store"
 
 export type PromptToolPermission = boolean | "allow" | "deny" | "ask"
 

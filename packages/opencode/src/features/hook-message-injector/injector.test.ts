@@ -8,7 +8,7 @@ import {
   generatePartId,
   injectHookMessage,
 } from "./injector"
-import { isSqliteBackend, resetSqliteBackendCache } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend, resetSqliteBackendCache } from "../../config/opencode-storage-detection"
 
 //#region Mocks
 

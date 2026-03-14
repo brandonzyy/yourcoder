@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin";
-import { normalizeSDKResponse } from "./normalize-sdk-response"
+import { normalizeSDKResponse } from "../model/normalize-sdk-response"
 
 const DEFAULT_ANTHROPIC_ACTUAL_LIMIT = 200_000;
 const CHARS_PER_TOKEN_ESTIMATE = 4;

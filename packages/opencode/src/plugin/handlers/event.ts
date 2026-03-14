@@ -17,9 +17,9 @@ import {
 } from "../../hooks/model-fallback/hook";
 import { resetMessageCursor } from "../../shared";
 import { log } from "../../shared/logger";
-import { shouldRetryError } from "../../shared/model-error-classifier";
-import { clearSessionModel, setSessionModel } from "../../shared/session-model-state";
-import { deleteSessionTools } from "../../shared/session-tools-store";
+import { shouldRetryError } from "../../model/model-error-classifier";
+import { clearSessionModel, setSessionModel } from "../../session/session-model-state";
+import { deleteSessionTools } from "../../session/session-tools-store";
 
 import type { CreatedHooks } from "../create-hooks";
 import type { Managers } from "../create-managers";

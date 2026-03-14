@@ -5,7 +5,7 @@ import { unlink } from "fs/promises"
 import { tmpdir } from "../fixture/fixture"
 import { Instance } from "../../src/project/instance"
 import { Provider } from "../../src/provider/provider"
-import { Env } from "../../src/env"
+import { Env } from "../../src/config/env"
 import { Global } from "../../src/global"
 import { Filesystem } from "../../src/util/filesystem"
 

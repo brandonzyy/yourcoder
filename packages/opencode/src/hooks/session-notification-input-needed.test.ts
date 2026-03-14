@@ -1,9 +1,8 @@
 const { describe, expect, test, beforeEach, afterEach, spyOn } = require("bun:test")
 
-const { createSessionNotification } = require("./session-notification")
-const { setMainSession, subagentSessions, _resetForTesting } = require("../features/claude-code-session-state")
-const utils = require("./session-notification-utils")
-const sender = require("./session-notification-sender")
+import { createSessionNotification } from "./session-notification"
+import { setMainSession, subagentSessions, _resetForTesting } from "../features/claude-code-session-state"
+import * as notification from "./session-notification/notification"
 
 describe("session-notification input-needed events", () => {
   let notificationCalls: string[]
@@ -15,10 +14,6 @@ describe("session-notification input-needed events", () => {
           ? cmd
           : cmd.reduce((acc, part, i) => acc + part + (values[i] ?? ""), "")
 
-        if (cmdStr.includes("osascript") || cmdStr.includes("notify-send") || cmdStr.includes("powershell")) {
-          notificationCalls.push(cmdStr)
-        }
-
         return { stdout: "", stderr: "", exitCode: 0 }
       },
       client: {
@@ -27,26 +22,22 @@ describe("session-notification input-needed events", () => {
         },
       },
       directory: "/tmp/test",
-    }
+    } as any
   }
 
   beforeEach(() => {
     _resetForTesting()
     notificationCalls = []
 
-    spyOn(utils, "getOsascriptPath").mockResolvedValue("/usr/bin/osascript")
-    spyOn(utils, "getNotifySendPath").mockResolvedValue("/usr/bin/notify-send")
-    spyOn(utils, "getPowershellPath").mockResolvedValue("powershell")
-    spyOn(utils, "startBackgroundCheck").mockImplementation(() => {})
-    spyOn(sender, "detectPlatform").mockReturnValue("darwin")
-    spyOn(sender, "sendSessionNotification").mockImplementation(async (_ctx: unknown, _platform: unknown, _title: unknown, message: string) => {
+    spyOn(notification, "startBackgroundCheck").mockImplementation(() => {})
+    spyOn(notification, "detectPlatform").mockReturnValue("darwin")
+    spyOn(notification, "sendSessionNotification").mockImplementation(async (_ctx, _platform, _title, message) => {
       notificationCalls.push(message)
     })
   })
 
   afterEach(() => {
     subagentSessions.clear()
-    _resetForTesting()
   })
 
   test("sends question notification when question tool asks for input", async () => {

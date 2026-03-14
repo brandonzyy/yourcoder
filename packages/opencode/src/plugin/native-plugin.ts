@@ -107,4 +107,4 @@ export type {
   BuiltinCommandName,
 } from "../config/plugin-config-types"
 
-export type { ConfigLoadError } from "../shared/config-errors"
+export type { ConfigLoadError } from "../config/config-errors"

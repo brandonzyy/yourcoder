@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createRuntimeFallbackHook } from "./index"
 import type { RuntimeFallbackConfig, OhMyOpenCodeConfig } from "../../config/plugin-config-types"
 import * as sharedModule from "../../shared"
-import { SessionCategoryRegistry } from "../../shared/session-category-registry"
+import { SessionCategoryRegistry } from "../../session/session-category-registry"
 
 describe("runtime-fallback", () => {
   let logCalls: Array<{ msg: string; data?: unknown }>

@@ -4,7 +4,7 @@ import { Instance } from "../project/instance"
 import { Filesystem } from "../util/filesystem"
 import { Process } from "../util/process"
 import { which } from "../util/which"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 
 export interface Info {
   name: string

@@ -5,7 +5,7 @@ import { buildTaskPrompt } from "./prompt-builder"
 import { storeToolMetadata } from "../../features/tool-metadata-store"
 import { formatDuration } from "./time-formatter"
 import { formatDetailedError } from "./error-formatting"
-import { getSessionTools } from "../../shared/session-tools-store"
+import { getSessionTools } from "../../session/session-tools-store"
 import { normalizeSDKResponse } from "../../shared"
 
 export async function executeUnstableAgentTask(

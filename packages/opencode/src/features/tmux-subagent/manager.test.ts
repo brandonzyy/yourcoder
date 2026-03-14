@@ -59,7 +59,7 @@ mock.module('./action-executor', () => ({
   executeActionWithDeps: mockExecuteAction,
 }))
 
-mock.module('../../shared/tmux', () => {
+mock.module('./shared', () => {
   const { isInsideTmux, getCurrentPaneId } = require('../../shared/tmux/tmux-utils')
   const { POLL_INTERVAL_BACKGROUND_MS, SESSION_TIMEOUT_MS, SESSION_MISSING_GRACE_MS } = require('../../shared/tmux/constants')
   return {

@@ -1,7 +1,7 @@
 import { Database } from "bun:sqlite"
 import { join } from "node:path"
 import { existsSync } from "node:fs"
-import { getDataDir } from "../../shared/data-path"
+import { getDataDir } from "../../config/data-path"
 import { log } from "../../shared"
 
 function getDbPath(): string {

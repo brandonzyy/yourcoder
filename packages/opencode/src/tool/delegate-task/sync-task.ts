@@ -5,7 +5,7 @@ import { getTaskToastManager } from "../../features/task-toast-manager"
 import { storeToolMetadata } from "../../features/tool-metadata-store"
 import { subagentSessions, syncSubagentSessions, setSessionAgent } from "../../features/claude-code-session-state"
 import { log } from "../../shared/logger"
-import { SessionCategoryRegistry } from "../../shared/session-category-registry"
+import { SessionCategoryRegistry } from "../../session/session-category-registry"
 import { formatDuration } from "./time-formatter"
 import { formatDetailedError } from "./error-formatting"
 import { syncTaskDeps, type SyncTaskDeps } from "./sync-task-deps"
@@ -20,7 +20,7 @@ export async function executeSyncTask(
   categoryModel: { providerID: string; modelID: string; variant?: string } | undefined,
   systemContent: string | undefined,
   modelInfo?: ModelFallbackInfo,
-  fallbackChain?: import("../../shared/model-requirements").FallbackEntry[],
+  fallbackChain?: import("../../model/model-requirements").FallbackEntry[],
   deps: SyncTaskDeps = syncTaskDeps
 ): Promise<string> {
   const { client, directory, onSyncSessionCreated, syncPollTimeoutMs } = executorCtx

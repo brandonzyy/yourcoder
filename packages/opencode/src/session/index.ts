@@ -6,7 +6,7 @@ import { Decimal } from "decimal.js"
 import z from "zod"
 import { type ProviderMetadata } from "ai"
 import { Config } from "../config/config"
-import { Flag } from "../flag/flag"
+import { Flag } from "../config/flag"
 import { Identifier } from "../id/id"
 import { Installation } from "../installation"
 

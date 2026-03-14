@@ -22,7 +22,7 @@ mock.module("./image-resizer", () => ({
   resizeImage: mockResizeImage,
 }))
 
-mock.module("../../shared/session-model-state", () => ({
+mock.module("../../session/session-model-state", () => ({
   getSessionModel: mockGetSessionModel,
 }))
 

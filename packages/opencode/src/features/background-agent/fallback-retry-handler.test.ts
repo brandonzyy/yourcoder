@@ -6,7 +6,7 @@ mock.module("../../shared", () => ({
   readProviderModelsCache: mock(() => null),
 }))
 
-mock.module("../../shared/model-error-classifier", () => ({
+mock.module("../../model/model-error-classifier", () => ({
   shouldRetryError: mock(() => true),
   getNextFallback: mock((chain: Array<{ model: string }>, attempt: number) => chain[attempt]),
   hasMoreFallbacks: mock((chain: Array<{ model: string }>, attempt: number) => attempt < chain.length),
@@ -18,7 +18,7 @@ mock.module("../../shared/provider-model-id-transform", () => ({
 }))
 
 import { tryFallbackRetry } from "./fallback-retry-handler"
-import { shouldRetryError } from "../../shared/model-error-classifier"
+import { shouldRetryError } from "../../model/model-error-classifier"
 import type { BackgroundTask } from "./types"
 import type { ConcurrencyManager } from "./concurrency"
 

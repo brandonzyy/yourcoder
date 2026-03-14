@@ -1,7 +1,7 @@
 import type { OpencodeClient } from "../../tool/delegate-task/types"
-import { POLL_INTERVAL_BACKGROUND_MS } from "../../shared/tmux"
+import { POLL_INTERVAL_BACKGROUND_MS } from "./shared"
 import type { TrackedSession } from "./types"
-import { SESSION_MISSING_GRACE_MS } from "../../shared/tmux"
+import { SESSION_MISSING_GRACE_MS } from "./shared"
 import { log } from "../../shared"
 import { normalizeSDKResponse } from "../../shared"
 

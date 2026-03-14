@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach, spyOn } from "bun:test"
 import { existsSync, mkdirSync, rmSync } from "fs"
 import { join } from "path"
-import * as dataPath from "./data-path"
+import * as dataPath from "../config/data-path"
 import { updateConnectedProvidersCache, readProviderModelsCache } from "./connected-providers-cache"
 
 const TEST_CACHE_DIR = join(import.meta.dir, "__test-cache__")

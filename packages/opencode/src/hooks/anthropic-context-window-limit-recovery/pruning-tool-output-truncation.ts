@@ -1,12 +1,12 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import type { PluginInput } from "@opencode-ai/plugin"
-import { getOpenCodeStorageDir } from "../../shared/data-path"
+import { getOpenCodeStorageDir } from "../../config/data-path"
 import { truncateToolResult } from "./storage"
 import { truncateToolResultAsync } from "./tool-result-storage-sdk"
 import { log } from "../../shared/logger"
 import { getMessageDir } from "../../shared/opencode-message-dir"
-import { isSqliteBackend } from "../../shared/opencode-storage-detection"
+import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { normalizeSDKResponse } from "../../shared"
 
 type OpencodeClient = PluginInput["client"]

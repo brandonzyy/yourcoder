@@ -7,14 +7,14 @@ import { randomUUID } from "node:crypto"
 const TEST_STORAGE = join(tmpdir(), `omo-msgdir-test-${randomUUID()}`)
 const TEST_MESSAGE_STORAGE = join(TEST_STORAGE, "message")
 
-mock.module("./opencode-storage-paths", () => ({
+mock.module("../config/opencode-storage-paths", () => ({
   OPENCODE_STORAGE: TEST_STORAGE,
   MESSAGE_STORAGE: TEST_MESSAGE_STORAGE,
   PART_STORAGE: join(TEST_STORAGE, "part"),
   SESSION_STORAGE: join(TEST_STORAGE, "session"),
 }))
 
-mock.module("./opencode-storage-detection", () => ({
+mock.module("../config/opencode-storage-detection", () => ({
   isSqliteBackend: () => false,
   resetSqliteBackendCache: () => {},
 }))

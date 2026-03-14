@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test"
-import { Auth } from "../../src/auth"
+import { Auth } from "../../src/server/auth"
 
 test("set normalizes trailing slashes in keys", async () => {
   await Auth.set("https://example.com/", {

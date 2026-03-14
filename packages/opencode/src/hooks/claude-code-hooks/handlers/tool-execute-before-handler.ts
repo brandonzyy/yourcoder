@@ -8,7 +8,7 @@ import {
 import { appendTranscriptEntry } from "../transcript"
 import { cacheToolInput } from "../tool-input-cache"
 import type { PluginConfig } from "../types"
-import { isHookDisabled } from "../../utils/hook-disabled"
+import { isHookDisabled } from "../../shared/hook-disabled"
 import { log } from "../../../shared"
 
 export function createToolExecuteBeforeHandler(ctx: PluginInput, config: PluginConfig) {

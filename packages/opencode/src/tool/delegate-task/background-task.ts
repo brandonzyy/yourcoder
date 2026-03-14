@@ -1,12 +1,12 @@
 import type { DelegateTaskArgs, ToolContextWithMetadata } from "./types"
 import type { ExecutorContext, ParentContext } from "./executor-types"
-import type { FallbackEntry } from "../../shared/model-requirements"
+import type { FallbackEntry } from "../../model/model-requirements"
 import { getTimingConfig } from "./timing"
 import { buildTaskPrompt } from "./prompt-builder"
 import { storeToolMetadata } from "../../features/tool-metadata-store"
 import { formatDetailedError } from "./error-formatting"
-import { getSessionTools } from "../../shared/session-tools-store"
-import { SessionCategoryRegistry } from "../../shared/session-category-registry"
+import { getSessionTools } from "../../session/session-tools-store"
+import { SessionCategoryRegistry } from "../../session/session-category-registry"
 
 export async function executeBackgroundTask(
   args: DelegateTaskArgs,

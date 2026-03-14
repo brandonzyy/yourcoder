@@ -5,7 +5,7 @@ import { generateObject, streamObject, type ModelMessage } from "ai"
 import { SystemPrompt } from "../session/system"
 import { Instance } from "../project/instance"
 import { Truncate } from "../tool/truncation"
-import { Auth } from "../auth"
+import { Auth } from "../server/auth"
 import { ProviderTransform } from "../provider/transform"
 import { Log } from "../util/log"
 

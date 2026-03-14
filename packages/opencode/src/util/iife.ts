@@ -1,3 +1,1 @@
-export function iife<T>(fn: () => T) {
-  return fn()
-}
+export { iife } from "@opencode-ai/util/iife"

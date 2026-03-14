@@ -3,7 +3,7 @@ import type {
   PostToolUseOutput,
   ClaudeHooksConfig,
 } from "./types"
-import { findMatchingHooks } from "../utils/pattern-matcher"
+import { findMatchingHooks } from "../shared/pattern-matcher"
 import { objectToSnakeCase, transformToolName, log } from "../../shared"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { buildTranscriptFromSession, deleteTempTranscript } from "./transcript"

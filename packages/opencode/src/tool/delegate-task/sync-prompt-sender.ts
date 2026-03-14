@@ -4,9 +4,9 @@ import { buildTaskPrompt } from "./prompt-builder"
 import {
   promptSyncWithModelSuggestionRetry,
   promptWithModelSuggestionRetry,
-} from "../../shared/model-suggestion-retry"
+} from "../../model/model-suggestion-retry"
 import { formatDetailedError } from "./error-formatting"
-import { setSessionTools } from "../../shared/session-tools-store"
+import { setSessionTools } from "../../session/session-tools-store"
 import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
 
 type SendSyncPromptDeps = {

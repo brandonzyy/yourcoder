@@ -3,7 +3,7 @@ import { loadClaudeHooksConfig } from "../config"
 import { loadPluginExtendedConfig } from "../config-loader"
 import { executePreCompactHooks, type PreCompactContext } from "../pre-compact"
 import type { PluginConfig } from "../types"
-import { isHookDisabled } from "../../utils/hook-disabled"
+import { isHookDisabled } from "../../shared/hook-disabled"
 import { log } from "../../../shared"
 
 export function createPreCompactHandler(ctx: PluginInput, config: PluginConfig) {

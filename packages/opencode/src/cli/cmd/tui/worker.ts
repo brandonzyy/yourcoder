@@ -9,7 +9,7 @@ import { Config } from "@/config/config"
 import { GlobalBus } from "@/bus/global"
 import { createOpencodeClient, type Event } from "@opencode-ai/sdk/v2"
 import type { BunWebSocketData } from "hono/bun"
-import { Flag } from "@/flag/flag"
+import { Flag } from "@/config/flag"
 import { setTimeout as sleep } from "node:timers/promises"
 
 await Log.init({

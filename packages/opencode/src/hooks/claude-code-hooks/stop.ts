@@ -3,7 +3,7 @@ import type {
   StopOutput,
   ClaudeHooksConfig,
 } from "./types"
-import { findMatchingHooks } from "../utils/pattern-matcher"
+import { findMatchingHooks } from "../shared/pattern-matcher"
 import { log } from "../../shared"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { getTodoPath } from "./todo"

@@ -4,7 +4,7 @@ import { TMUX_CALLBACK_DELAY_MS } from "./constants"
 import { log, promptWithModelSuggestionRetry, createInternalAgentTextPart } from "../../shared"
 import { subagentSessions } from "../claude-code-session-state"
 import { getTaskToastManager } from "../task-toast-manager"
-import { isInsideTmux } from "../../shared/tmux"
+import { isInsideTmux } from "../tmux-subagent/shared"
 import type { ConcurrencyManager } from "./concurrency"
 
 export interface SpawnerContext {

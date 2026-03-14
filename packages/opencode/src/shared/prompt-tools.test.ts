@@ -1,6 +1,6 @@
 declare const require: (name: string) => any
 const { afterEach, describe, expect, test } = require("bun:test")
-import { clearSessionTools, setSessionTools } from "./session-tools-store"
+import { clearSessionTools, setSessionTools } from "../session/session-tools-store"
 import { normalizePromptTools, resolveInheritedPromptTools } from "./prompt-tools"
 
 describe("prompt-tools", () => {
