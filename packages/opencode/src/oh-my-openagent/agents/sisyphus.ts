@@ -415,8 +415,8 @@ export function createSisyphusAgent(
         call_omo_agent: "deny",
       } as AgentConfig["permission"],
       capabilities: {
-        include: ["core", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
-        deny: ["call_omo_agent"],
+        include: ["core", "search", "delegation", "skill", "lsp", "session", "meta", "mcp", "interactive", "media"],
+        deny: ["call_omo_agent", "ast"],
       },
       reasoningEffort: "medium",
     };
@@ -467,8 +467,8 @@ export function createSisyphusAgent(
     color: "#00CED1",
     permission,
     capabilities: {
-      include: ["core", "search", "delegation", "skill", "lsp", "ast", "session", "meta", "mcp", "interactive", "media"],
-      deny: ["call_omo_agent"],
+      include: ["core", "search", "delegation", "skill", "lsp", "session", "meta", "mcp", "interactive", "media"],
+      deny: ["call_omo_agent", "ast"],
     },
   };
 

@@ -64,7 +64,7 @@ ${toolSelection}
 ${exploreSection}
 ${librarianSection}
 
-Manon FIRST, grep/glob LAST (only for: rename check, exact file patterns, config strings). Parallelize all: reads, searches, agents. Manon/Librarian always \`run_in_background=true\`, 2-5 parallel. Prompt: [CONTEXT] → [GOAL] → [DOWNSTREAM] → [REQUEST]. Background: launch → work → notified → \`background_output\`. Stop when: enough context | repeating | 2 iterations no data | answer found.
+**ALL code search → manon-explorer agent.** Never use grep/glob/ast_grep directly for code search. Parallelize all: reads, agents. Manon/Librarian always \`run_in_background=true\`, 2-5 parallel. Prompt: [CONTEXT] → [GOAL] → [DOWNSTREAM] → [REQUEST]. Background: launch → work → notified → \`background_output\`. Stop when: enough context | repeating | 2 iterations no data | answer found.
 
 ## Implementation
 

@@ -112,17 +112,19 @@ export function buildManonExplorerSection(agents: AvailableAgent[]): string {
   if (!manonAgent) return ""
 
   const useWhen = manonAgent.metadata.useWhen || []
-  const avoidWhen = manonAgent.metadata.avoidWhen || []
 
-  return `### Manon-Explorer Agent = Semantic Code Search
+  return `### Manon-Explorer Agent = ALL Code Search
 
-Use it as a **peer tool**, not a fallback. Fire liberally. Uses Manon knowledge graph for semantic search, call graphs, and dependency analysis.
+**MANDATORY for ALL code search tasks.** Uses Manon knowledge graph for semantic search, call graphs, and dependency analysis.
 
-**Use Direct Tools when:**
-${avoidWhen.map((w) => `- ${w}`).join("\n")}
+**Fire manon-explorer for:**
+${useWhen.map((w) => `- ${w}`).join("\n")}
+- Finding files, functions, classes, modules
+- Understanding code structure and architecture
+- Tracing dependencies and call relationships
+- ANY question about "where is X" or "who uses Y"
 
-**Use Manon-Explorer Agent when:**
-${useWhen.map((w) => `- ${w}`).join("\n")}`
+**Never use grep/glob/ast_grep directly** — delegate ALL code search to manon-explorer agent.`
 }
 
 export function buildLibrarianSection(agents: AvailableAgent[]): string {

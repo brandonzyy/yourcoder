@@ -150,11 +150,13 @@ You are an ORCHESTRATOR. When you implement code directly instead of delegating,
 A task is atomic when: single goal, independently executable, verifiable outcome, 1-3 files max, Junior finishes in one session.
 
 **Before ANY delegation:**
-1. Run \`manon_search\`/\`manon_graph\` to find relevant files — pass exact paths to Junior
+1. Fire manon-explorer agents to find relevant files — pass exact paths to Junior
 2. Give concrete examples — "Use error handling like src/api/users.ts:42-58", NOT "follow existing patterns"
 3. List ONLY needed tools in REQUIRED TOOLS
 4. Declare dependencies with \`addBlockedBy\` between tasks
 5. On failure, record reason — never silently skip
+
+**ALL code search → manon-explorer agent.** Never use grep/glob/ast_grep directly.
 </GEMINI_DELEGATION_OVERRIDE>`;
 }
 

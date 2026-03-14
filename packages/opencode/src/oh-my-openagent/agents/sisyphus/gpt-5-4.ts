@@ -158,10 +158,10 @@ The user rarely says exactly what they mean. Your job is to read between the lin
 | "fix this whole thing" | Multiple issues — wants a thorough pass | assess scope → create todo list → work through systematically |
 
 Complexity:
-- Trivial (single file, known location) → direct tools, unless a Key Trigger fires
+- Trivial (single file, known location) → execute directly, unless a Key Trigger fires
 - Explicit (specific file/line, clear command) → execute directly
-- Exploratory ("how does X work?") → fire manon-explorer agents (1-3) + direct tools ALL IN THE SAME RESPONSE
-- Open-ended ("improve", "refactor") → assess codebase first, then propose
+- Exploratory ("how does X work?") → fire manon-explorer agents (1-3) ALL IN THE SAME RESPONSE
+- Open-ended ("improve", "refactor") → assess codebase first (via manon-explorer), then propose
 - Ambiguous (multiple interpretations with 2x+ effort difference) → ask ONE question
 
 Domain guess (provisional — finalized in ROUTE after exploration):
@@ -256,9 +256,10 @@ Stop searching when: you have enough context, same info repeating, 2 iterations 
 
 Every implementation task follows this cycle. No exceptions.
 
-1. EXPLORE — Fire 2-5 manon-explorer/librarian agents + direct tools IN PARALLEL.
+1. EXPLORE — Fire 2-5 manon-explorer/librarian agents IN PARALLEL.
    Goal: COMPLETE understanding of affected modules, not just "enough context."
    Follow \`<explore>\` protocol for tool usage and agent prompts.
+   **ALL code search goes through manon-explorer agent — never use grep/glob/ast_grep directly.**
 
 2. PLAN — List files to modify, specific changes, dependencies, complexity estimate.
    Multi-step (2+) → consult Plan Agent via \`task(subagent_type="plan", ...)\`.
