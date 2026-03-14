@@ -3,7 +3,7 @@ import {
   loadPluginCommands,
   loadPluginSkillsAsCommands,
 } from "../features/claude-code-plugin-loader"
-import type { CommandDefinition } from "../features/claude-code-command-loader/types"
+import type { CommandDefinition } from "../features/builtin-commands/command-types"
 
 export interface PluginCommandDiscoveryOptions {
   pluginsEnabled?: boolean

@@ -10,7 +10,7 @@ import {
 } from "../../shared"
 import { discoverPluginCommandDefinitions } from "../../plugin/plugin-command-discovery"
 import { loadBuiltinCommands } from "../../features/builtin-commands"
-import type { CommandFrontmatter } from "../../features/claude-code-command-loader/types"
+import type { CommandFrontmatter } from "../../features/builtin-commands/command-types"
 import { isMarkdownFile } from "../../shared/file-utils"
 import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../features/opencode-skill-loader"
 import type { ParsedSlashCommand } from "./types"

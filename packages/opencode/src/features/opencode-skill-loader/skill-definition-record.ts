@@ -1,4 +1,4 @@
-import type { CommandDefinition } from "../claude-code-command-loader/types"
+import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { LoadedSkill } from "./types"
 
 export function skillsToCommandDefinitionRecord(skills: LoadedSkill[]): Record<string, CommandDefinition> {

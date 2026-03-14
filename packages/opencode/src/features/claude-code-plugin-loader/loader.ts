@@ -1,6 +1,6 @@
 import { log } from "../../shared/logger"
 import type { AgentConfig } from "@opencode-ai/sdk"
-import type { CommandDefinition } from "../claude-code-command-loader/types"
+import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { McpServerConfig } from "../claude-code-mcp-loader/types"
 import type { HooksConfig, LoadedPlugin, PluginLoadError, PluginLoaderOptions } from "./types"
 import { discoverInstalledPlugins } from "./discovery"

@@ -4,7 +4,7 @@ import { parseFrontmatter } from "../../shared/frontmatter"
 import { isMarkdownFile } from "../../shared/file-utils"
 import { sanitizeModelField } from "../../shared/model-sanitizer"
 import { log } from "../../shared/logger"
-import type { CommandDefinition, CommandFrontmatter } from "../claude-code-command-loader/types"
+import type { CommandDefinition, CommandFrontmatter } from "../builtin-commands/command-types"
 import type { LoadedPlugin } from "./types"
 
 export function loadPluginCommands(plugins: LoadedPlugin[]): Record<string, CommandDefinition> {

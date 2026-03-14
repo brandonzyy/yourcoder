@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
 import type { BackgroundManager, BackgroundTask } from "../../features/background-agent"
-import { readContinuationMarker } from "../../features/run-continuation-state"
+import { readContinuationMarker } from "../shared/continuation-state"
 import { createStopContinuationGuardHook } from "./index"
 
 type CancelCall = {

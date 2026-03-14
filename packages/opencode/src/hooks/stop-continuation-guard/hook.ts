@@ -4,7 +4,7 @@ import type { BackgroundManager } from "../../features/background-agent"
 import {
   clearContinuationMarker,
   setContinuationMarkerSource,
-} from "../../features/run-continuation-state"
+} from "../shared/continuation-state"
 import { log } from "../../shared/logger"
 
 const HOOK_NAME = "stop-continuation-guard"

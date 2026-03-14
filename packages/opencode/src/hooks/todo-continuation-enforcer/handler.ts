@@ -3,7 +3,7 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import type { BackgroundManager } from "../../features/background-agent"
 import {
   clearContinuationMarker,
-} from "../../features/run-continuation-state"
+} from "../shared/continuation-state"
 import { log } from "../../shared/logger"
 
 import { DEFAULT_SKIP_AGENTS, HOOK_NAME } from "./constants"

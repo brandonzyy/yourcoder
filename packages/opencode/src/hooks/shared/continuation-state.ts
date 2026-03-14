@@ -1,11 +1,22 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { CONTINUATION_MARKER_DIR } from "./constants"
-import type {
-  ContinuationMarker,
-  ContinuationMarkerSource,
-  ContinuationMarkerState,
-} from "./types"
+
+export type ContinuationMarkerSource = "todo" | "stop"
+export type ContinuationMarkerState = "idle" | "active" | "stopped"
+
+export interface ContinuationMarkerSourceEntry {
+  state: ContinuationMarkerState
+  reason?: string
+  updatedAt: string
+}
+
+export interface ContinuationMarker {
+  sessionID: string
+  updatedAt: string
+  sources: Partial<Record<ContinuationMarkerSource, ContinuationMarkerSourceEntry>>
+}
+
+const CONTINUATION_MARKER_DIR = ".sisyphus/run-continuation"
 
 function getMarkerPath(directory: string, sessionID: string): string {
   return join(directory, CONTINUATION_MARKER_DIR, `${sessionID}.json`)

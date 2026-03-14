@@ -1,4 +1,4 @@
-import type { CommandDefinition } from "../claude-code-command-loader"
+import type { CommandDefinition } from "./command-types"
 import type { BuiltinCommandName, BuiltinCommands } from "./types"
 import { INIT_DEEP_TEMPLATE } from "./templates/init-deep"
 import { RALPH_LOOP_TEMPLATE, ULW_LOOP_TEMPLATE, CANCEL_RALPH_TEMPLATE } from "./templates/ralph-loop"

@@ -5,7 +5,7 @@ import { resolveSymlink } from "../../shared/file-utils"
 import { sanitizeModelField } from "../../shared/model-sanitizer"
 import { resolveSkillPathReferences } from "../../shared/skill-path-resolver"
 import { log } from "../../shared/logger"
-import type { CommandDefinition } from "../claude-code-command-loader/types"
+import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { SkillMetadata } from "../opencode-skill-loader/types"
 import type { LoadedPlugin } from "./types"
 
