@@ -1,0 +1,7 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hanhaismart/oh-my-opencode/main/schema.json",
+  "disabled_hooks": [
+    "directoryAgentsInjector",
+    "directoryReadmeInjector"
+  ]
+}
