@@ -1,14 +1,15 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { subagentSessions, getMainSessionID } from "../features/claude-code-session-state"
-import {
-  startBackgroundCheck,
-} from "./session-notification-utils"
+import { subagentSessions, getMainSessionID } from "../../features/claude-code-session-state"
 import {
   type Platform,
-} from "./session-notification-sender"
-import * as sessionNotificationSender from "./session-notification-sender"
-import { hasIncompleteTodos } from "./session-todo-status"
-import { createIdleNotificationScheduler } from "./session-notification-scheduler"
+  startBackgroundCheck,
+  detectPlatform,
+  getDefaultSoundPath,
+  sendSessionNotification,
+  playSessionNotificationSound,
+  createIdleNotificationScheduler,
+} from "./notification"
+import { hasIncompleteTodos } from "../session-todo-status"
 
 interface SessionNotificationConfig {
   title?: string
@@ -27,12 +28,15 @@ interface SessionNotificationConfig {
   /** Grace period in ms to ignore late-arriving activity events after scheduling (default: 100) */
   activityGracePeriodMs?: number
 }
+
+export { type Platform, startBackgroundCheck, detectPlatform, getDefaultSoundPath, sendSessionNotification, playSessionNotificationSound, createIdleNotificationScheduler, escapeAppleScriptText, escapePowerShellSingleQuotedText, buildWindowsToastScript } from "./notification"
+
 export function createSessionNotification(
   ctx: PluginInput,
   config: SessionNotificationConfig = {}
 ) {
-  const currentPlatform: Platform = sessionNotificationSender.detectPlatform()
-  const defaultSoundPath = sessionNotificationSender.getDefaultSoundPath(currentPlatform)
+  const currentPlatform: Platform = detectPlatform()
+  const defaultSoundPath = getDefaultSoundPath(currentPlatform)
 
   startBackgroundCheck(currentPlatform)
 
@@ -55,8 +59,8 @@ export function createSessionNotification(
     platform: currentPlatform,
     config: mergedConfig,
     hasIncompleteTodos,
-    send: sessionNotificationSender.sendSessionNotification,
-    playSound: sessionNotificationSender.playSessionNotificationSound,
+    send: sendSessionNotification,
+    playSound: playSessionNotificationSound,
   })
 
   const QUESTION_TOOLS = new Set(["question", "ask_user_question", "askuserquestion"])
@@ -150,14 +154,14 @@ export function createSessionNotification(
       if (!shouldNotifyForSession(sessionID)) return
 
       scheduler.markSessionActivity(sessionID)
-      await sessionNotificationSender.sendSessionNotification(
+      await sendSessionNotification(
         ctx,
         currentPlatform,
         mergedConfig.title,
         mergedConfig.permissionMessage,
       )
       if (mergedConfig.playSound && mergedConfig.soundPath) {
-        await sessionNotificationSender.playSessionNotificationSound(ctx, currentPlatform, mergedConfig.soundPath)
+        await playSessionNotificationSound(ctx, currentPlatform, mergedConfig.soundPath)
       }
       return
     }
@@ -177,9 +181,9 @@ export function createSessionNotification(
               ? mergedConfig.permissionMessage
               : mergedConfig.questionMessage
 
-            await sessionNotificationSender.sendSessionNotification(ctx, currentPlatform, mergedConfig.title, message)
+            await sendSessionNotification(ctx, currentPlatform, mergedConfig.title, message)
             if (mergedConfig.playSound && mergedConfig.soundPath) {
-              await sessionNotificationSender.playSessionNotificationSound(ctx, currentPlatform, mergedConfig.soundPath)
+              await playSessionNotificationSound(ctx, currentPlatform, mergedConfig.soundPath)
             }
           }
         }
