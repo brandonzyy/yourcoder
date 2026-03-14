@@ -182,7 +182,7 @@ describe("createAnthropicEffortHook", () => {
         provider: { id: "anthropic" },
         message: { variant: "max" as const },
       }
-      const output = { temperature: 0.1, options: {} }
+      const output: { temperature: number; options: Record<string, unknown> } = { temperature: 0.1, options: {} }
 
       //#when chat.params hook is called with undefined modelID
       await hook["chat.params"](input, output)

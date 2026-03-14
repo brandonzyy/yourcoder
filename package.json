@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "bun run --cwd packages/opencode --conditions=browser src/index.ts",
     "typecheck": "bun turbo typecheck",
+    "test:unit": "bun run --cwd packages/opencode test",
+    "test:smoke": "bun run --cwd packages/opencode test test/config test/session test/tool test/provider test/project test/server",
+    "test:src": "bun run --cwd packages/opencode test src",
     "prepare": "husky",
     "random": "echo 'Random script'",
     "hello": "echo 'Hello World!'",

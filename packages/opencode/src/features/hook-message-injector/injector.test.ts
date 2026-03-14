@@ -14,7 +14,7 @@ import { isSqliteBackend, resetSqliteBackendCache } from "../../config/opencode-
 
 const mockIsSqliteBackend = vi.fn()
 
-vi.mock("../../shared/opencode-storage-detection", () => ({
+vi.mock("../../config/opencode-storage-detection", () => ({
   isSqliteBackend: mockIsSqliteBackend,
   resetSqliteBackendCache: () => {},
 }))

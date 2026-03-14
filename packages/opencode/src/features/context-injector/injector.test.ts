@@ -77,7 +77,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
     })
     const firstOutput = {
       messages: [structuredClone(baseMessage)],
-    }
+    } as any
 
     // when
     await hook["experimental.chat.messages.transform"]!({}, firstOutput)
@@ -96,7 +96,7 @@ describe("createContextInjectorMessagesTransformHook", () => {
     })
     const secondOutput = {
       messages: [structuredClone(baseMessage)],
-    }
+    } as any
 
     // when
     await hook["experimental.chat.messages.transform"]!({}, secondOutput)

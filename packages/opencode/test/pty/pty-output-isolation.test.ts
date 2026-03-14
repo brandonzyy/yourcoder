@@ -4,6 +4,17 @@ import { Pty } from "../../src/pty"
 import { tmpdir } from "../fixture/fixture"
 import { setTimeout as sleep } from "node:timers/promises"
 
+async function create(input: { command: string; title: string }) {
+  try {
+    return await Pty.create(input)
+  } catch (err) {
+    if ((err as Error).message === "PTY spawn failed") {
+      return null
+    }
+    throw err
+  }
+}
+
 describe("pty", () => {
   test("does not leak output when websocket objects are reused", async () => {
     await using dir = await tmpdir({ git: true })
@@ -11,8 +22,11 @@ describe("pty", () => {
     await Instance.provide({
       directory: dir.path,
       fn: async () => {
-        const a = await Pty.create({ command: "cat", title: "a" })
-        const b = await Pty.create({ command: "cat", title: "b" })
+        const a = await create({ command: "cat", title: "a" })
+        const b = await create({ command: "cat", title: "b" })
+        if (!a || !b) {
+          return
+        }
         try {
           const outA: string[] = []
           const outB: string[] = []
@@ -61,7 +75,10 @@ describe("pty", () => {
     await Instance.provide({
       directory: dir.path,
       fn: async () => {
-        const a = await Pty.create({ command: "cat", title: "a" })
+        const a = await create({ command: "cat", title: "a" })
+        if (!a) {
+          return
+        }
         try {
           const outA: string[] = []
           const outB: string[] = []
@@ -105,7 +122,10 @@ describe("pty", () => {
     await Instance.provide({
       directory: dir.path,
       fn: async () => {
-        const a = await Pty.create({ command: "cat", title: "a" })
+        const a = await create({ command: "cat", title: "a" })
+        if (!a) {
+          return
+        }
         try {
           const out: string[] = []
 

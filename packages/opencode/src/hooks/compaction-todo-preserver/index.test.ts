@@ -33,7 +33,7 @@ function createMockContext(todoResponses: Array<Todo>[]): PluginInput {
     const current = todoResponses[Math.min(callIndex, todoResponses.length - 1)] ?? []
     callIndex += 1
     return Promise.resolve({ data: current, error: undefined, request, response })
-  })
+  }) as unknown as typeof client.session.todo
 
   return {
     client,

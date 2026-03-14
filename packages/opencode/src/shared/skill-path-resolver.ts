@@ -1,4 +1,4 @@
-import { join } from "path"
+import { posix } from "path"
 
 /**
  * Resolves @path references in skill content to absolute paths.
@@ -9,9 +9,9 @@ import { join } from "path"
  * Email addresses are excluded since they have alphanumeric characters before @.
  */
 export function resolveSkillPathReferences(content: string, basePath: string): string {
-	const normalizedBase = basePath.endsWith("/") ? basePath.slice(0, -1) : basePath
+	const normalizedBase = basePath.replaceAll("\\", "/").replace(/\/$/, "")
 	return content.replace(
 		/(?<![a-zA-Z0-9])@([a-zA-Z0-9_-]+\/[a-zA-Z0-9_.\-\/]*)/g,
-		(_, relativePath: string) => join(normalizedBase, relativePath)
+		(_, relativePath: string) => posix.join(normalizedBase, relativePath)
 	)
 }

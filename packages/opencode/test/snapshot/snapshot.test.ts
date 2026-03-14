@@ -31,6 +31,18 @@ async function bootstrap() {
   })
 }
 
+async function symlink(target: string, path: string, type?: "file" | "dir") {
+  try {
+    await fs.symlink(target, path, type)
+    return true
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "EPERM") {
+      return false
+    }
+    throw err
+  }
+}
+
 test("tracks deleted files correctly", async () => {
   await using tmp = await bootstrap()
   await Instance.provide({
@@ -170,7 +182,9 @@ test("symlink handling", async () => {
       const before = await Snapshot.track()
       expect(before).toBeTruthy()
 
-      await fs.symlink(`${tmp.path}/a.txt`, `${tmp.path}/link.txt`, "file")
+      if (!(await symlink(`${tmp.path}/a.txt`, `${tmp.path}/link.txt`, "file"))) {
+        return
+      }
 
       expect((await Snapshot.patch(before!)).files).toContain(fwd(tmp.path, "link.txt"))
     },
@@ -442,8 +456,12 @@ test("nested symlinks", async () => {
 
       await $`mkdir -p ${tmp.path}/sub/dir`.quiet()
       await Filesystem.write(`${tmp.path}/sub/dir/target.txt`, "target content")
-      await fs.symlink(`${tmp.path}/sub/dir/target.txt`, `${tmp.path}/sub/dir/link.txt`, "file")
-      await fs.symlink(`${tmp.path}/sub`, `${tmp.path}/sub-link`, "dir")
+      if (!(await symlink(`${tmp.path}/sub/dir/target.txt`, `${tmp.path}/sub/dir/link.txt`, "file"))) {
+        return
+      }
+      if (!(await symlink(`${tmp.path}/sub`, `${tmp.path}/sub-link`, "dir"))) {
+        return
+      }
 
       const patch = await Snapshot.patch(before!)
       expect(patch.files).toContain(fwd(tmp.path, "sub", "dir", "link.txt"))
@@ -457,6 +475,10 @@ test("file permissions and ownership changes", async () => {
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
+      if (process.platform === "win32") {
+        return
+      }
+
       const before = await Snapshot.track()
       expect(before).toBeTruthy()
 

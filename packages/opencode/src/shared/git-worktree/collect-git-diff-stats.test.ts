@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, expect, test, spyOn, beforeEach, afterEach } from "bun:test"
 import * as childProcess from "node:child_process"

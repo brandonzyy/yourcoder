@@ -44,7 +44,7 @@ function createMockContext(): PluginInput {
       },
     },
     directory: "/tmp",
-  } as PluginInput
+  } as unknown as PluginInput
 }
 
 function setupDelayedTimeoutMocks(): {
@@ -58,7 +58,7 @@ function setupDelayedTimeoutMocks(): {
 
   globalThis.setTimeout = ((_: () => void, _delay?: number) => {
     timeoutCounter += 1
-    return timeoutCounter as ReturnType<typeof setTimeout>
+    return timeoutCounter as unknown as ReturnType<typeof setTimeout>
   }) as typeof setTimeout
 
   globalThis.clearTimeout = ((timeoutID: ReturnType<typeof setTimeout>) => {
@@ -89,7 +89,7 @@ describe("createAnthropicContextWindowLimitRecoveryHook", () => {
     //#given
     const { restore, getClearTimeoutCalls } = setupDelayedTimeoutMocks()
     const { createAnthropicContextWindowLimitRecoveryHook } = await import("./recovery-hook")
-    const hook = createAnthropicContextWindowLimitRecoveryHook(createMockContext())
+    const hook = createAnthropicContextWindowLimitRecoveryHook(createMockContext(), { pluginConfig: {} as never })
 
     try {
       //#when
@@ -108,9 +108,9 @@ describe("createAnthropicContextWindowLimitRecoveryHook", () => {
       })
 
       //#then
-      expect(getClearTimeoutCalls()).toEqual([1 as ReturnType<typeof setTimeout>])
+      expect(getClearTimeoutCalls()).toEqual([1 as unknown as ReturnType<typeof setTimeout>])
       expect(executeCompactMock).toHaveBeenCalledTimes(1)
-      expect(executeCompactMock.mock.calls[0]?.[0]).toBe("session-race")
+      expect((executeCompactMock as any).mock.calls[0][0]).toBe("session-race")
     } finally {
       restore()
     }

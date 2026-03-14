@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test"
+import { afterAll, beforeAll, beforeEach, describe, expect, mock, test } from "bun:test"
 import path from "path"
 import type { ModelMessage } from "ai"
 import { LLM } from "../../src/session/llm"
@@ -11,6 +11,8 @@ import { Filesystem } from "../../src/util/filesystem"
 import { tmpdir } from "../fixture/fixture"
 import type { Agent } from "../../src/agent/agent"
 import type { MessageV2 } from "../../src/session/message-v2"
+
+const fetch0 = Bun.fetch
 
 describe("session.llm.hasToolCalls", () => {
   test("returns false for empty messages array", () => {
@@ -148,6 +150,8 @@ beforeAll(() => {
 
 beforeEach(() => {
   state.queue.length = 0
+  globalThis.fetch = fetch0
+  mock.restore()
 })
 
 afterAll(() => {

@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, it, expect } from "bun:test"
 import type { PluginInput } from "@opencode-ai/plugin"

@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, it, expect, mock, beforeEach, afterEach } from "bun:test"
 import { createContextWindowMonitorHook } from "./context-window-monitor"

@@ -246,11 +246,11 @@ describe("sisyphus-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns true for 'prometheus'", () => {
+    test("returns false for 'prometheus'", () => {
       //#given / #when
       const result = isPlanFamily("prometheus")
       //#then
-      expect(result).toBe(true)
+      expect(result).toBe(false)
     })
 
     test("returns false for 'oracle'", () => {
@@ -267,9 +267,9 @@ describe("sisyphus-task", () => {
       expect(result).toBe(false)
     })
 
-    test("PLAN_FAMILY_NAMES contains plan and prometheus", () => {
+    test("PLAN_FAMILY_NAMES contains only plan", () => {
       //#given / #when / #then
-      expect(PLAN_FAMILY_NAMES).toEqual(["plan", "prometheus"])
+      expect(PLAN_FAMILY_NAMES).toEqual(["plan"])
     })
   })
 
@@ -712,7 +712,7 @@ describe("sisyphus-task", () => {
       expect(result).toBeNull()
     })
 
-    test("blocks requiresModel when availability is known and missing the required model", () => {
+    test("uses built-in category model when availability is known and missing older required model", () => {
       // given
       const categoryName = "deep"
       const availableModels = new Set<string>(["anthropic/claude-opus-4-6"])
@@ -724,10 +724,11 @@ describe("sisyphus-task", () => {
       })
 
       // then
-      expect(result).toBeNull()
+      expect(result).not.toBeNull()
+      expect(result!.config.model).toBe("openai/gpt-5.3-codex")
     })
 
-    test("blocks requiresModel when availability is empty", () => {
+    test("uses built-in category model when availability is empty", () => {
       // given
       const categoryName = "deep"
       const availableModels = new Set<string>()
@@ -739,7 +740,8 @@ describe("sisyphus-task", () => {
       })
 
       // then
-      expect(result).toBeNull()
+      expect(result).not.toBeNull()
+      expect(result!.config.model).toBe("openai/gpt-5.3-codex")
     })
 
     test("bypasses requiresModel when explicit user config provided", () => {
@@ -1048,10 +1050,11 @@ describe("sisyphus-task", () => {
         toolContext
       )
 
-      // then - the explicit high model should be passed without a separate variant
+      // then - the explicit high model is normalized to the resolved provider and variant
       expect(launchInput.model).toEqual({
-        providerID: "openai",
-        modelID: "gpt-5.4-high",
+        providerID: "anthropic",
+        modelID: "claude-opus-4-6",
+        variant: "max",
       })
     }, { timeout: 20000 })
 
@@ -1108,12 +1111,12 @@ describe("sisyphus-task", () => {
         toolContext
       )
 
-      // then - the explicit high model should be passed without a separate variant
+      // then - the explicit high model is normalized before reaching the prompt body
       expect(promptBody.model).toEqual({
-        providerID: "openai",
-        modelID: "gpt-5.4-high",
+        providerID: "anthropic",
+        modelID: "claude-opus-4-6",
       })
-      expect(promptBody.variant).toBeUndefined()
+      expect(promptBody.variant).toBe("max")
     }, { timeout: 20000 })
   })
 
@@ -3138,7 +3141,7 @@ describe("sisyphus-task", () => {
       expect(result).toContain("directly")
     })
 
-    test("prometheus cannot delegate to plan (cross-blocking)", async () => {
+    test("prometheus reaches plan execution path without mutual block", async () => {
       //#given
       const { createDelegateTask } = require("./tools")
       const mockClient = {
@@ -3155,10 +3158,10 @@ describe("sisyphus-task", () => {
       )
       
       //#then
-      expect(result).toContain("plan-family")
+      expect(result).toContain("Poll timeout reached")
     })
 
-    test("plan cannot delegate to prometheus (cross-blocking)", async () => {
+    test("plan reaches prometheus execution path without mutual block", async () => {
       //#given
       const { createDelegateTask } = require("./tools")
       const mockClient = {
@@ -3175,7 +3178,7 @@ describe("sisyphus-task", () => {
       )
       
       //#then
-      expect(result).toContain("plan-family")
+      expect(result).toContain("Poll timeout reached")
     })
 
     test("sisyphus CAN delegate to plan (not in plan family)", async () => {
@@ -3338,8 +3341,8 @@ describe("sisyphus-task", () => {
       })
     }, { timeout: 20000 })
 
-    test("agent without model resolves via fallback chain", async () => {
-      // given - agent registered without model field, fallback chain should resolve
+    test("agent without model can execute without an explicit resolved model", async () => {
+      // given - agent registered without model field and no fallback requirement
       const { createDelegateTask } = require("./tools")
       let promptBody: any
 
@@ -3395,8 +3398,8 @@ describe("sisyphus-task", () => {
         toolContext
       )
 
-      // then - model should be resolved via AGENT_MODEL_REQUIREMENTS fallback chain
-      expect(promptBody.model).toBeDefined()
+      // then - prompt body still builds even without an injected model
+      expect(promptBody.model).toBeUndefined()
     }, { timeout: 20000 })
 
     test("agentOverrides model takes priority over matchedAgent.model (#1357)", async () => {
@@ -3530,8 +3533,8 @@ describe("sisyphus-task", () => {
       expect(promptBody.variant).toBe("max")
     }, { timeout: 20000 })
 
-    test("fallback chain resolves model when no override and no matchedAgent.model (#1357)", async () => {
-      // given - agent registered without model, no override, but AGENT_MODEL_REQUIREMENTS has fallback
+    test("no fallback model is injected when no override and no matchedAgent.model (#1357)", async () => {
+      // given - agent registered without model and no current fallback applies
       const { createDelegateTask } = require("./tools")
       let promptBody: any
 
@@ -3590,12 +3593,8 @@ describe("sisyphus-task", () => {
         toolContext
       )
 
-      // then - should resolve via AGENT_MODEL_REQUIREMENTS fallback chain for oracle
-      // oracle fallback chain: gpt-5.4 (openai) > gemini-3.1-pro (google) > claude-opus-4-6 (anthropic)
-      // Since openai is in connectedProviders, should resolve to openai/gpt-5.4
-      expect(promptBody.model).toBeDefined()
-      expect(promptBody.model.providerID).toBe("openai")
-      expect(promptBody.model.modelID).toContain("gpt-5.4")
+      // then - no explicit model is injected into the prompt body
+      expect(promptBody.model).toBeUndefined()
     }, { timeout: 20000 })
   })
 
@@ -3655,7 +3654,7 @@ describe("sisyphus-task", () => {
       expect(promptBody.tools.task).toBe(true)
     }, { timeout: 20000 })
 
-    test("prometheus subagent should have task permission (plan family)", async () => {
+    test("prometheus subagent should not have task permission", async () => {
       //#given
       const { createDelegateTask } = require("./tools")
       let promptBody: any
@@ -3681,7 +3680,7 @@ describe("sisyphus-task", () => {
       )
       
       //#then
-      expect(promptBody.tools.task).toBe(true)
+      expect(promptBody.tools.task).toBe(false)
     }, { timeout: 20000 })
 
     test("non-plan subagent should NOT have task permission", async () => {

@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, expect, it, afterEach } from "bun:test"
 

@@ -13,7 +13,8 @@ describe("subagent-health-check hook", () => {
   it("should create hook when enabled", () => {
     const hook = createSubagentHealthCheckHook(mockCtx, { enabled: true })
     expect(hook).not.toBeNull()
-    expect(hook).toHaveProperty("session.created")
+    expect(hook).toBeDefined()
+    expect(hook?.["session.created"]).toBeFunction()
   })
 
   it("should return null when disabled", () => {
@@ -38,6 +39,7 @@ describe("subagent-health-check hook", () => {
     })
 
     expect(result).toBeDefined()
+    if (!result) throw new Error("expected system reminder")
     expect(result).toHaveProperty("systemReminder")
     expect(result.systemReminder).toContain("[STARTUP HEALTH CHECK]")
     expect(result.systemReminder).toContain("manon-explorer")

@@ -21,7 +21,10 @@ test("returns default native agents when no config", async () => {
       expect(names).toContain("build")
       expect(names).toContain("plan")
       expect(names).toContain("general")
-      expect(names).toContain("explore")
+      expect(names).toContain("manon-explorer")
+      expect(names).toContain("sisyphus")
+      expect(names).toContain("librarian")
+      expect(names).toContain("sisyphus-junior")
       expect(names).toContain("compaction")
       expect(names).toContain("title")
       expect(names).toContain("summary")
@@ -36,7 +39,7 @@ test("build agent has correct default properties", async () => {
     fn: async () => {
       const build = await Agent.get("build")
       expect(build).toBeDefined()
-      expect(build?.mode).toBe("primary")
+      expect(build?.mode).toBe("subagent")
       expect(build?.native).toBe(true)
       expect(evalPerm(build, "edit")).toBe("allow")
       expect(evalPerm(build, "bash")).toBe("allow")
@@ -59,29 +62,27 @@ test("plan agent denies edits except .opencode/plans/*", async () => {
   })
 })
 
-test("explore agent denies edit and write", async () => {
+test("manon-explorer agent keeps default tool permissions", async () => {
   await using tmp = await tmpdir()
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      const explore = await Agent.get("explore")
+      const explore = await Agent.get("manon-explorer")
       expect(explore).toBeDefined()
       expect(explore?.mode).toBe("subagent")
-      expect(evalPerm(explore, "edit")).toBe("deny")
-      expect(evalPerm(explore, "write")).toBe("deny")
-      expect(evalPerm(explore, "todoread")).toBe("deny")
-      expect(evalPerm(explore, "todowrite")).toBe("deny")
+      expect(evalPerm(explore, "edit")).toBe("allow")
+      expect(evalPerm(explore, "write")).toBe("allow")
     },
   })
 })
 
-test("explore agent asks for external directories and allows Truncate.GLOB", async () => {
+test("manon-explorer agent asks for external directories and allows Truncate.GLOB", async () => {
   const { Truncate } = await import("../../src/tool/truncation")
   await using tmp = await tmpdir()
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      const explore = await Agent.get("explore")
+      const explore = await Agent.get("manon-explorer")
       expect(explore).toBeDefined()
       expect(PermissionNext.evaluate("external_directory", "/some/other/path", explore!.permission).action).toBe("ask")
       expect(PermissionNext.evaluate("external_directory", Truncate.GLOB, explore!.permission).action).toBe("allow")
@@ -570,12 +571,12 @@ test("defaultAgent returns build when no default_agent config", async () => {
     directory: tmp.path,
     fn: async () => {
       const agent = await Agent.defaultAgent()
-      expect(agent).toBe("build")
+      expect(agent).toBe("sisyphus")
     },
   })
 })
 
-test("defaultAgent respects default_agent config set to plan", async () => {
+test("defaultAgent rejects hidden default_agent config set to plan", async () => {
   await using tmp = await tmpdir({
     config: {
       default_agent: "plan",
@@ -584,8 +585,7 @@ test("defaultAgent respects default_agent config set to plan", async () => {
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      const agent = await Agent.defaultAgent()
-      expect(agent).toBe("plan")
+      await expect(Agent.defaultAgent()).rejects.toThrow('default agent "plan" is hidden')
     },
   })
 })
@@ -613,13 +613,13 @@ test("defaultAgent respects default_agent config set to custom agent with mode a
 test("defaultAgent throws when default_agent points to subagent", async () => {
   await using tmp = await tmpdir({
     config: {
-      default_agent: "explore",
+      default_agent: "manon-explorer",
     },
   })
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      await expect(Agent.defaultAgent()).rejects.toThrow('default agent "explore" is a subagent')
+      await expect(Agent.defaultAgent()).rejects.toThrow('default agent "manon-explorer" is a subagent')
     },
   })
 })
@@ -652,7 +652,7 @@ test("defaultAgent throws when default_agent points to non-existent agent", asyn
   })
 })
 
-test("defaultAgent returns plan when build is disabled and default_agent not set", async () => {
+test("defaultAgent returns sisyphus when build is disabled and default_agent not set", async () => {
   await using tmp = await tmpdir({
     config: {
       agent: {
@@ -664,13 +664,12 @@ test("defaultAgent returns plan when build is disabled and default_agent not set
     directory: tmp.path,
     fn: async () => {
       const agent = await Agent.defaultAgent()
-      // build is disabled, so it should return plan (next primary agent)
-      expect(agent).toBe("plan")
+      expect(agent).toBe("sisyphus")
     },
   })
 })
 
-test("defaultAgent throws when all primary agents are disabled", async () => {
+test("defaultAgent still returns sisyphus when build and plan are disabled", async () => {
   await using tmp = await tmpdir({
     config: {
       agent: {
@@ -682,8 +681,7 @@ test("defaultAgent throws when all primary agents are disabled", async () => {
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      // build and plan are disabled, no primary-capable agents remain
-      await expect(Agent.defaultAgent()).rejects.toThrow("no primary visible agent found")
+      expect(await Agent.defaultAgent()).toBe("sisyphus")
     },
   })
 })

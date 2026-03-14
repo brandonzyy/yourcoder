@@ -9,7 +9,7 @@ describe("session-notification", () => {
 
   function createMockPluginInput() {
     return {
-      $: async (cmd: TemplateStringsArray | string, ...values: any[]) => {
+      $: async (cmd: TemplateStringsArray | string, ...values: unknown[]) => {
         // given - track notification commands (osascript, notify-send, powershell)
         const cmdStr = typeof cmd === "string" 
           ? cmd 
@@ -35,7 +35,7 @@ describe("session-notification", () => {
     
     spyOn(notification, "startBackgroundCheck").mockImplementation(() => {})
     spyOn(notification, "detectPlatform").mockReturnValue("darwin")
-    spyOn(notification, "sendSessionNotification").mockImplementation(async (_ctx, _platform, _title, message) => {
+    spyOn(notification, "sendSessionNotification").mockImplementation(async (_ctx: unknown, _platform: unknown, _title: unknown, message: string) => {
       notificationCalls.push(message)
     })
   })

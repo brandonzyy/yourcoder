@@ -12,7 +12,6 @@ import {
 import type { BoulderState } from "../../features/boulder-state"
 import * as sessionState from "../../features/claude-code-session-state"
 import * as worktreeDetector from "./worktree-detector"
-import * as worktreeDetector from "./worktree-detector"
 
 describe("start-work hook", () => {
   let testDir: string

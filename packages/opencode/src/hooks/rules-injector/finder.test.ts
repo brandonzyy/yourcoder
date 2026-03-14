@@ -4,6 +4,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { findProjectRoot, findRuleFiles } from "./finder";
 
+function norm(path: string) {
+  return path.replaceAll("\\", "/");
+}
+
 describe("findRuleFiles", () => {
   const TEST_DIR = join(tmpdir(), `rules-injector-test-${Date.now()}`);
   const homeDir = join(TEST_DIR, "home");
@@ -43,7 +47,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should find both instruction files
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(
         paths.some((p) => p.includes("typescript.instructions.md"))
       ).toBe(true);
@@ -70,7 +74,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should only find .instructions.md file
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.includes("valid.instructions.md"))).toBe(
         true
       );
@@ -95,7 +99,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should find nested instruction file
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.includes("react.instructions.md"))).toBe(
         true
       );
@@ -184,7 +188,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should find claude rules
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.includes(".claude/rules/"))).toBe(true);
     });
 
@@ -201,7 +205,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should find cursor rules
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.includes(".cursor/rules/"))).toBe(true);
     });
 
@@ -218,7 +222,7 @@ describe("findRuleFiles", () => {
       const candidates = findRuleFiles(TEST_DIR, homeDir, currentFile);
 
       // then should find .mdc file
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.endsWith("advanced.mdc"))).toBe(true);
     });
   });
@@ -251,7 +255,7 @@ describe("findRuleFiles", () => {
 
       // then should find all rules
       expect(candidates.length).toBeGreaterThanOrEqual(4);
-      const paths = candidates.map((c) => c.path);
+      const paths = candidates.map((c) => norm(c.path));
       expect(paths.some((p) => p.includes(".claude/rules/"))).toBe(true);
       expect(paths.some((p) => p.includes(".cursor/rules/"))).toBe(true);
       expect(paths.some((p) => p.includes(".github/instructions/"))).toBe(

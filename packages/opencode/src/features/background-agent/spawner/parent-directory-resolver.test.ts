@@ -19,7 +19,7 @@ describe("background-agent parent-directory-resolver", () => {
 
       //#when
       const result = await resolveParentDirectory({
-        client: client as Parameters<typeof resolveParentDirectory>[0]["client"],
+        client: client as unknown as Parameters<typeof resolveParentDirectory>[0]["client"],
         parentSessionID: "ses_parent",
         defaultDirectory: "C:\\Users\\test\\AppData\\Roaming\\opencode",
       })

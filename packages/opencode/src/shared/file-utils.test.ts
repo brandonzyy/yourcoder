@@ -23,6 +23,23 @@ const testDir = join(tmpdir(), "file-utils-test-" + Date.now())
 const realSkillDir = join(testDir, "repo", "skills", "category", "my-skill")
 const repoOpencodeSkills = join(testDir, "repo", ".opencode", "skills")
 const configSkills = join(testDir, "config", "skills")
+let linked = false
+
+function link(target: string, file: string) {
+	try {
+		symlinkSync(target, file)
+		return true
+	} catch (err) {
+		if (
+			err &&
+			typeof err === "object" &&
+			"code" in err &&
+			err.code === "EPERM"
+		)
+			return false
+		throw err
+	}
+}
 
 beforeAll(() => {
 	// Create real skill directory with a file
@@ -31,11 +48,12 @@ beforeAll(() => {
 
 	// Create .opencode/skills/ with a relative symlink to the real skill
 	mkdirSync(repoOpencodeSkills, { recursive: true })
-	symlinkSync("../../skills/category/my-skill", join(repoOpencodeSkills, "my-skill"))
+	linked = link("../../skills/category/my-skill", join(repoOpencodeSkills, "my-skill"))
+	if (!linked) return
 
 	// Create config/skills as an absolute symlink to .opencode/skills
 	mkdirSync(join(testDir, "config"), { recursive: true })
-	symlinkSync(repoOpencodeSkills, configSkills)
+	linked = link(repoOpencodeSkills, configSkills)
 })
 
 afterAll(() => {
@@ -49,11 +67,13 @@ describe("resolveSymlink", () => {
 	})
 
 	it("resolves a relative symlink to its real path", () => {
+		if (!linked) return
 		const symlinkPath = join(repoOpencodeSkills, "my-skill")
 		expect(resolveSymlink(symlinkPath)).toBe(realSkillDir)
 	})
 
 	it("resolves a chained symlink (symlink-to-dir-containing-symlinks) to the real path", () => {
+		if (!linked) return
 		// This is the real-world scenario:
 		// config/skills/my-skill -> (follows config/skills) -> repo/.opencode/skills/my-skill -> repo/skills/category/my-skill
 		const chainedPath = join(configSkills, "my-skill")
@@ -73,11 +93,13 @@ describe("resolveSymlinkAsync", () => {
 	})
 
 	it("resolves a relative symlink to its real path", async () => {
+		if (!linked) return
 		const symlinkPath = join(repoOpencodeSkills, "my-skill")
 		expect(await resolveSymlinkAsync(symlinkPath)).toBe(realSkillDir)
 	})
 
 	it("resolves a chained symlink (symlink-to-dir-containing-symlinks) to the real path", async () => {
+		if (!linked) return
 		const chainedPath = join(configSkills, "my-skill")
 		expect(await resolveSymlinkAsync(chainedPath)).toBe(realSkillDir)
 	})
@@ -90,6 +112,7 @@ describe("resolveSymlinkAsync", () => {
 
 describe("isSymbolicLink", () => {
 	it("returns true for a symlink", () => {
+		if (!linked) return
 		expect(isSymbolicLink(join(repoOpencodeSkills, "my-skill"))).toBe(true)
 	})
 

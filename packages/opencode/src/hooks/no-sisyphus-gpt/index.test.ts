@@ -8,7 +8,7 @@ const HEPHAESTUS_DISPLAY = getAgentDisplayName("hephaestus")
 
 function createOutput() {
   return {
-    message: {},
+    message: {} as { agent?: string },
     parts: [],
   }
 }
@@ -40,12 +40,12 @@ describe("no-sisyphus-gpt hook", () => {
     expect(showToast).toHaveBeenCalledTimes(2)
     expect(output1.message.agent).toBe(HEPHAESTUS_DISPLAY)
     expect(output2.message.agent).toBe(HEPHAESTUS_DISPLAY)
-    expect(showToast.mock.calls[0]?.[0]).toMatchObject({
-      body: {
+    expect(showToast).toHaveBeenCalledWith({
+      body: expect.objectContaining({
         title: "NEVER Use Sisyphus with GPT",
         message: expect.stringContaining("For GPT models (other than 5.4), always use Hephaestus."),
         variant: "error",
-      },
+      }),
     })
   })
 

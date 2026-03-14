@@ -8,6 +8,14 @@
       "dependsOn": [],
       "outputs": ["dist/**"]
     },
+    "test:unit": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test:smoke": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
     "opencode#test": {
       "dependsOn": ["^build"],
       "outputs": []

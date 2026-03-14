@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, it, expect, beforeEach, afterEach } from "bun:test"
 import { join } from "node:path"

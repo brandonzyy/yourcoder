@@ -1,8 +1,6 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
-import { describe, expect, it } from "bun:test"
-
-import { parseImageDimensions } from "./image-dimensions"
+import { describe, expect, it, mock } from "bun:test"
 
 const PNG_1X1_DATA_URL =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
@@ -35,90 +33,97 @@ function createLargePngDataUrl(width: number, height: number, extraBase64Chars: 
   return `data:image/png;base64,${paddedBase64}`
 }
 
+async function parse(dataUrl: string, mime: string) {
+  mock.restore()
+  const path = new URL(`./image-dimensions.ts?image-dimensions-test=${Math.random()}`, import.meta.url).href
+  const mod = await import(path)
+  return mod.parseImageDimensions(dataUrl, mime)
+}
+
 describe("parseImageDimensions", () => {
-  it("parses PNG 1x1 dimensions", () => {
+  it("parses PNG 1x1 dimensions", async () => {
     //#given
     const dataUrl = PNG_1X1_DATA_URL
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/png")
+    const result = await parse(dataUrl, "image/png")
 
     //#then
     expect(result).toEqual({ width: 1, height: 1 })
   })
 
-  it("parses PNG dimensions from IHDR", () => {
+  it("parses PNG dimensions from IHDR", async () => {
     //#given
     const dataUrl = createPngDataUrl(3000, 2000)
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/png")
+    const result = await parse(dataUrl, "image/png")
 
     //#then
     expect(result).toEqual({ width: 3000, height: 2000 })
   })
 
-  it("parses PNG dimensions from a very large base64 payload", () => {
+  it("parses PNG dimensions from a very large base64 payload", async () => {
     //#given
     const dataUrl = createLargePngDataUrl(4096, 2160, 10 * 1024 * 1024)
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/png")
+    const result = await parse(dataUrl, "image/png")
 
     //#then
     expect(result).toEqual({ width: 4096, height: 2160 })
   })
 
-  it("parses GIF 1x1 dimensions", () => {
+  it("parses GIF 1x1 dimensions", async () => {
     //#given
     const dataUrl = GIF_1X1_DATA_URL
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/gif")
+    const result = await parse(dataUrl, "image/gif")
 
     //#then
     expect(result).toEqual({ width: 1, height: 1 })
   })
 
-  it("parses GIF dimensions from logical screen descriptor", () => {
+  it("parses GIF dimensions from logical screen descriptor", async () => {
     //#given
     const dataUrl = createGifDataUrl(320, 240)
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/gif")
+    const result = await parse(dataUrl, "image/gif")
 
     //#then
     expect(result).toEqual({ width: 320, height: 240 })
   })
 
-  it("returns null for empty input", () => {
+  it("returns null for empty input", async () => {
     //#given
     const dataUrl = ""
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/png")
+    const result = await parse(dataUrl, "image/png")
 
     //#then
     expect(result).toBeNull()
   })
 
-  it("returns null for too-short PNG buffer", () => {
+  it("returns null for too-short PNG buffer", async () => {
     //#given
     const dataUrl = "data:image/png;base64,AAAA"
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/png")
+    const result = await parse(dataUrl, "image/png")
 
     //#then
     expect(result).toBeNull()
   })
 
-  it("returns null for unsupported mime type", () => {
+  it("returns null for unsupported mime type", async () => {
     //#given
     const dataUrl = PNG_1X1_DATA_URL
 
     //#when
-    const result = parseImageDimensions(dataUrl, "image/heic")
+    const result = await parse(dataUrl, "image/heic")
 
     //#then
     expect(result).toBeNull()

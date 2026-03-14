@@ -34,3 +34,9 @@ export function takePendingCall(callID: string): PendingCall | undefined {
   pendingCalls.delete(callID)
   return pendingCall
 }
+
+export function _resetForTesting(): void {
+  pendingCalls.clear()
+  cleanupIntervalStarted = false
+  cleanupInterval = undefined
+}

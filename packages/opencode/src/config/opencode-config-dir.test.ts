@@ -45,7 +45,7 @@ describe("opencode-config-dir", () => {
       const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
 
       // then returns the custom path
-      expect(result).toBe("/custom/opencode/path")
+      expect(result).toBe(resolve("/custom/opencode/path"))
     })
 
     test("falls back to default when env var is not set", () => {
@@ -109,7 +109,7 @@ describe("opencode-config-dir", () => {
       const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
 
       // then OPENCODE_CONFIG_DIR takes priority
-      expect(result).toBe("/custom/opencode/path")
+      expect(result).toBe(resolve("/custom/opencode/path"))
     })
   })
 
@@ -163,7 +163,7 @@ describe("opencode-config-dir", () => {
         const result = getOpenCodeConfigDir({ binary: "opencode", version: "1.0.200" })
 
         // then returns $XDG_CONFIG_HOME/opencode
-        expect(result).toBe("/custom/config/opencode")
+        expect(result).toBe(join(process.env.XDG_CONFIG_HOME!, "opencode"))
       })
 
       test("returns ~/.config/opencode on macOS", () => {

@@ -3,7 +3,7 @@ import { getServerBaseUrl, patchPart, deletePart } from "./opencode-http-api"
 
 // Mock fetch globally
 const mockFetch = vi.fn()
-global.fetch = mockFetch
+global.fetch = mockFetch as unknown as typeof fetch
 
 // Mock log
 vi.mock("./logger", () => ({

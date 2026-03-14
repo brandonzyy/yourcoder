@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 
 import { describe, expect, test } from "bun:test"
 import { formatFileChanges, parseGitDiffNumstat, parseGitStatusPorcelain } from "./index"

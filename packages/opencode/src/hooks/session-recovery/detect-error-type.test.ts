@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 import { describe, expect, it } from "bun:test"
 import { detectErrorType, extractMessageIndex, extractUnavailableToolName } from "./detect-error-type"
 

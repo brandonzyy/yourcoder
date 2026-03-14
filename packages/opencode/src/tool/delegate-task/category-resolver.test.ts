@@ -27,7 +27,7 @@ describe("resolveCategoryExecution", () => {
 		sisyphusJuniorModel: undefined,
 	})
 
-	test("returns clear error when category exists but required model is not available", async () => {
+	test("resolves current category model when legacy required model is not available", async () => {
 		//#given
 		const args = {
 			category: "deep",
@@ -46,10 +46,13 @@ describe("resolveCategoryExecution", () => {
 		const result = await resolveCategoryExecution(args, executorCtx, inheritedModel, systemDefaultModel)
 
 		//#then
-		expect(result.error).toBeDefined()
-		expect(result.error).toContain("deep")
-		expect(result.error).toMatch(/model.*not.*available|requires.*model/i)
-		expect(result.error).not.toContain("Unknown category")
+		expect(result.error).toBeUndefined()
+		expect(result.actualModel).toBe("openai/gpt-5.3-codex")
+		expect(result.categoryModel).toEqual({
+			providerID: "openai",
+			modelID: "gpt-5.3-codex",
+			variant: "medium",
+		})
 	})
 
 	test("returns 'unknown category' error for truly unknown categories", async () => {

@@ -45,7 +45,7 @@ bunDescribe("sendSyncPrompt", () => {
     bunExpect(promptArgs.body.tools.question).toBe(false)
   })
 
-  bunTest("applies agent tool restrictions for explore agent", async () => {
+  bunTest("keeps call_omo_agent enabled for manon-explorer agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -63,7 +63,7 @@ bunDescribe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "explore",
+      agentToUse: "manon-explorer",
       args: {
         description: "test task",
         prompt: "test prompt",
@@ -82,10 +82,10 @@ bunDescribe("sendSyncPrompt", () => {
 
     //#then
     bunExpect(promptAsync).toHaveBeenCalled()
-    bunExpect(promptArgs.body.tools.call_omo_agent).toBe(false)
+    bunExpect(promptArgs.body.tools.call_omo_agent).toBe(true)
   })
 
-  bunTest("applies agent tool restrictions for librarian agent", async () => {
+  bunTest("keeps call_omo_agent enabled for librarian agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -122,7 +122,7 @@ bunDescribe("sendSyncPrompt", () => {
 
     //#then
     bunExpect(promptAsync).toHaveBeenCalled()
-    bunExpect(promptArgs.body.tools.call_omo_agent).toBe(false)
+    bunExpect(promptArgs.body.tools.call_omo_agent).toBe(true)
   })
 
   bunTest("does not restrict call_omo_agent for sisyphus agent", async () => {

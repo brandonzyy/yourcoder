@@ -41,7 +41,7 @@ mock.module("../checker", () => ({
 }))
 mock.module("../version-channel", () => ({ extractChannel: mockExtractChannel }))
 mock.module("../cache", () => ({ invalidatePackage: mockInvalidatePackage }))
-mock.module("../../../cli/config-manager", () => ({ runBunInstall: mockRunBunInstall }))
+mock.module("../../../config/config-manager", () => ({ runBunInstall: mockRunBunInstall }))
 mock.module("./update-toasts", () => ({
   showUpdateAvailableToast: mockShowUpdateAvailableToast,
   showAutoUpdatedToast: mockShowAutoUpdatedToast,

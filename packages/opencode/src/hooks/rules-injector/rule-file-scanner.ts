@@ -3,7 +3,8 @@ import { join } from "node:path";
 import { GITHUB_INSTRUCTIONS_PATTERN, RULE_EXTENSIONS } from "./constants";
 
 function isGitHubInstructionsDir(dir: string): boolean {
-  return dir.includes(".github/instructions") || dir.endsWith(".github/instructions");
+  const path = dir.replaceAll("\\", "/");
+  return path.includes(".github/instructions") || path.endsWith(".github/instructions");
 }
 
 function isValidRuleFile(fileName: string, dir: string): boolean {

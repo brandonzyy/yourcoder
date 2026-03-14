@@ -1,5 +1,6 @@
 import z from "zod"
 import { spawn } from "child_process"
+import { existsSync, realpathSync } from "fs"
 import { Tool } from "./tool"
 import path from "path"
 import DESCRIPTION from "./bash.txt"
@@ -116,12 +117,8 @@ export const BashTool = Tool.define("bash", async () => {
         if (["cd", "rm", "cp", "mv", "mkdir", "touch", "chmod", "chown", "cat"].includes(command[0])) {
           for (const arg of command.slice(1)) {
             if (arg.startsWith("-") || (command[0] === "chmod" && arg.startsWith("+"))) continue
-            const resolved = await $`realpath ${arg}`
-              .cwd(cwd)
-              .quiet()
-              .nothrow()
-              .text()
-              .then((x) => x.trim())
+            const raw = path.isAbsolute(arg) ? arg : path.resolve(cwd, arg)
+            const resolved = existsSync(raw) ? realpathSync.native(raw) : raw
             log.info("resolved path", { arg, resolved })
             if (resolved) {
               const normalized =

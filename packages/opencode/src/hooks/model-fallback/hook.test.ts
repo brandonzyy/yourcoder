@@ -83,7 +83,7 @@ describe("model fallback hook", () => {
 
     //#then
     expect(output.message["model"]).toEqual({
-      providerID: "anthropic",
+      providerID: "opencode",
       modelID: "claude-opus-4-6",
     })
   })
@@ -115,7 +115,7 @@ describe("model fallback hook", () => {
 
     //#then
     expect(firstOutput.message["model"]).toEqual({
-      providerID: "anthropic",
+      providerID: "opencode",
       modelID: "claude-opus-4-6",
     })
 
@@ -134,10 +134,10 @@ describe("model fallback hook", () => {
 
     //#then - chain should progress to entry[1], not repeat entry[0]
     expect(secondOutput.message["model"]).toEqual({
-      providerID: "kimi-for-coding",
-      modelID: "k2p5",
+      providerID: "opencode",
+      modelID: "kimi-k2.5",
     })
-    expect(secondOutput.message["variant"]).toBeUndefined()
+    expect((secondOutput.message as { variant?: string }).variant).toBeUndefined()
   })
 
   test("shows toast when fallback is applied", async () => {

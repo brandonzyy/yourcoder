@@ -21,8 +21,8 @@ describe("pending-calls cleanup interval", () => {
     }) as unknown as typeof setInterval
 
     try {
-      const modulePath = new URL("./pending-calls.ts", import.meta.url).pathname
-      const pendingCallsModule = await import(`${modulePath}?pending-calls-test-once`)
+      const pendingCallsModule = await import("./pending-calls")
+      pendingCallsModule._resetForTesting()
 
       //#when
       pendingCallsModule.startPendingCallCleanup()

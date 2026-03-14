@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 import { describe, expect, test } from "bun:test"
 import type { PluginInput } from "@opencode-ai/plugin"
 import { detectCompletionInSessionMessages } from "./completion-promise-detector"

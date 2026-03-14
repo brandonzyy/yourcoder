@@ -1,4 +1,4 @@
-/// <reference types="bun-types" />
+/// <reference types="bun" />
 import { describe, expect, it } from "bun:test"
 import { parsePatch } from "diff"
 import { generateUnifiedDiff } from "./diff-utils"

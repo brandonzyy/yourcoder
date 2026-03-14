@@ -56,7 +56,7 @@ describe("createWriteExistingFileGuardHook", () => {
   }
 
   const emitSessionDeleted = async (sessionID: string): Promise<void> => {
-    await hook.event?.({ event: { type: "session.deleted", properties: { info: { id: sessionID } } } })
+    await hook.event?.({ event: { type: "session.deleted", properties: { info: { id: sessionID } } } as never })
   }
 
   beforeEach(() => {

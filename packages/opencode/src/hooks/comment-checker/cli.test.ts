@@ -115,7 +115,20 @@ done
     test("keeps non-timeout flow unchanged", async () => {
       // given
       const { runCommentChecker } = await import("./cli")
-      const binaryPath = createScriptBinary(`#!/bin/sh
+      const binaryPath =
+        process.platform === "win32"
+          ? (() => {
+              const dir = mkdtempSync(join(tmpdir(), "comment-checker-cli-test-"))
+              const path = join(dir, "comment-checker.cmd")
+              writeFileSync(path, `@echo off
+if not "%1"=="check" exit /b 1
+more > nul
+echo found comments 1>&2
+exit /b 2
+`)
+              return path
+            })()
+          : createScriptBinary(`#!/bin/sh
 if [ "$1" != "check" ]; then
   exit 1
 fi
@@ -126,7 +139,8 @@ exit 2
       // when
       const result = await runCommentChecker(createMockInput(), binaryPath)
       // then
-      expect(result).toEqual({ hasComments: true, message: "found comments\n" })
+      expect(result.hasComments).toBe(true)
+      expect(result.message.trim()).toBe("found comments")
     })
   })
 
@@ -152,7 +166,7 @@ exit 2
       mock.module("./cli", cliMockFactory)
       mock.module("./cli.ts", cliMockFactory)
       mock.module(new URL("./cli.ts", import.meta.url).href, cliMockFactory)
-      const concurrentRunnerBasePath = new URL("./cli-runner.ts", import.meta.url).pathname
+      const concurrentRunnerBasePath = new URL("./cli-runner.ts", import.meta.url).href
       const concurrentModulePath = `${concurrentRunnerBasePath}?semaphore-concurrent`
       const { processWithCli } = await import(concurrentModulePath)
       const pendingCall: PendingCall = {
@@ -186,7 +200,7 @@ exit 2
       mock.module("./cli", cliMockFactory)
       mock.module("./cli.ts", cliMockFactory)
       mock.module(new URL("./cli.ts", import.meta.url).href, cliMockFactory)
-      const sequentialRunnerBasePath = new URL("./cli-runner.ts", import.meta.url).pathname
+      const sequentialRunnerBasePath = new URL("./cli-runner.ts", import.meta.url).href
       const sequentialModulePath = `${sequentialRunnerBasePath}?semaphore-sequential`
       const { processWithCli } = await import(sequentialModulePath)
       const pendingCall: PendingCall = {

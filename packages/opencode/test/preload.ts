@@ -26,7 +26,10 @@ afterAll(async () => {
 
   // Windows can keep SQLite WAL handles alive until GC finalizers run, so we
   // force GC and retry teardown to avoid flaky EBUSY in test cleanup.
-  await rm(30)
+  await rm(30).catch((error) => {
+    if (!busy(error)) throw error
+    console.warn(`[test cleanup] skipped busy temp dir removal: ${dir}`)
+  })
 })
 
 process.env["XDG_DATA_HOME"] = path.join(dir, "share")

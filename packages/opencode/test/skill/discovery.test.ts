@@ -1,8 +1,10 @@
-import { describe, test, expect, beforeAll, afterAll } from "bun:test"
+import { describe, test, expect, beforeAll, afterAll, beforeEach, mock } from "bun:test"
 import { Discovery } from "../../src/skill/discovery"
 import { Filesystem } from "../../src/util/filesystem"
 import { rm } from "fs/promises"
 import path from "path"
+
+const fetch0 = Bun.fetch
 
 let CLOUDFLARE_SKILLS_URL: string
 let server: ReturnType<typeof Bun.serve>
@@ -36,6 +38,11 @@ beforeAll(async () => {
   })
 
   CLOUDFLARE_SKILLS_URL = `http://localhost:${server.port}/.well-known/skills/`
+})
+
+beforeEach(() => {
+  globalThis.fetch = fetch0
+  mock.restore()
 })
 
 afterAll(async () => {

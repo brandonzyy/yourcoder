@@ -6,6 +6,7 @@ import type { BackgroundTask, ResumeInput } from "./types"
 import { MIN_IDLE_TIME_MS } from "./constants"
 import { BackgroundManager } from "./manager"
 import { ConcurrencyManager } from "./concurrency"
+import { _resetForTesting as resetProcessCleanup } from "./process-cleanup"
 import { initTaskToastManager, _resetTaskToastManagerForTesting } from "../task-toast-manager/manager"
 
 
@@ -1597,6 +1598,7 @@ describe("BackgroundManager.resume model persistence", () => {
 describe("BackgroundManager process cleanup", () => {
   test("should remove listeners after last shutdown", () => {
     // given
+    resetProcessCleanup()
     const signals = getCleanupSignals()
     const baseline = getListenerCounts(signals)
     const managerA = createBackgroundManager()
@@ -1615,6 +1617,7 @@ describe("BackgroundManager process cleanup", () => {
       expect(afterFirstShutdown[signal]).toBe(baseline[signal] + 1)
       expect(afterSecondShutdown[signal]).toBe(baseline[signal])
     }
+    resetProcessCleanup()
   })
 })
 
@@ -3189,7 +3192,7 @@ describe("BackgroundManager.handleEvent - session.error", () => {
       concurrencyKey,
       fallbackChain: [
         { providers: ["anthropic"], model: "claude-opus-4-6", variant: "max" },
-        { providers: ["anthropic"], model: "claude-opus-4-5" },
+        { providers: ["anthropic"], model: "claude-opus-4-5", variant: "max" },
       ],
     })
 
@@ -3287,7 +3290,7 @@ describe("BackgroundManager.handleEvent - session.error", () => {
           },
         },
       },
-    })
+    } as never)
 
     //#then
     expect(task.status).toBe("pending")
@@ -4035,7 +4038,7 @@ describe("BackgroundManager regression fixes - resume and aborted notification",
 })
 
 describe("BackgroundManager - tool permission spread order", () => {
-  test("startTask respects explore agent restrictions", async () => {
+  test("startTask uses the fixed background tool set", async () => {
     //#given
     let capturedTools: Record<string, unknown> | undefined
     const client = {
@@ -4055,7 +4058,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       queuedAt: new Date(),
       description: "test task",
       prompt: "test prompt",
-      agent: "explore",
+      agent: "manon-explorer",
       parentSessionID: "parent-session",
       parentMessageID: "parent-message",
     }
@@ -4073,15 +4076,16 @@ describe("BackgroundManager - tool permission spread order", () => {
 
     //#then
     expect(capturedTools).toBeDefined()
-    expect(capturedTools?.call_omo_agent).toBe(false)
+    expect(capturedTools?.call_omo_agent).toBe(true)
     expect(capturedTools?.task).toBe(false)
-    expect(capturedTools?.write).toBe(false)
-    expect(capturedTools?.edit).toBe(false)
+    expect(capturedTools?.question).toBe(false)
+    expect(capturedTools?.write).toBeUndefined()
+    expect(capturedTools?.edit).toBeUndefined()
 
     manager.shutdown()
   })
 
-  test("resume respects explore agent restrictions", async () => {
+  test("resume uses the fixed background tool set", async () => {
     //#given
     let capturedTools: Record<string, unknown> | undefined
     const client = {
@@ -4101,7 +4105,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       parentMessageID: "parent-message",
       description: "resume task",
       prompt: "resume prompt",
-      agent: "explore",
+      agent: "manon-explorer",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),
@@ -4118,10 +4122,11 @@ describe("BackgroundManager - tool permission spread order", () => {
 
     //#then
     expect(capturedTools).toBeDefined()
-    expect(capturedTools?.call_omo_agent).toBe(false)
+    expect(capturedTools?.call_omo_agent).toBe(true)
     expect(capturedTools?.task).toBe(false)
-    expect(capturedTools?.write).toBe(false)
-    expect(capturedTools?.edit).toBe(false)
+    expect(capturedTools?.question).toBe(false)
+    expect(capturedTools?.write).toBeUndefined()
+    expect(capturedTools?.edit).toBeUndefined()
 
     manager.shutdown()
   })
