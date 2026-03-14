@@ -23,8 +23,9 @@ import {
   createQuestionLabelTruncatorHook,
   createPreemptiveCompactionHook,
   createRuntimeFallbackHook,
-} from "../../hooks"
-import { createAnthropicEffortHook } from "../../hooks/anthropic-effort"
+  createSubagentHealthCheckHook,
+} from "../../../hooks"
+import { createAnthropicEffortHook } from "../../../hooks/anthropic-effort"
 import {
   detectExternalNotificationPlugin,
   getNotificationConflictWarning,
@@ -56,6 +57,7 @@ export type SessionHooks = {
   taskResumeInfo: ReturnType<typeof createTaskResumeInfoHook> | null
   anthropicEffort: ReturnType<typeof createAnthropicEffortHook> | null
   runtimeFallback: ReturnType<typeof createRuntimeFallbackHook> | null
+  subagentHealthCheck: ReturnType<typeof createSubagentHealthCheckHook> | null
 }
 
 export function createSessionHooks(args: {
@@ -246,6 +248,15 @@ export function createSessionHooks(args: {
           pluginConfig,
         }))
     : null
+
+  const subagentHealthCheck = isHookEnabled("subagent-health-check")
+    ? safeHook("subagent-health-check", () =>
+        createSubagentHealthCheckHook(ctx, {
+          enabled: true,
+          timeout: 10000,
+        }))
+    : null
+
   return {
     contextWindowMonitor,
     preemptiveCompaction,
@@ -268,5 +279,6 @@ export function createSessionHooks(args: {
     taskResumeInfo,
     anthropicEffort,
     runtimeFallback,
+    subagentHealthCheck,
   }
 }
