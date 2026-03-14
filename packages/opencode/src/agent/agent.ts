@@ -7,6 +7,7 @@ import { Instance } from "../project/instance"
 import { Truncate } from "../tool/truncation"
 import { Auth } from "../auth"
 import { ProviderTransform } from "../provider/transform"
+import { Log } from "../util/log"
 
 import PROMPT_GENERATE from "./generate.txt"
 import PROMPT_COMPACTION from "./prompt/compaction.txt"
@@ -205,7 +206,7 @@ export namespace Agent {
           permission: PermissionNext.merge(defaults, user),
           options: {},
           prompt: agentConfig.prompt,
-          capabilities: agentConfig.capabilities,
+          capabilities: agentConfig.capabilities as any,
           temperature: agentConfig.temperature,
         }
       }

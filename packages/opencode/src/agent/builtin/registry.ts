@@ -1,5 +1,4 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
-import type { Config } from "../../config/config"
 import type { ToolDefinition } from "@opencode-ai/plugin"
 import { BackgroundManager } from "../../features/background-agent"
 
@@ -15,7 +14,7 @@ export class BuiltinAgentRegistry {
   /**
    * Load all builtin agents based on config
    */
-  static async load(config: Config, client?: any, directory?: string): Promise<{
+  static async load(config: { model?: string }, client?: any, directory?: string): Promise<{
     agents: Record<string, AgentConfig>
     tools: Record<string, ToolDefinition>
   }> {
@@ -74,7 +73,7 @@ export class BuiltinAgentRegistry {
   /**
    * Load sisyphus agent with config
    */
-  private static async loadSisyphus(config: Config): Promise<AgentConfig | null> {
+  private static async loadSisyphus(config: { model?: string }): Promise<AgentConfig | null> {
     try {
       const { createSisyphusAgent } = await import("./sisyphus")
 
