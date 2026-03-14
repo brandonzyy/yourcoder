@@ -128,7 +128,10 @@ provider/model/
 
 ---
 
-## Phase 4: 注入器模式统一（中风险，需创建抽象）
+## Phase 4: 注入器模式统一 — ✅ DONE
+
+directory-agents-injector/ (7 files) + directory-readme-injector/ (7 files) → content-injector/ (2 files)。
+提取通用 ContentInjectorConfig 框架，各注入器只提供配置。净减 566 行。
 
 4 个注入器 hooks 共 2,907 行。`directory-agents-injector` 和 `directory-readme-injector` 结构完全相同（finder + injector + storage + hook + constants）。
 
@@ -159,7 +162,9 @@ hooks/rules-injector/             — 保持不变（1,907 行，复杂度高，
 
 ---
 
-## Phase 5: 恢复/容错 hooks 合并（高风险，核心逻辑）
+## Phase 5: 恢复/容错 hooks 合并 — ⏸️ DEFERRED
+
+核心业务逻辑深度合并，需要完整测试体系支撑。等测试重写后再做。
 
 7 个 hooks 共 10,755 行。
 
@@ -200,7 +205,9 @@ delegate-task-retry (267)、json-error-recovery (260)、edit-error-recovery (206
 
 ---
 
-## Phase 6: delegate-task 精简（高风险，核心工具）
+## Phase 6: delegate-task 精简 — ⏸️ DEFERRED
+
+31 文件核心工具重构，需要完整测试体系支撑。等测试重写后再做。
 
 31 个源文件，3,041 行源码（不含测试）。同时 `task/delegate.ts` (93 行) 是精简版。
 
