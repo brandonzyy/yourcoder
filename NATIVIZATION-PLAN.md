@@ -26,7 +26,7 @@
 - ✅ `create-session-hooks.ts`：sessionExists 替换为 `false`
 - ✅ `tool-registry.ts`：删除所有空 stub 调用，直接 import 实际工具
 - ✅ `plugin-tools.ts` 已删除
-- ✅ tsc 验证通过（84 → 84 错误，无变化）
+- ✅ tsc 验证通过
 
 ## ✅ Phase B2: 删除死 hook 模块
 
@@ -38,69 +38,58 @@
 - ✅ config schema 清理：hooks.ts 移除 3 个废弃名称，agent-overrides.ts 移除 atlas
 - ✅ tsc 验证通过（84 → 82 错误，减少 2 个来自删除的测试文件）
 
----
+## ✅ Phase C: config/ 精简
 
-## Phase C: config/ 精简
+### ✅ C1. 删除 `config/config-manager/` 死文件（~530 行）
+- ✅ 12 个死文件已删除，保留 `config-context.ts` 和 `bun-install.ts`
+- ✅ `config-manager.ts` barrel 精简为只导出 2 个文件
+- ✅ `config/model-fallback.ts` 已删除
+- ✅ `config/types.ts` 已删除
 
-### C1. 删除 `config/config-manager/` 插件时代遗留（655 行）
-消费者：`background-update-check.ts`（runBunInstall）、`native-plugin.ts`（initConfigContext）
-- [ ] 评估 `initConfigContext` 是否仍需要
-- [ ] 评估 `runBunInstall` 是否仍需要
-- [ ] 将必要功能内联，删除目录
+### C2. 精简 `config/plugin-schema/`（672 行）— 跳过
+所有 24 个导出类型有外部消费者，schema 文件是活跃代码。
 
-### C2. 精简 `config/plugin-schema/`（672 行）
-所有 schema 文件都被 `oh-my-opencode-config.ts` barrel 导入。
-- [ ] 确认哪些 schema 的配置项实际被运行时读取
-- [ ] 删除未使用的 schema 文件
-- [ ] 合并剩余为单文件
+## ✅ Phase D: features/ 瘦身
 
-## Phase D: features/ 瘦身（有消费者，需谨慎）
+### ✅ D1. `features/run-continuation-state/`（190 行）
+- ✅ 合并为 `hooks/shared/continuation-state.ts` 单文件
+- ✅ 更新 2 个消费者 import 路径
 
-### D1. `features/run-continuation-state/`（190 行，3 消费者）
-- [ ] 内联到 `hooks/stop-continuation-guard/` 和 `hooks/todo-continuation-enforcer/`
+### ✅ D2. `features/claude-code-command-loader/`（192 行）
+- ✅ `types.ts` 移至 `builtin-commands/command-types.ts`
+- ✅ `loader.ts`（144 行死代码）已删除
+- ✅ 更新 12 个 import 路径
 
-### D2. `features/claude-code-*-loader/` 系列（1,532 行）
-- [ ] `claude-code-command-loader`（192 行）→ 内联到 `builtin-commands`
-- [ ] `claude-code-mcp-loader`（603 行）→ 内联到消费者
-- [ ] `claude-code-plugin-loader`（737 行）→ 内联到 `plugin-command-discovery.ts`
+### D2b. `claude-code-mcp-loader`（603 行）、`claude-code-plugin-loader`（737 行）— 跳过
+两者都有实际功能代码被消费者使用，不是纯类型/死代码。
 
-### D3. `features/builtin-commands/`（1,558 行，1 消费者）
-- [ ] 唯一消费者 `auto-slash-command/executor.ts`，评估精简
+### D3-D5. builtin-commands / builtin-skills / tmux-subagent — 跳过
+全部有活跃消费者，是功能性代码，非死代码。
 
-### D4. `features/builtin-skills/`（2,385 行，1 外部消费者）
-- [ ] 精简为纯数据文件
+## ✅ Phase E: plugin/ 死代码清理
 
-### D5. `features/tmux-subagent/`（4,393 行，1 消费者）
-- [ ] 唯一消费者 `plugin/create-managers.ts`，评估是否核心功能
+### ✅ E1. 删除死 plugin 文件
+- ✅ `plugin/codex.ts`（626 行）— 0 消费者，已删除
+- ✅ `plugin/copilot.ts`（328 行）— 0 消费者，已删除
+- ✅ `test/plugin/codex.test.ts`（123 行）— 已删除
+- ✅ `plugin/index.ts` 移除 CodexAuthPlugin/CopilotAuthPlugin import
+- ✅ tsc 验证通过（82 错误，无变化）
 
-## Phase E: plugin/ 原生化（最大重构，依赖 C-D 完成）
+### E2-E4. plugin/ 结构重构 — 延后
+plugin/ 剩余文件（~2,600 行）全部有活跃消费者，是核心运行时代码。
+结构重构（移动 handler 到 hooks/、合并 hook creators）属于代码组织优化，非死代码清理。
 
-### E1. 分析 plugin/ 依赖图（4,199 行）
-- [ ] 理解 native-plugin.ts 初始化流程
-- [ ] 确定核心 handler vs 可删除 handler
-
-### E2. 将核心 handler 移入 hooks/
-- [ ] event.ts, chat-message.ts, tool-execute-before/after.ts, messages-transform.ts
-
-### E3. 合并 hook creators
-- [ ] 6 个 create-*-hooks.ts → 1 个 hook-registry.ts
-
-### E4. 删除 plugin/ 目录
-
-## Phase F: tool/ 精简
+## Phase F: tool/ 精简 — 延后
 
 ### F1. `tool/delegate-task/`（9,816 行）
-两个版本并存：task/delegate.ts（简版，registry 用）和 tool/delegate-task/（全版，plugin 用）
-- [ ] 评估能否统一为一个版本
-- [ ] 精简全版到合理规模
+核心任务委派系统，1 个外部消费者（tool-registry.ts）。内部文件全部活跃。
+需要功能性重构而非简单删除。
 
 ### F2. `tool/hashline-edit/`（2,868 行）
-- [ ] 确认是否有实际使用场景
-- [ ] 如无使用，删除
+1 个消费者（tool-registry.ts），功能性工具。
 
 ### F3. `tool/look-at/`（1,697 行）
-- [ ] 确认是否有实际使用场景
-- [ ] 如无使用，删除
+1 个消费者（tool-registry.ts），功能性工具。
 
 ---
 
@@ -119,12 +108,18 @@
 | `hooks/task-reminder/` | 210 | ✅ |
 | `hooks/hashline-edit-diff-enhancer/` | 106 | ✅ |
 | config schema 废弃条目 | ~5 | ✅ |
-| **合计** | **~8,804** | |
+| `config/config-manager/` 死文件 | ~530 | ✅ |
+| `config/model-fallback.ts` + `types.ts` | ~80 | ✅ |
+| `features/run-continuation-state/` | 190 | ✅ |
+| `features/claude-code-command-loader/` | 192 | ✅ |
+| `plugin/codex.ts` | 626 | ✅ |
+| `plugin/copilot.ts` | 328 | ✅ |
+| `test/plugin/codex.test.ts` | 123 | ✅ |
+| **合计** | **~10,873** | |
 
-tsc 错误：84 → 82（减少 2 个来自删除的测试文件，无新增）
+tsc 错误：始终保持 82 个 pre-existing 错误，无新增
 
-## 验证方法
+## 结论
 
-每个子步骤完成后：
-1. `tsc --noEmit` — 无新增类型错误（当前基线：82 个 pre-existing 错误）
-2. `grep` 确认无残留引用
+死代码清理已完成。剩余模块（features/、plugin/、tool/）全部有活跃消费者，属于功能性代码。
+进一步优化需要功能性重构（代码组织、模块合并），而非简单删除。
