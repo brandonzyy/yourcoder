@@ -6,23 +6,10 @@ import type {
 import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
 import type { PluginContext, ToolsRecord } from "./types"
 
-import {
-  builtinTools,
-  createBackgroundTools,
-  createCallOmoAgent,
-  createLookAt,
-  createGrepTools,
-  createGlobTools,
-  createAstGrepTools,
-  createSessionManagerTools,
-  createDelegateTask,
-  interactive_bash,
-  createTaskCreateTool,
-  createTaskGetTool,
-  createTaskList,
-  createTaskUpdateTool,
-  createHashlineEditTool,
-} from "../../tool/plugin-tools"
+import { createDelegateTask } from "../../tool/delegate-task"
+import { interactive_bash } from "../../tool/interactive-bash"
+import { createHashlineEditTool } from "../../tool/hashline-edit"
+import { createLookAt } from "../../tool/look-at"
 import { log } from "../../shared"
 import { CapabilityRegistry, fromPluginTool } from "../../capability"
 
@@ -42,9 +29,6 @@ export function createToolRegistry(args: {
   availableCategories: AvailableCategory[]
 }): ToolRegistryResult {
   const { ctx, pluginConfig, managers, skillContext, availableCategories } = args
-
-  const backgroundTools = createBackgroundTools(managers.backgroundManager, ctx.client)
-  const callOmoAgent = createCallOmoAgent(ctx, managers.backgroundManager, pluginConfig.disabled_agents ?? [])
 
   const isMultimodalLookerEnabled = !(pluginConfig.disabled_agents ?? []).some(
     (agent) => agent.toLowerCase() === "multimodal-looker",
@@ -84,14 +68,6 @@ export function createToolRegistry(args: {
   })
 
   const taskSystemEnabled = pluginConfig.experimental?.task_system ?? false
-  const taskToolsRecord: Record<string, ToolDefinition> = taskSystemEnabled
-    ? {
-        task_create: createTaskCreateTool(pluginConfig, ctx),
-        task_get: createTaskGetTool(pluginConfig),
-        task_list: createTaskList(pluginConfig),
-        task_update: createTaskUpdateTool(pluginConfig, ctx),
-      }
-    : {}
 
   const hashlineEnabled = pluginConfig.hashline_edit ?? false
   const hashlineToolsRecord: Record<string, ToolDefinition> = hashlineEnabled
@@ -99,17 +75,9 @@ export function createToolRegistry(args: {
     : {}
 
   const allTools: Record<string, ToolDefinition> = {
-    ...builtinTools,
-    ...createGrepTools(ctx),
-    ...createGlobTools(ctx),
-    ...createAstGrepTools(ctx),
-    ...createSessionManagerTools(ctx),
-    ...backgroundTools,
-    call_omo_agent: callOmoAgent,
     ...(lookAt ? { look_at: lookAt } : {}),
     task: delegateTask,
     interactive_bash,
-    ...taskToolsRecord,
     ...hashlineToolsRecord,
   }
 

@@ -33,7 +33,6 @@ import {
   normalizeSDKResponse,
 } from "../../../shared"
 import { safeCreateHook } from "../../../shared/safe-create-hook"
-import { sessionExists } from "../../../tool/plugin-tools"
 
 export type SessionHooks = {
   contextWindowMonitor: ReturnType<typeof createContextWindowMonitorHook> | null
@@ -201,7 +200,7 @@ export function createSessionHooks(args: {
     ? safeHook("ralph-loop", () =>
         createRalphLoopHook(ctx, {
           config: pluginConfig.ralph_loop,
-          checkSessionExists: async (sessionId) => await sessionExists(sessionId),
+          checkSessionExists: async (_sessionId) => false,
         }))
     : null
 

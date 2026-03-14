@@ -1,7 +1,7 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { Config } from "../../config/config"
 import type { ToolDefinition } from "@opencode-ai/plugin"
-import { BackgroundManager } from "../../task/background"
+import { BackgroundManager } from "../../features/background-agent"
 
 /**
  * Native builtin agent registry
@@ -56,13 +56,10 @@ export class BuiltinAgentRegistry {
     // Initialize BackgroundManager and load delegate-task tool
     if (client && directory) {
       // Create BackgroundManager instance
-      this.backgroundManager = new BackgroundManager({
-        client,
-        directory,
-        config: {
-          defaultConcurrency: 5,
-        },
-      })
+      this.backgroundManager = new BackgroundManager(
+        { client, directory } as any,
+        { defaultConcurrency: 5 },
+      )
 
       const delegateTask = await this.loadDelegateTask(client, this.backgroundManager)
       if (delegateTask) {

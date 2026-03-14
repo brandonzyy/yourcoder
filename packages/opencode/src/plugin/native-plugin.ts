@@ -12,7 +12,7 @@ import { loadPluginConfig } from "./plugin-config"
 import { createModelCacheState } from "./plugin-state"
 import { createFirstMessageVariantGate } from "../shared/first-message-variant"
 import { injectServerAuthIntoClient, log } from "../shared"
-import { startTmuxCheck } from "../tool/plugin-tools"
+import { startBackgroundCheck as startTmuxCheck } from "../tool/interactive-bash"
 
 const NativePlugin: Plugin = async (ctx) => {
   // Initialize config context for plugin runtime (prevents warnings from hooks)
