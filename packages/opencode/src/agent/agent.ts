@@ -91,7 +91,10 @@ export namespace Agent {
         mode: "primary",
         native: true,
         hidden: true,
-        // build gets all tools (no capabilities filter)
+        // build excludes search tools — search is delegated to subagents
+        capabilities: {
+          exclude: ["filesearch", "search", "lsp", "ast"],
+        },
       },
       plan: {
         name: "plan",
@@ -185,11 +188,53 @@ export namespace Agent {
       },
     }
 
+    // Load native builtin agents (sisyphus, librarian, manon-explorer, sisyphus-junior)
+    const builtinAgentNames = new Set<string>()
+    try {
+      const { BuiltinAgentRegistry } = await import("./builtin")
+      const { agents: builtinAgents } = await BuiltinAgentRegistry.load(cfg)
+
+      for (const [name, agentConfig] of Object.entries(builtinAgents)) {
+        builtinAgentNames.add(name)
+        result[name] = {
+          name,
+          description: agentConfig.description,
+          mode: (agentConfig.mode as any) ?? "all",
+          native: true,
+          color: agentConfig.color,
+          permission: PermissionNext.merge(defaults, user),
+          options: {},
+          prompt: agentConfig.prompt,
+          capabilities: agentConfig.capabilities,
+          temperature: agentConfig.temperature,
+        }
+      }
+
+      // When sisyphus is loaded, make it the default and demote build
+      if (builtinAgents.sisyphus && result.build) {
+        result.build.mode = "subagent"
+        result.build.hidden = true
+      }
+    } catch (error) {
+      Log.Default.error("Failed to load builtin agents", { error })
+    }
+
     for (const [key, value] of Object.entries(cfg.agent ?? {})) {
       if (value.disable) {
         delete result[key]
         continue
       }
+
+      // Skip plugin overrides for native builtin agents — they are already loaded
+      if (builtinAgentNames.has(key) && result[key]) {
+        // Only allow model override from config, skip prompt/mode/capabilities
+        if (value.model) result[key].model = Provider.parseModel(value.model)
+        if (value.permission) {
+          result[key].permission = PermissionNext.merge(result[key].permission, PermissionNext.fromConfig(value.permission ?? {}))
+        }
+        continue
+      }
+
       let item = result[key]
       if (!item)
         item = result[key] = {
@@ -243,7 +288,7 @@ export namespace Agent {
     return pipe(
       await state(),
       values(),
-      sortBy([(x) => (cfg.default_agent ? x.name === cfg.default_agent : x.name === "build"), "desc"]),
+      sortBy([(x) => (cfg.default_agent ? x.name === cfg.default_agent : x.name === "sisyphus" || x.name === "build"), "desc"]),
     )
   }
 
