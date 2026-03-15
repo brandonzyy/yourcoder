@@ -7,7 +7,7 @@ import { homedir } from "os"
 import { parseFrontmatter } from "../../../util/frontmatter"
 import { sanitizeModelField } from "../../../model/model-sanitizer"
 import { resolveSkillPathReferences } from "../../../util/skill-path-resolver"
-import { parseAllowedTools } from "../allowed-tools-parser"
+import { parseAllowedTools } from "../loaded-skill-from-path"
 
 function resolveFilePath(from: string, configDir?: string): string {
   let filePath = from

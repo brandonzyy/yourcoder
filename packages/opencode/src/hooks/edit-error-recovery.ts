@@ -1,4 +1,4 @@
-import type { PluginInput } from "../../plugin/sdk"
+import type { PluginInput } from "../plugin/sdk"
 
 /**
  * Known Edit tool error patterns that indicate the AI made a mistake

@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach } from "bun:test"
 import * as CapabilityRegistry from "../../src/capability/registry"
-import { fromNativeTool } from "../../src/capability/adapters/native"
-import { fromPluginTool } from "../../src/capability/adapters/plugin"
-import { fromMcpTool } from "../../src/capability/adapters/mcp"
+import { fromNativeTool, fromPluginTool, fromMcpTool } from "../../src/capability/registry"
 import type { Capabilities } from "../../src/capability/capability"
 
 describe("CapabilityRegistry", () => {

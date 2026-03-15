@@ -4,8 +4,17 @@ import { parseFrontmatter } from "../../util/frontmatter"
 import { sanitizeModelField } from "../../model/model-sanitizer"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
 import type { CommandDefinition } from "../builtin-commands/command-types"
-import { parseAllowedTools } from "./allowed-tools-parser"
 import { loadMcpJsonFromDir, parseSkillMcpConfigFromFrontmatter } from "./skill-mcp-config"
+
+export function parseAllowedTools(allowedTools: string | string[] | undefined): string[] | undefined {
+  if (!allowedTools) return undefined
+
+  if (Array.isArray(allowedTools)) {
+    return allowedTools.map((tool) => tool.trim()).filter(Boolean)
+  }
+
+  return allowedTools.split(/\s+/).filter(Boolean)
+}
 import type { SkillScope, SkillMetadata, LoadedSkill, LazyContentLoader } from "./types"
 
 export async function loadSkillFromPath(options: {

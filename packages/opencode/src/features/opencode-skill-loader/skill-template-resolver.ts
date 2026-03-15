@@ -1,9 +1,19 @@
+import { readFileSync } from "node:fs"
 import { createBuiltinSkills } from "../builtin-skills/skills"
+import { parseFrontmatter } from "../../util/frontmatter"
 import type { LoadedSkill } from "./types"
-import type { SkillResolutionOptions } from "./skill-resolution-options"
+import type { SkillResolutionOptions } from "./types"
 import { injectGitMasterConfig } from "./git-master-template-injection"
 import { getAllSkills } from "./skill-discovery"
-import { extractSkillTemplate } from "./loaded-skill-template-extractor"
+
+export function extractSkillTemplate(skill: LoadedSkill): string {
+	if (skill.path) {
+		const content = readFileSync(skill.path, "utf-8")
+		const { body } = parseFrontmatter(content)
+		return body.trim()
+	}
+	return skill.definition.template || ""
+}
 
 export function resolveSkillContent(skillName: string, options?: SkillResolutionOptions): string | null {
 	const skills = createBuiltinSkills({

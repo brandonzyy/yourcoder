@@ -1,5 +1,14 @@
 import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { SkillMcpConfig } from "../builtin-skills/types"
+import type { BrowserAutomationProvider, GitMasterConfig } from "../../config/plugin-schema"
+
+export interface SkillResolutionOptions {
+	gitMasterConfig?: GitMasterConfig
+	browserProvider?: BrowserAutomationProvider
+	disabledSkills?: Set<string>
+	/** Project directory to discover project-level skills from. Falls back to process.cwd() if not provided. */
+	directory?: string
+}
 
 export type SkillScope = "builtin" | "config" | "user" | "project" | "opencode" | "opencode-project"
 

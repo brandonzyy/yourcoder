@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "bun:test"
-import { createEditErrorRecoveryHook, EDIT_ERROR_REMINDER, EDIT_ERROR_PATTERNS } from "./index"
+import { createEditErrorRecoveryHook, EDIT_ERROR_REMINDER, EDIT_ERROR_PATTERNS } from "./edit-error-recovery"
 
 describe("createEditErrorRecoveryHook", () => {
   let hook: ReturnType<typeof createEditErrorRecoveryHook>

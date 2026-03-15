@@ -10,6 +10,7 @@ import { getUltraworkMessage } from "./ultrawork"
 import { SEARCH_PATTERN, SEARCH_MESSAGE } from "./search"
 import { ANALYZE_PATTERN, ANALYZE_MESSAGE } from "./analyze"
 
+
 export type KeywordDetector = {
   pattern: RegExp
   message: string | ((agentName?: string, modelID?: string) => string)

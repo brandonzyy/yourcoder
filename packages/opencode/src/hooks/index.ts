@@ -1,12 +1,12 @@
 export { createTodoContinuationEnforcer, type TodoContinuationEnforcer } from "./todo-continuation-enforcer";
 export { createContextWindowMonitorHook } from "./context-window-monitor/hook";
 export { createSessionNotification, sendSessionNotification, playSessionNotificationSound, detectPlatform, getDefaultSoundPath, buildWindowsToastScript, escapeAppleScriptText, escapePowerShellSingleQuotedText, createIdleNotificationScheduler } from "./session-notification";
-export { hasIncompleteTodos } from "./session-todo-status/hook";
+export { hasIncompleteTodos } from "./session-todo-status";
 export { createSessionRecoveryHook, type SessionRecoveryHook, type SessionRecoveryOptions } from "./session-recovery";
 export { createCommentCheckerHooks } from "./comment-checker";
-export { createToolOutputTruncatorHook } from "./tool-output-truncator/hook";
+export { createToolOutputTruncatorHook } from "./tool-output-truncator";
 export { createDirectoryAgentsInjectorHook, createDirectoryReadmeInjectorHook } from "./file-content-injector";
-export { createEmptyTaskResponseDetectorHook } from "./empty-task-response-detector/hook";
+export { createEmptyTaskResponseDetectorHook } from "./empty-task-response-detector";
 export { createAnthropicContextWindowLimitRecoveryHook, type AnthropicContextWindowLimitRecoveryOptions } from "./anthropic-context-window-limit-recovery";
 
 export { createThinkModeHook } from "./think-mode";

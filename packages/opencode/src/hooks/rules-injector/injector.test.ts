@@ -48,13 +48,7 @@ mock.module("node:os", () => ({
   homedir: () => mockedHomeDir || originalHomedir(),
 }));
 
-mock.module("./matcher", () => ({
-  shouldApplyRule: () => ({ applies: true, reason: "matched" }),
-  isDuplicateByRealPath: (realPath: string, cache: Set<string>) =>
-    cache.has(realPath),
-  createContentHash: (content: string) => `hash:${content}`,
-  isDuplicateByContentHash: (hash: string, cache: Set<string>) => cache.has(hash),
-}));
+// matcher functions are now inlined in injector.ts, no separate module to mock
 
 function createOutput(): { title: string; output: string; metadata: unknown } {
   return { title: "tool", output: "", metadata: {} };
@@ -131,7 +125,7 @@ describe("createRuleInjectionProcessor", () => {
     mkdirSync(homeRoot, { recursive: true });
 
     writeFileSync(targetFile, "export const value = 1;\n");
-    writeFileSync(ruleFile, "rule-content\n");
+    writeFileSync(ruleFile, "---\nalwaysApply: true\n---\nrule-content\n");
 
     ruleRealPath = fs.realpathSync(ruleFile);
     trackedRulePath = ruleFile;

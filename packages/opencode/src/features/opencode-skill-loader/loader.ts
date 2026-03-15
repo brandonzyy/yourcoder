@@ -4,9 +4,28 @@ import { getClaudeConfigDir } from "../../config/claude-config-dir"
 import { getOpenCodeConfigDir } from "../../config/opencode-config-dir"
 import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { LoadedSkill } from "./types"
-import { skillsToCommandDefinitionRecord } from "./skill-definition-record"
-import { deduplicateSkillsByName } from "./skill-deduplication"
 import { loadSkillsFromDir } from "./skill-directory-loader"
+
+export function skillsToCommandDefinitionRecord(skills: LoadedSkill[]): Record<string, CommandDefinition> {
+  const result: Record<string, CommandDefinition> = {}
+  for (const skill of skills) {
+    const { name: _name, argumentHint: _argumentHint, ...openCodeCompatible } = skill.definition
+    result[skill.name] = openCodeCompatible as CommandDefinition
+  }
+  return result
+}
+
+export function deduplicateSkillsByName(skills: LoadedSkill[]): LoadedSkill[] {
+  const seen = new Set<string>()
+  const result: LoadedSkill[] = []
+  for (const skill of skills) {
+    if (!seen.has(skill.name)) {
+      seen.add(skill.name)
+      result.push(skill)
+    }
+  }
+  return result
+}
 
 export async function loadUserSkills(): Promise<Record<string, CommandDefinition>> {
   const userSkillsDir = join(getClaudeConfigDir(), "skills")

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "bun:test"
-import { resolve } from "../../src/capability/resolver"
+import { resolve } from "../../src/capability/registry"
 import type { Info, Capabilities } from "../../src/capability/capability"
 
 function cap(id: string, opts: Partial<Info> = {}): Info {

@@ -1,8 +1,8 @@
-import type { BackgroundManager } from "../../features/background-agent"
+import type { BackgroundManager } from "../features/background-agent"
 import {
   createSystemDirective,
   SystemDirectiveTypes,
-} from "../shared/system-directive"
+} from "./shared/system-directive"
 
 const COMPACTION_CONTEXT_PROMPT = `${createSystemDirective(SystemDirectiveTypes.COMPACTION_CONTEXT)}
 

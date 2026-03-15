@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { getRuleInjectionFilePath } from "./output-path";
+import { getRuleInjectionFilePath } from "./hook";
 
 describe("getRuleInjectionFilePath", () => {
   it("prefers metadata filePath when available", () => {

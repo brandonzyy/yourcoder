@@ -1,17 +1,63 @@
+import { createHash } from "crypto";
 import { readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { relative, resolve } from "node:path";
+import picomatch from "picomatch";
 import { findProjectRoot, findRuleFiles } from "./finder";
-import {
-  createContentHash,
-  isDuplicateByContentHash,
-  isDuplicateByRealPath,
-  shouldApplyRule,
-} from "./matcher";
 import { parseRuleFrontmatter } from "./parser";
-import { saveInjectedRules } from "./storage";
-import type { SessionInjectedRulesCache } from "./cache";
+import { saveInjectedRules, type SessionInjectedRulesCache } from "./storage";
 import type { RuleMetadata } from "./types";
+
+// --- Matcher logic (inlined from matcher.ts) ---
+
+interface MatchResult {
+  applies: boolean;
+  reason?: string;
+}
+
+function shouldApplyRule(
+  metadata: RuleMetadata,
+  currentFilePath: string,
+  projectRoot: string | null
+): MatchResult {
+  if (metadata.alwaysApply === true) {
+    return { applies: true, reason: "alwaysApply" };
+  }
+
+  const globs = metadata.globs;
+  if (!globs) {
+    return { applies: false };
+  }
+
+  const patterns = Array.isArray(globs) ? globs : [globs];
+  if (patterns.length === 0) {
+    return { applies: false };
+  }
+
+  const relativePath = projectRoot ? relative(projectRoot, currentFilePath) : currentFilePath;
+
+  for (const pattern of patterns) {
+    if (picomatch.isMatch(relativePath, pattern, { dot: true, bash: true })) {
+      return { applies: true, reason: `glob: ${pattern}` };
+    }
+  }
+
+  return { applies: false };
+}
+
+function isDuplicateByRealPath(realPath: string, cache: Set<string>): boolean {
+  return cache.has(realPath);
+}
+
+function createContentHash(content: string): string {
+  return createHash("sha256").update(content).digest("hex").slice(0, 16);
+}
+
+function isDuplicateByContentHash(hash: string, cache: Set<string>): boolean {
+  return cache.has(hash);
+}
+
+// --- Injector ---
 
 type ToolExecuteOutput = {
   title: string;
