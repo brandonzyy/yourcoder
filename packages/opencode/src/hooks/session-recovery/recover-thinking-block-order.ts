@@ -5,7 +5,7 @@ import { findMessageByIndexNeedingThinking, findMessagesWithOrphanThinking, prep
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { prependThinkingPartAsync } from "./storage/thinking-prepend"
 import { THINKING_TYPES } from "./constants"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 type Client = ReturnType<typeof createOpencodeClient>
 

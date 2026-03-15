@@ -1,7 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { TmuxConfig } from "../../config/plugin-schema"
 import type { TrackedSession, CapacityConfig } from "./types"
-import { log, normalizeSDKResponse } from "../../shared"
+import {log} from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import {
   isInsideTmux as defaultIsInsideTmux,
   getCurrentPaneId as defaultGetCurrentPaneId,

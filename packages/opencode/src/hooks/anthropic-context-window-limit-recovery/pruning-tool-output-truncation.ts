@@ -7,7 +7,7 @@ import { truncateToolResultAsync } from "./tool-result-storage-sdk"
 import { log } from "../../shared/logger"
 import { getMessageDir } from "../../shared/opencode-message-dir"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 type OpencodeClient = PluginInput["client"]
 

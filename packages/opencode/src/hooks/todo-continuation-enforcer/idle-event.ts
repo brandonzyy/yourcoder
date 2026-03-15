@@ -2,7 +2,7 @@ import type { PluginInput } from "@opencode-ai/plugin"
 
 import type { BackgroundManager } from "../../features/background-agent"
 import type { ToolPermission } from "../../features/hook-message-injector"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import { log } from "../../shared/logger"
 import { getAgentConfigKey } from "../../shared/agent-display-names"
 

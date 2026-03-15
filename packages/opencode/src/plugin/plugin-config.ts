@@ -4,12 +4,12 @@ import { OhMyOpenCodeConfigSchema, type OhMyOpenCodeConfig } from "../config/plu
 import {
   log,
   deepMerge,
-  getOpenCodeConfigDir,
-  addConfigLoadError,
   parseJsonc,
   detectConfigFile,
   migrateConfigFile,
 } from "../shared";
+import {getOpenCodeConfigDir} from "../config/opencode-config-dir";
+import {addConfigLoadError} from "../config/config-errors";
 
 export function parseConfigPartially(
   rawConfig: Record<string, unknown>

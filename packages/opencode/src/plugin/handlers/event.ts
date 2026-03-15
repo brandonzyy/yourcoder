@@ -15,7 +15,7 @@ import {
   clearSessionFallbackChain,
   setPendingModelFallback,
 } from "../../hooks/model-fallback/hook";
-import { resetMessageCursor } from "../../shared";
+import {resetMessageCursor} from "../../session/session-cursor"
 import { log } from "../../shared/logger";
 import { shouldRetryError } from "../../model/model-error-classifier";
 import { clearSessionModel, setSessionModel } from "../../session/session-model-state";

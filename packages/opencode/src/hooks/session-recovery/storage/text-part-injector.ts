@@ -4,7 +4,8 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import { PART_STORAGE } from "../constants"
 import type { StoredTextPart } from "../types"
 import { generatePartId } from "./part-id"
-import { log, isSqliteBackend, patchPart } from "../../../shared"
+import {log, patchPart} from "../../../shared"
+import {isSqliteBackend} from "../../../config/opencode-storage-detection"
 
 type OpencodeClient = PluginInput["client"]
 

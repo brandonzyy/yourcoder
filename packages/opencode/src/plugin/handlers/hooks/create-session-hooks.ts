@@ -30,8 +30,8 @@ import {
   detectExternalNotificationPlugin,
   getNotificationConflictWarning,
   log,
-  normalizeSDKResponse,
 } from "../../../shared"
+import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
 import { safeCreateHook } from "../../../shared/safe-create-hook"
 
 export type SessionHooks = {

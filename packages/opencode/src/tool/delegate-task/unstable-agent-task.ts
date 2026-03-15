@@ -6,7 +6,7 @@ import { storeToolMetadata } from "../../features/tool-metadata-store"
 import { formatDuration } from "./time-formatter"
 import { formatDetailedError } from "./error-formatting"
 import { getSessionTools } from "../../session/session-tools-store"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 export async function executeUnstableAgentTask(
   args: DelegateTaskArgs,

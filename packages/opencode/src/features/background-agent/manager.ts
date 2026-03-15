@@ -9,16 +9,16 @@ import { TaskHistory } from "./task-history"
 import {
   log,
   normalizePromptTools,
-  normalizeSDKResponse,
-  promptWithModelSuggestionRetry,
   resolveInheritedPromptTools,
   createInternalAgentTextPart,
 } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import {promptWithModelSuggestionRetry} from "../../model/model-suggestion-retry"
 import { setSessionTools } from "../../session/session-tools-store"
 import { SessionCategoryRegistry } from "../../session/session-category-registry"
 import { ConcurrencyManager } from "./concurrency"
 import type { BackgroundTaskConfig, TmuxConfig } from "../../config/plugin-schema"
-import { isInsideTmux } from "../tmux-subagent/shared"
+import {isInsideTmux} from "../tmux-subagent/shared"
 import {
   shouldRetryError,
   hasMoreFallbacks,

@@ -1,5 +1,5 @@
 import { log } from "../../shared"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 interface SessionMessage {
   info?: {

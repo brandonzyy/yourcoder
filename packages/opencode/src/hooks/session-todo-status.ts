@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { normalizeSDKResponse } from "../shared"
+import {normalizeSDKResponse} from "../model/normalize-sdk-response"
 
 interface Todo {
   content: string

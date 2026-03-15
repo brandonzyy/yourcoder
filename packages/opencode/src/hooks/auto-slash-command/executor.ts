@@ -4,10 +4,10 @@ import {
   parseFrontmatter,
   resolveCommandsInText,
   resolveFileReferencesInText,
-  sanitizeModelField,
-  getClaudeConfigDir,
-  getOpenCodeConfigDir,
 } from "../../shared"
+import {sanitizeModelField} from "../../model/model-sanitizer"
+import {getClaudeConfigDir} from "../../config/claude-config-dir"
+import {getOpenCodeConfigDir} from "../../config/opencode-config-dir"
 import { discoverPluginCommandDefinitions } from "../../plugin/plugin-command-discovery"
 import { loadBuiltinCommands } from "../../features/builtin-commands"
 import type { CommandFrontmatter } from "../../features/builtin-commands/command-types"

@@ -9,7 +9,7 @@ import { findNearestMessageWithFields } from "../../features/hook-message-inject
 import { formatDuration } from "./time-formatter"
 import { syncContinuationDeps, type SyncContinuationDeps } from "./sync-continuation-deps"
 import { setSessionTools } from "../../session/session-tools-store"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import { buildTaskPrompt } from "./prompt-builder"
 
 export async function executeSyncContinuation(

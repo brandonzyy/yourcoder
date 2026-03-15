@@ -6,7 +6,8 @@ import { MESSAGE_STORAGE, PART_STORAGE } from "./constants"
 import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } from "./types"
 import { log } from "../../shared/logger"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import { createInternalAgentTextPart, normalizeSDKResponse } from "../../shared"
+import {createInternalAgentTextPart} from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 export interface StoredMessage {
   agent?: string

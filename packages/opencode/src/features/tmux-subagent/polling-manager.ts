@@ -1,9 +1,9 @@
 import type { OpencodeClient } from "../../tool/delegate-task/types"
-import { POLL_INTERVAL_BACKGROUND_MS } from "./shared"
+import {POLL_INTERVAL_BACKGROUND_MS} from "./shared"
 import type { TrackedSession } from "./types"
-import { SESSION_MISSING_GRACE_MS } from "./shared"
+import {SESSION_MISSING_GRACE_MS} from "./shared"
 import { log } from "../../shared"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 const SESSION_TIMEOUT_MS = 10 * 60 * 1000
 const MIN_STABILITY_TIME_MS = 10 * 1000

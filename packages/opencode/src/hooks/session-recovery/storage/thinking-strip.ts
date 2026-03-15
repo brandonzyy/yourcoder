@@ -3,8 +3,9 @@ import { join } from "node:path"
 import type { PluginInput } from "@opencode-ai/plugin"
 import { PART_STORAGE, THINKING_TYPES } from "../constants"
 import type { StoredPart } from "../types"
-import { log, isSqliteBackend, deletePart } from "../../../shared"
-import { normalizeSDKResponse } from "../../../shared"
+import {log, deletePart} from "../../../shared"
+import {isSqliteBackend} from "../../../config/opencode-storage-detection"
+import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
 
 type OpencodeClient = PluginInput["client"]
 

@@ -2,7 +2,7 @@ import type { PluginInput } from "@opencode-ai/plugin";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 
-import { OPENCODE_STORAGE } from "../../shared";
+import {OPENCODE_STORAGE} from "../../config/opencode-storage-paths"
 import { createInjectedPathsStorage } from "../../session/session-injected-paths";
 import { createDynamicTruncator } from "../../shared/dynamic-truncator";
 

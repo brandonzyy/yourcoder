@@ -1,5 +1,6 @@
 import type { TmuxConfig } from "../../config/plugin-schema"
-import type { applyLayout, closeTmuxPane, enforceMainPaneWidth, replaceTmuxPane, spawnTmuxPane } from "./shared"
+import type {applyLayout} from "./shared"
+import {closeTmuxPane, enforceMainPaneWidth, replaceTmuxPane, spawnTmuxPane} from "./shared"
 import type { PaneAction, WindowState } from "./types"
 
 export interface ActionResult {

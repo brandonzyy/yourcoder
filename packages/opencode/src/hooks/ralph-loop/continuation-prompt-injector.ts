@@ -5,9 +5,9 @@ import { getMessageDir } from "./message-storage-directory"
 import { withTimeout } from "./with-timeout"
 import {
 	createInternalAgentTextPart,
-	normalizeSDKResponse,
 	resolveInheritedPromptTools,
 } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 type MessageInfo = {
 	agent?: string

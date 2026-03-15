@@ -5,7 +5,7 @@ import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { stripThinkingPartsAsync } from "./storage/thinking-strip"
 import { THINKING_TYPES } from "./constants"
 import { log } from "../../shared/logger"
-import { normalizeSDKResponse } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 type Client = ReturnType<typeof createOpencodeClient>
 

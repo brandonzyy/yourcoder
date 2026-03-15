@@ -3,9 +3,9 @@ import type { PluginInput } from "@opencode-ai/plugin"
 import type { BackgroundManager } from "../../features/background-agent"
 import {
   createInternalAgentTextPart,
-  normalizeSDKResponse,
   resolveInheritedPromptTools,
 } from "../../shared"
+import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import {
   findNearestMessageWithFields,
   findNearestMessageWithFieldsFromSDK,
