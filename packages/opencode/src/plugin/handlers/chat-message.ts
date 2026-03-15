@@ -1,7 +1,7 @@
 import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
 import type { PluginContext } from "./types"
 
-import { hasConnectedProvidersCache } from "../../shared"
+import { hasConnectedProvidersCache } from "../../shared/connected-providers-cache"
 import { setSessionModel } from "../../session/session-model-state"
 import { setSessionAgent } from "../../features/claude-code-session-state"
 import { applyUltraworkModelOverrideOnMessage } from "./ultrawork-model-override"

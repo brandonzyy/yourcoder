@@ -1,7 +1,7 @@
 import { detectThinkKeyword, extractPromptText } from "./detector"
 import { getHighVariant, isAlreadyHighVariant } from "./switcher"
 import type { ThinkModeState } from "./types"
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 
 const thinkModeState = new Map<string, ThinkModeState>()
 

@@ -9,7 +9,7 @@ import { appendTranscriptEntry } from "../transcript"
 import { cacheToolInput } from "../tool-input-cache"
 import type { PluginConfig } from "../types"
 import { isHookDisabled } from "../../shared/hook-disabled"
-import { log } from "../../../shared"
+import { log } from "../../../shared/logger"
 
 export function createToolExecuteBeforeHandler(ctx: PluginInput, config: PluginConfig) {
 	return async (

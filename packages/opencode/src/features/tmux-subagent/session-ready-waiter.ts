@@ -3,7 +3,7 @@ import {
   SESSION_READY_POLL_INTERVAL_MS,
   SESSION_READY_TIMEOUT_MS,
 } from "./shared"
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 import { parseSessionStatusMap } from "./session-status-parser"
 
 type OpencodeClient = PluginInput["client"]

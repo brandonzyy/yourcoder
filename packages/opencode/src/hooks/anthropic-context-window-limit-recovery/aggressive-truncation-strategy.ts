@@ -5,7 +5,7 @@ import type { Client } from "./client"
 import { clearSessionState } from "./state"
 import { formatBytes } from "./message-builder"
 import { log } from "../../shared/logger"
-import { resolveInheritedPromptTools } from "../../shared"
+import { resolveInheritedPromptTools } from "../../shared/prompt-tools"
 
 export async function runAggressiveTruncationStrategy(params: {
   sessionID: string

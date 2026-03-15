@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { detectKeywordsWithType, extractPromptText } from "./detector"
 import { isPlannerAgent } from "./constants"
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 import {
   isSystemDirective,
   removeSystemReminders,

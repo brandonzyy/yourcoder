@@ -4,7 +4,8 @@ import { loadPluginExtendedConfig } from "../config-loader"
 import { executeStopHooks, type StopContext } from "../stop"
 import type { PluginConfig } from "../types"
 import { isHookDisabled } from "../../shared/hook-disabled"
-import { createInternalAgentTextPart, log } from "../../../shared"
+import { log } from "../../../shared/logger"
+import { createInternalAgentTextPart } from "../../../shared/internal-initiator-marker"
 import {
 	clearSessionHookState,
 	sessionErrorState,

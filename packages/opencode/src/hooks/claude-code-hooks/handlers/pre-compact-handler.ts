@@ -4,7 +4,7 @@ import { loadPluginExtendedConfig } from "../config-loader"
 import { executePreCompactHooks, type PreCompactContext } from "../pre-compact"
 import type { PluginConfig } from "../types"
 import { isHookDisabled } from "../../shared/hook-disabled"
-import { log } from "../../../shared"
+import { log } from "../../../shared/logger"
 
 export function createPreCompactHandler(ctx: PluginInput, config: PluginConfig) {
 	return async (

@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite"
 import { join } from "node:path"
 import { existsSync } from "node:fs"
 import { getDataDir } from "../../config/data-path"
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 
 function getDbPath(): string {
   return join(getDataDir(), "opencode", "opencode.db")

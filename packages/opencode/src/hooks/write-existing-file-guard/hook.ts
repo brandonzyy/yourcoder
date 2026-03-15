@@ -3,7 +3,7 @@ import type { Hooks, PluginInput } from "@opencode-ai/plugin"
 import { existsSync, realpathSync } from "fs"
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from "path"
 
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 
 type GuardArgs = {
   filePath?: string

@@ -1,13 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 import { OhMyOpenCodeConfigSchema, type OhMyOpenCodeConfig } from "../config/plugin-config-types";
-import {
-  log,
-  deepMerge,
-  parseJsonc,
-  detectConfigFile,
-  migrateConfigFile,
-} from "../shared";
+import { log } from "../shared/logger";
+import { deepMerge } from "../shared/deep-merge";
+import { parseJsonc, detectConfigFile } from "../shared/jsonc-parser";
+import { migrateConfigFile } from "../shared/migration";
 import {getOpenCodeConfigDir} from "../config/opencode-config-dir";
 import {addConfigLoadError} from "../config/config-errors";
 

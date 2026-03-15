@@ -1,10 +1,8 @@
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { join, basename, dirname } from "path"
-import {
-  parseFrontmatter,
-  resolveCommandsInText,
-  resolveFileReferencesInText,
-} from "../../shared"
+import { parseFrontmatter } from "../../shared/frontmatter"
+import { resolveCommandsInText } from "../../shared/command-executor/resolve-commands-in-text"
+import { resolveFileReferencesInText } from "../../shared/file-reference-resolver"
 import {sanitizeModelField} from "../../model/model-sanitizer"
 import {getClaudeConfigDir} from "../../config/claude-config-dir"
 import {getOpenCodeConfigDir} from "../../config/opencode-config-dir"

@@ -1,6 +1,6 @@
 import type { ImageDimensions, ResizeResult } from "./types"
 import { extractBase64Data } from "../../tool/look-at/mime-type-inference"
-import { log } from "../../shared"
+import { log } from "../../shared/logger"
 
 const ANTHROPIC_MAX_LONG_EDGE = 1568
 const ANTHROPIC_MAX_FILE_SIZE = 5 * 1024 * 1024

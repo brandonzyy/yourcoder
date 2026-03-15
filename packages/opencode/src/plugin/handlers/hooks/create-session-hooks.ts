@@ -26,11 +26,8 @@ import {
   createSubagentHealthCheckHook,
 } from "../../../hooks"
 import { createAnthropicEffortHook } from "../../../hooks/anthropic-effort"
-import {
-  detectExternalNotificationPlugin,
-  getNotificationConflictWarning,
-  log,
-} from "../../../shared"
+import { log } from "../../../shared/logger"
+import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../../shared/external-plugin-detector"
 import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
 import { safeCreateHook } from "../../../shared/safe-create-hook"
 
