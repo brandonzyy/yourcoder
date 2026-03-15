@@ -1,4 +1,5 @@
 import type { BackgroundTask } from "../../features/background-agent"
+import { isRecord } from "../shared/record-type-guard"
 
 export const THINKING_SUMMARY_MAX_CHARS = 500 as const
 
@@ -19,10 +20,6 @@ type MessagePart = {
 
 function hasData(value: unknown): value is { data?: unknown } {
   return typeof value === "object" && value !== null && "data" in value
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null
 }
 
 export function getMessageInfo(value: unknown): MessageInfo | undefined {

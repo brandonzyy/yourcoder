@@ -1,5 +1,5 @@
 export { generatePartId } from "./storage/part-id"
-export { getMessageDir } from "./storage/message-dir"
+export { getMessageDir } from "../../util/opencode-message-dir"
 export { readMessages } from "./storage/messages-reader"
 export { readMessagesFromSDK } from "./storage/messages-reader"
 export { readParts } from "./storage/parts-reader"

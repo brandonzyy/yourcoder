@@ -1,6 +1,5 @@
-export function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null
-}
+import { isRecord } from "../../hooks/shared/record-type-guard"
+export { isRecord }
 
 export function isAbortedSessionError(error: unknown): boolean {
   const message = getErrorText(error)

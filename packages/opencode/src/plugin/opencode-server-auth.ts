@@ -17,11 +17,9 @@ export function getServerBasicAuthHeader(): string | undefined {
   return `Basic ${token}`
 }
 
-type UnknownRecord = Record<string, unknown>
+import { isRecord } from "../hooks/shared/record-type-guard"
 
-function isRecord(value: unknown): value is UnknownRecord {
-  return typeof value === "object" && value !== null
-}
+type UnknownRecord = Record<string, unknown>
 
 function isRequestFetch(value: unknown): value is (request: Request) => Promise<Response> {
   return typeof value === "function"

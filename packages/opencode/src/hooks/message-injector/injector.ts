@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { randomBytes } from "node:crypto"
 import { join } from "node:path"
 import type { PluginInput } from "../../plugin/sdk"
-import { MESSAGE_STORAGE, PART_STORAGE } from "./constants"
+import { MESSAGE_STORAGE, PART_STORAGE } from "../../config/opencode-storage-paths"
 import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } from "./types"
 import { log } from "../../util/logger"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"

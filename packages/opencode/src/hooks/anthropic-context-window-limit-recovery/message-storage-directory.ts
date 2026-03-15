@@ -3,8 +3,6 @@ import type { PluginInput } from "../../plugin/sdk"
 import { getMessageDir } from "../../util/opencode-message-dir"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
-export { getMessageDir }
-
 type OpencodeClient = PluginInput["client"]
 
 interface SDKMessage {

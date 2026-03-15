@@ -24,7 +24,7 @@ export interface RalphLoopHook {
 
 const DEFAULT_API_TIMEOUT = 5000 as const
 
-function getMessageCountFromResponse(messagesResponse: unknown): number {
+export function getMessageCountFromResponse(messagesResponse: unknown): number {
   if (Array.isArray(messagesResponse)) {
     return messagesResponse.length
   }

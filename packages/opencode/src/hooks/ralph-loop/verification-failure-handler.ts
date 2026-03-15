@@ -3,6 +3,7 @@ import { log } from "../../util/logger"
 import { buildVerificationFailurePrompt } from "./continuation-prompt-builder"
 import { HOOK_NAME } from "./constants"
 import { injectContinuationPrompt } from "./continuation-prompt-injector"
+import { getMessageCountFromResponse } from "./ralph-loop-hook"
 import type { RalphLoopState } from "./types"
 
 type LoopStateController = {
@@ -10,23 +11,6 @@ type LoopStateController = {
 		sessionID: string,
 		messageCountAtStart?: number,
 	) => RalphLoopState | null
-}
-
-function getMessageCountFromResponse(messagesResponse: unknown): number {
-	if (Array.isArray(messagesResponse)) {
-		return messagesResponse.length
-	}
-
-	if (
-		typeof messagesResponse === "object"
-		&& messagesResponse !== null
-		&& "data" in messagesResponse
-	) {
-		const data = (messagesResponse as { data?: unknown }).data
-		return Array.isArray(data) ? data.length : 0
-	}
-
-	return 0
 }
 
 async function getSessionMessageCount(

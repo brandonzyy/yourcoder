@@ -1,3 +1,5 @@
+import { isRecord } from "../../hooks/shared/record-type-guard"
+
 export type ChatParamsInput = {
   sessionID: string
   agent: { name?: string }
@@ -11,10 +13,6 @@ export type ChatParamsOutput = {
   topP?: number
   topK?: number
   options: Record<string, unknown>
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null
 }
 
 function buildChatParamsInput(raw: unknown): ChatParamsInput | null {

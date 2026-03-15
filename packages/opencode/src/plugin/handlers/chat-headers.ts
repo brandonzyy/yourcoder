@@ -1,5 +1,6 @@
 import { INTERNAL_INITIATOR_MARKER } from "../../util/internal-initiator-marker"
 import type { PluginContext } from "./types"
+import { isRecord } from "../../hooks/shared/record-type-guard"
 
 type ChatHeadersInput = {
   sessionID: string
@@ -16,10 +17,6 @@ type ChatHeadersOutput = {
 
 const INTERNAL_MARKER_CACHE_LIMIT = 1000
 const internalMarkerCache = new Map<string, boolean>()
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null
-}
 
 function buildChatHeadersInput(raw: unknown): ChatHeadersInput | null {
   if (!isRecord(raw)) return null

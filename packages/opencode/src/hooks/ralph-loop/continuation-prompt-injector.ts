@@ -1,7 +1,7 @@
 import type { PluginInput } from "../../plugin/sdk"
 import { log } from "../../util/logger"
 import { findNearestMessageWithFields } from "../message-injector"
-import { getMessageDir } from "./message-storage-directory"
+import { getMessageDir } from "../../util/opencode-message-dir"
 import { withTimeout } from "./with-timeout"
 import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import { resolveInheritedPromptTools } from "../../util/prompt-tools"

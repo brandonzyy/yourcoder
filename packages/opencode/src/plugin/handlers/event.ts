@@ -25,15 +25,12 @@ import type { CreatedHooks } from "../create-hooks";
 import type { Managers } from "../create-managers";
 import { pruneRecentSyntheticIdles } from "./recent-synthetic-idles";
 import { normalizeSessionStatusToIdle } from "./session-status-normalizer";
+import { isRecord } from "../../hooks/shared/record-type-guard";
 
 type FirstMessageVariantGate = {
   markSessionCreated: (sessionInfo: { id?: string; title?: string; parentID?: string } | undefined) => void;
   clear: (sessionID: string) => void;
 };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
 
 function normalizeFallbackModelID(modelID: string): string {
   return modelID

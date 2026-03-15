@@ -8,13 +8,14 @@ import { log } from "../../util/logger"
 import type { TrackedSession } from "./types"
 import { queryWindowState } from "./pane-state-querier"
 import { executeAction } from "./action-executor"
-import {
-  MIN_STABILITY_TIME_MS,
-  SESSION_TIMEOUT_MS,
-  STABLE_POLLS_REQUIRED,
-} from "./polling-constants"
+const SESSION_TIMEOUT_MS = 10 * 60 * 1000
+// Stability detection constants (prevents premature closure - see issue #1330)
+const MIN_STABILITY_TIME_MS = 10 * 1000
+const STABLE_POLLS_REQUIRED = 3
 import { parseSessionStatusMap } from "./session-status-parser"
-import { getMessageCount } from "./session-message-count"
+function getMessageCount(data: unknown): number {
+  return Array.isArray(data) ? data.length : 0
+}
 import { waitForSessionReady as waitForSessionReadyFromClient } from "./session-ready-waiter"
 
 type OpencodeClient = PluginInput["client"]
