@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
-import * as hooks from "../../../hooks"
-import * as shared from "../../../config/opencode-version"
-import * as safeHook from "../../safe-create-hook"
-import { createToolGuardHooks } from "./create-tool-guard-hooks"
+import * as hooks from "../../../src/hooks"
+import * as shared from "../../../src/config/opencode-version"
+import * as logger from "../../../src/util/logger"
+import * as safeHook from "../../../src/plugin/safe-create-hook"
+import { createToolGuardHooks } from "../../../src/plugin/handlers/hooks/create-tool-guard-hooks"
 
 const cc = mock((cfg: unknown) => ({ id: "cc", cfg }))
 const tt = mock((ctx: unknown, cfg: unknown) => ({ id: "tt", ctx, cfg }))
@@ -28,8 +29,8 @@ function bind() {
   const ver = add(spyOn(shared, "getOpenCodeVersion").mockReturnValue("1.0.0"))
   const min = add(spyOn(shared, "isOpenCodeVersionAtLeast").mockReturnValue(false))
   const safe = add(
-    spyOn(safeHook, "safeCreateHook").mockImplementation((_: unknown, fn: () => unknown, opts: { enabled: boolean }) =>
-      opts.enabled ? fn() : null,
+    spyOn(safeHook, "safeCreateHook").mockImplementation(<T>(_: string, fn: () => T, opts?: { enabled?: boolean }) =>
+      (opts?.enabled ?? true) ? fn() : null,
     ),
   )
   add(spyOn(hooks, "createCommentCheckerHooks").mockImplementation(cc as never))
@@ -43,18 +44,18 @@ function bind() {
   add(spyOn(hooks, "createHashlineReadEnhancerHook").mockImplementation(hr as never))
   add(spyOn(hooks, "createJsonErrorRecoveryHook").mockImplementation(jr as never))
   add(spyOn(hooks, "createReadImageResizerHook").mockImplementation(ir as never))
-  add(spyOn(shared, "log").mockImplementation(lg as never))
+  add(spyOn(logger, "log").mockImplementation(lg as never))
   return { ver, min, safe }
 }
 
 function mk() {
-  const ctx = { id: "ctx" } as never
-  const cfg = {
-    comment_checker: { on: true },
-    experimental: { fast: true },
+  const ctx = { id: "ctx" } as unknown as Parameters<typeof createToolGuardHooks>[0]["ctx"]
+  const cfg: Parameters<typeof createToolGuardHooks>[0]["pluginConfig"] = {
+    comment_checker: {},
+    experimental: { aggressive_truncation: true },
     hashline_edit: true,
-  } as never
-  const state = { id: "state" } as never
+  }
+  const state = { id: "state" } as unknown as Parameters<typeof createToolGuardHooks>[0]["modelCacheState"]
 
   return {
     ctx,
@@ -66,7 +67,7 @@ function mk() {
       modelCacheState: state,
       isHookEnabled: () => true,
       safeHookEnabled: true,
-    },
+    } satisfies Parameters<typeof createToolGuardHooks>[0],
   }
 }
 
@@ -93,19 +94,19 @@ describe("createToolGuardHooks", () => {
 
     const res = createToolGuardHooks(args)
 
-    expect(res.commentChecker).toEqual({ id: "cc", cfg: cfg.comment_checker })
-    expect(res.toolOutputTruncator).toEqual({
+    expect(res.commentChecker as unknown).toEqual({ id: "cc", cfg: cfg.comment_checker })
+    expect(res.toolOutputTruncator as unknown).toEqual({
       id: "tt",
       ctx,
       cfg: { modelCacheState: state, experimental: cfg.experimental },
     })
-    expect(res.directoryAgentsInjector).toEqual({ id: "da", ctx, state })
-    expect(res.hashlineReadEnhancer).toEqual({
+    expect(res.directoryAgentsInjector as unknown).toEqual({ id: "da", ctx, state })
+    expect(res.hashlineReadEnhancer as unknown).toEqual({
       id: "hr",
       ctx,
       cfg: { hashline_edit: { enabled: true } },
     })
-    expect(res.readImageResizer).toEqual({ id: "ir", ctx })
+    expect(res.readImageResizer as unknown).toEqual({ id: "ir", ctx })
     expect(ri).toHaveBeenCalledWith(ctx, state)
     expect(td).toHaveBeenCalledWith({ experimental: cfg.experimental })
     expect(we).toHaveBeenCalledWith(ctx)
@@ -132,7 +133,7 @@ describe("createToolGuardHooks", () => {
 
   it("returns null hooks when safe creation is disabled", () => {
     const { safe } = bind()
-    safe.mockImplementation((_: unknown, _fn: () => unknown) => null)
+    safe.mockImplementation(<T>(_: string, _fn: () => T) => null)
 
     const { args } = mk()
     const res = createToolGuardHooks({

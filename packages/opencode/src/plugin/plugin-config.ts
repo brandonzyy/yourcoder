@@ -4,7 +4,6 @@ import { PluginConfigSchema, type PluginConfig } from "../config/plugin-schema";
 import { log } from "../util/logger";
 import { deepMerge } from "../util/deep-merge";
 import { parseJsonc, detectConfigFile } from "../util/jsonc-parser";
-import { migrateConfigFile } from "../config/migration/config-migration";
 import {getOpenCodeConfigDir} from "../config/opencode-config-dir";
 import {addConfigLoadError} from "../config/config-errors";
 
@@ -52,8 +51,6 @@ export function loadConfigFromPath(
     if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
       const rawConfig = parseJsonc<Record<string, unknown>>(content);
-
-      migrateConfigFile(configPath, rawConfig);
 
       const result = PluginConfigSchema.safeParse(rawConfig);
 
@@ -114,6 +111,12 @@ export function mergeConfigs(
         ...(override.disabled_hooks ?? []),
       ]),
     ],
+    enabled_hooks: [
+      ...new Set([
+        ...(base.enabled_hooks ?? []),
+        ...(override.enabled_hooks ?? []),
+      ]),
+    ],
     disabled_commands: [
       ...new Set([
         ...(base.disabled_commands ?? []),
@@ -134,41 +137,16 @@ export function loadPluginConfig(
   directory: string,
   ctx: unknown
 ): PluginConfig {
-  // User-level config path - prefer .jsonc over .json, with legacy fallback
+  // User-level config path - prefer .jsonc over .json
   const configDir = getOpenCodeConfigDir({ binary: "opencode" });
   const userBasePath = path.join(configDir, "opencode-plugin");
   const userDetected = detectConfigFile(userBasePath);
-  let userConfigPath: string
-  if (userDetected.format !== "none") {
-    userConfigPath = userDetected.path
-  } else {
-    // Legacy fallback: check old oh-my-opencode name
-    const legacyBasePath = path.join(configDir, "oh-my-opencode");
-    const legacyDetected = detectConfigFile(legacyBasePath);
-    if (legacyDetected.format !== "none") {
-      userConfigPath = legacyDetected.path
-      log(`[deprecation] Using legacy config "${legacyDetected.path}". Rename to "opencode-plugin.json[c]" to suppress this warning.`);
-    } else {
-      userConfigPath = userBasePath + ".json";
-    }
-  }
+  const userConfigPath = userDetected.format !== "none" ? userDetected.path : userBasePath + ".json"
 
-  // Project-level config path - prefer .jsonc over .json, with legacy fallback
+  // Project-level config path - prefer .jsonc over .json
   const projectBasePath = path.join(directory, ".opencode", "opencode-plugin");
   const projectDetected = detectConfigFile(projectBasePath);
-  let projectConfigPath: string
-  if (projectDetected.format !== "none") {
-    projectConfigPath = projectDetected.path
-  } else {
-    const legacyProjectBasePath = path.join(directory, ".opencode", "oh-my-opencode");
-    const legacyProjectDetected = detectConfigFile(legacyProjectBasePath);
-    if (legacyProjectDetected.format !== "none") {
-      projectConfigPath = legacyProjectDetected.path
-      log(`[deprecation] Using legacy config "${legacyProjectDetected.path}". Rename to "opencode-plugin.json[c]" to suppress this warning.`);
-    } else {
-      projectConfigPath = projectBasePath + ".json";
-    }
-  }
+  const projectConfigPath = projectDetected.format !== "none" ? projectDetected.path : projectBasePath + ".json"
 
   // Load user config first (base)
   let config: PluginConfig =
@@ -189,6 +167,7 @@ export function loadPluginConfig(
     disabled_agents: config.disabled_agents,
     disabled_mcps: config.disabled_mcps,
     disabled_hooks: config.disabled_hooks,
+    enabled_hooks: config.enabled_hooks,
     claude_code: config.claude_code,
   });
   return config;

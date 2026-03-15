@@ -4,7 +4,7 @@ import type { LoadedSkill } from "../../../skill/loader/types"
 import type { PluginContext } from "../types"
 
 import { createAutoSlashCommandHook, createCategorySkillReminderHook } from "../../../hooks"
-import { safeCreateHook } from "../../safe-create-hook"
+import { mount } from "./mount"
 
 export type SkillHooks = {
   categorySkillReminder: ReturnType<typeof createCategorySkillReminderHook> | null
@@ -27,23 +27,15 @@ export function createSkillHooks(args: {
     mergedSkills,
     availableSkills,
   } = args
+  const categorySkillReminder = mount("category-skill-reminder", isHookEnabled("category-skill-reminder"), safeHookEnabled, () =>
+    createCategorySkillReminderHook(ctx, availableSkills))
 
-  const safeHook = <T>(hookName: HookName, factory: () => T): T | null =>
-    safeCreateHook(hookName, factory, { enabled: safeHookEnabled })
-
-  const categorySkillReminder = isHookEnabled("category-skill-reminder")
-    ? safeHook("category-skill-reminder", () =>
-        createCategorySkillReminderHook(ctx, availableSkills))
-    : null
-
-  const autoSlashCommand = isHookEnabled("auto-slash-command")
-    ? safeHook("auto-slash-command", () =>
-        createAutoSlashCommandHook({
-          skills: mergedSkills,
-          pluginsEnabled: pluginConfig.claude_code?.plugins ?? true,
-          enabledPluginsOverride: pluginConfig.claude_code?.plugins_override,
-        }))
-    : null
+  const autoSlashCommand = mount("auto-slash-command", isHookEnabled("auto-slash-command"), safeHookEnabled, () =>
+    createAutoSlashCommandHook({
+      skills: mergedSkills,
+      pluginsEnabled: pluginConfig.claude_code?.plugins ?? true,
+      enabledPluginsOverride: pluginConfig.claude_code?.plugins_override,
+    }))
 
   return { categorySkillReminder, autoSlashCommand }
 }

@@ -21,7 +21,7 @@ import {
   OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
 } from "../../../config/opencode-version"
 import { log } from "../../../util/logger"
-import { safeCreateHook } from "../../safe-create-hook"
+import { mount } from "./mount"
 
 export type ToolGuardHooks = {
   commentChecker: ReturnType<typeof createCommentCheckerHooks> | null
@@ -45,20 +45,14 @@ export function createToolGuardHooks(args: {
   safeHookEnabled: boolean
 }): ToolGuardHooks {
   const { ctx, pluginConfig, modelCacheState, isHookEnabled, safeHookEnabled } = args
-  const safeHook = <T>(hookName: HookName, factory: () => T): T | null =>
-    safeCreateHook(hookName, factory, { enabled: safeHookEnabled })
+  const commentChecker = mount("comment-checker", isHookEnabled("comment-checker"), safeHookEnabled, () =>
+    createCommentCheckerHooks(pluginConfig.comment_checker))
 
-  const commentChecker = isHookEnabled("comment-checker")
-    ? safeHook("comment-checker", () => createCommentCheckerHooks(pluginConfig.comment_checker))
-    : null
-
-  const toolOutputTruncator = isHookEnabled("tool-output-truncator")
-    ? safeHook("tool-output-truncator", () =>
-        createToolOutputTruncatorHook(ctx, {
-          modelCacheState,
-          experimental: pluginConfig.experimental,
-        }))
-    : null
+  const toolOutputTruncator = mount("tool-output-truncator", isHookEnabled("tool-output-truncator"), safeHookEnabled, () =>
+    createToolOutputTruncatorHook(ctx, {
+      modelCacheState,
+      experimental: pluginConfig.experimental,
+    }))
 
   let directoryAgentsInjector: ReturnType<typeof createDirectoryAgentsInjectorHook> | null = null
   if (isHookEnabled("directory-agents-injector")) {
@@ -71,45 +65,34 @@ export function createToolGuardHooks(args: {
         nativeVersion: OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
       })
     } else {
-      directoryAgentsInjector = safeHook("directory-agents-injector", () =>
+      directoryAgentsInjector = mount("directory-agents-injector", true, safeHookEnabled, () =>
         createDirectoryAgentsInjectorHook(ctx, modelCacheState))
     }
   }
 
-  const directoryReadmeInjector = isHookEnabled("directory-readme-injector")
-    ? safeHook("directory-readme-injector", () =>
-        createDirectoryReadmeInjectorHook(ctx, modelCacheState))
-    : null
+  const directoryReadmeInjector = mount("directory-readme-injector", isHookEnabled("directory-readme-injector"), safeHookEnabled, () =>
+    createDirectoryReadmeInjectorHook(ctx, modelCacheState))
 
-  const emptyTaskResponseDetector = isHookEnabled("empty-task-response-detector")
-    ? safeHook("empty-task-response-detector", () => createEmptyTaskResponseDetectorHook(ctx))
-    : null
+  const emptyTaskResponseDetector = mount("empty-task-response-detector", isHookEnabled("empty-task-response-detector"), safeHookEnabled, () =>
+    createEmptyTaskResponseDetectorHook(ctx))
 
-  const rulesInjector = isHookEnabled("rules-injector")
-    ? safeHook("rules-injector", () =>
-        createRulesInjectorHook(ctx, modelCacheState))
-    : null
+  const rulesInjector = mount("rules-injector", isHookEnabled("rules-injector"), safeHookEnabled, () =>
+    createRulesInjectorHook(ctx, modelCacheState))
 
-  const tasksTodowriteDisabler = isHookEnabled("tasks-todowrite-disabler")
-    ? safeHook("tasks-todowrite-disabler", () =>
-        createTasksTodowriteDisablerHook({ experimental: pluginConfig.experimental }))
-    : null
+  const tasksTodowriteDisabler = mount("tasks-todowrite-disabler", isHookEnabled("tasks-todowrite-disabler"), safeHookEnabled, () =>
+    createTasksTodowriteDisablerHook({ experimental: pluginConfig.experimental }))
 
-  const writeExistingFileGuard = isHookEnabled("write-existing-file-guard")
-    ? safeHook("write-existing-file-guard", () => createWriteExistingFileGuardHook(ctx))
-    : null
+  const writeExistingFileGuard = mount("write-existing-file-guard", isHookEnabled("write-existing-file-guard"), safeHookEnabled, () =>
+    createWriteExistingFileGuardHook(ctx))
 
-  const hashlineReadEnhancer = isHookEnabled("hashline-read-enhancer")
-    ? safeHook("hashline-read-enhancer", () => createHashlineReadEnhancerHook(ctx, { hashline_edit: { enabled: pluginConfig.hashline_edit ?? false } }))
-    : null
+  const hashlineReadEnhancer = mount("hashline-read-enhancer", isHookEnabled("hashline-read-enhancer"), safeHookEnabled, () =>
+    createHashlineReadEnhancerHook(ctx, { hashline_edit: { enabled: pluginConfig.hashline_edit ?? false } }))
 
-  const jsonErrorRecovery = isHookEnabled("json-error-recovery")
-    ? safeHook("json-error-recovery", () => createJsonErrorRecoveryHook(ctx))
-    : null
+  const jsonErrorRecovery = mount("json-error-recovery", isHookEnabled("json-error-recovery"), safeHookEnabled, () =>
+    createJsonErrorRecoveryHook(ctx))
 
-  const readImageResizer = isHookEnabled("read-image-resizer")
-    ? safeHook("read-image-resizer", () => createReadImageResizerHook(ctx))
-    : null
+  const readImageResizer = mount("read-image-resizer", isHookEnabled("read-image-resizer"), safeHookEnabled, () =>
+    createReadImageResizerHook(ctx))
 
   return {
     commentChecker,

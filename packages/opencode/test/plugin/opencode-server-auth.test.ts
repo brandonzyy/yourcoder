@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
-import { getServerBasicAuthHeader, injectServerAuthIntoClient } from "./opencode-server-auth"
+import { getServerBasicAuthHeader, injectServerAuthIntoClient } from "../../src/plugin/opencode-server-auth"
 
 describe("opencode-server-auth", () => {
   let originalEnv: Record<string, string | undefined>
@@ -74,7 +74,6 @@ describe("opencode-server-auth", () => {
   })
 
   test("#given server password #when injecting wraps internal fetch #then wrapped fetch adds Authorization header", async () => {
-    //#given
     process.env.OPENCODE_SERVER_PASSWORD = "secret"
     delete process.env.OPENCODE_SERVER_USERNAME
 
@@ -104,19 +103,16 @@ describe("opencode-server-auth", () => {
       },
     }
 
-    //#when
     injectServerAuthIntoClient(client)
     if (!currentConfig.fetch) {
       throw new Error("expected fetch to be set")
     }
     await currentConfig.fetch(new Request("http://example.com"))
 
-    //#then
     expect(receivedAuthorization ?? "").toBe("Basic b3BlbmNvZGU6c2VjcmV0")
   })
 
   test("#given server password #when internal has _config.fetch but no setConfig #then fetch is wrapped and injects Authorization", async () => {
-    //#given
     process.env.OPENCODE_SERVER_PASSWORD = "secret"
     delete process.env.OPENCODE_SERVER_USERNAME
 
@@ -136,16 +132,13 @@ describe("opencode-server-auth", () => {
       _client: internal,
     }
 
-    //#when
     injectServerAuthIntoClient(client)
     await internal._config.fetch(new Request("http://example.com"))
 
-    //#then
     expect(receivedAuthorization ?? "").toBe("Basic b3BlbmNvZGU6c2VjcmV0")
   })
 
   test("#given server password #when client has top-level fetch #then fetch is wrapped and injects Authorization", async () => {
-    //#given
     process.env.OPENCODE_SERVER_PASSWORD = "secret"
     delete process.env.OPENCODE_SERVER_USERNAME
 
@@ -159,16 +152,13 @@ describe("opencode-server-auth", () => {
       fetch: baseFetch,
     }
 
-    //#when
     injectServerAuthIntoClient(client)
     await client.fetch(new Request("http://example.com"))
 
-    //#then
     expect(receivedAuthorization ?? "").toBe("Basic b3BlbmNvZGU6c2VjcmV0")
   })
 
   test("#given server password #when interceptors are available #then request interceptor injects Authorization", async () => {
-    //#given
     process.env.OPENCODE_SERVER_PASSWORD = "secret"
     delete process.env.OPENCODE_SERVER_USERNAME
 
@@ -191,7 +181,6 @@ describe("opencode-server-auth", () => {
       },
     }
 
-    //#when
     injectServerAuthIntoClient(client)
     if (!registeredInterceptor) {
       throw new Error("expected interceptor to be registered")
@@ -199,12 +188,10 @@ describe("opencode-server-auth", () => {
     const request = new Request("http://example.com")
     const result = await registeredInterceptor(request, {})
 
-    //#then
     expect(result.headers.get("Authorization")).toBe("Basic b3BlbmNvZGU6c2VjcmV0")
   })
 
   test("#given no server password #when injecting into client with fetch #then does not wrap fetch", async () => {
-    //#given
     delete process.env.OPENCODE_SERVER_PASSWORD
     delete process.env.OPENCODE_SERVER_USERNAME
 
@@ -229,14 +216,12 @@ describe("opencode-server-auth", () => {
       },
     }
 
-    //#when
     injectServerAuthIntoClient(client)
     if (!currentConfig.fetch) {
       throw new Error("expected fetch to exist")
     }
     await currentConfig.fetch(new Request("http://example.com"))
 
-    //#then
     expect(setConfigCalled).toBe(false)
     expect(receivedAuthorization).toBeNull()
   })

@@ -9,7 +9,7 @@ import {
   createCompactionContextInjector,
   createCompactionTodoPreserverHook,
 } from "../../../hooks"
-import { safeCreateHook } from "../../safe-create-hook"
+import { mount } from "./mount"
 import { createUnstableAgentBabysitter } from "../unstable-agent-babysitter"
 
 export type ContinuationHooks = {
@@ -42,37 +42,25 @@ export function createContinuationHooks(args: {
     backgroundManager,
     sessionRecovery,
   } = args
+  const stopContinuationGuard = mount("stop-continuation-guard", isHookEnabled("stop-continuation-guard"), safeHookEnabled, () =>
+    createStopContinuationGuardHook(ctx, {
+      backgroundManager,
+    }))
 
-  const safeHook = <T>(hookName: HookName, factory: () => T): T | null =>
-    safeCreateHook(hookName, factory, { enabled: safeHookEnabled })
+  const compactionContextInjector = mount("compaction-context-injector", isHookEnabled("compaction-context-injector"), safeHookEnabled, () =>
+    createCompactionContextInjector(backgroundManager))
 
-  const stopContinuationGuard = isHookEnabled("stop-continuation-guard")
-    ? safeHook("stop-continuation-guard", () =>
-        createStopContinuationGuardHook(ctx, {
-          backgroundManager,
-        }))
-    : null
+  const compactionTodoPreserver = mount("compaction-todo-preserver", isHookEnabled("compaction-todo-preserver"), safeHookEnabled, () =>
+    createCompactionTodoPreserverHook(ctx))
 
-  const compactionContextInjector = isHookEnabled("compaction-context-injector")
-    ? safeHook("compaction-context-injector", () => createCompactionContextInjector(backgroundManager))
-    : null
+  const todoContinuationEnforcer = mount("todo-continuation-enforcer", isHookEnabled("todo-continuation-enforcer"), safeHookEnabled, () =>
+    createTodoContinuationEnforcer(ctx, {
+      backgroundManager,
+      isContinuationStopped: stopContinuationGuard?.isStopped,
+    }))
 
-  const compactionTodoPreserver = isHookEnabled("compaction-todo-preserver")
-    ? safeHook("compaction-todo-preserver", () => createCompactionTodoPreserverHook(ctx))
-    : null
-
-  const todoContinuationEnforcer = isHookEnabled("todo-continuation-enforcer")
-    ? safeHook("todo-continuation-enforcer", () =>
-        createTodoContinuationEnforcer(ctx, {
-          backgroundManager,
-          isContinuationStopped: stopContinuationGuard?.isStopped,
-        }))
-    : null
-
-  const unstableAgentBabysitter = isHookEnabled("unstable-agent-babysitter")
-    ? safeHook("unstable-agent-babysitter", () =>
-        createUnstableAgentBabysitter({ ctx, backgroundManager, pluginConfig }))
-    : null
+  const unstableAgentBabysitter = mount("unstable-agent-babysitter", isHookEnabled("unstable-agent-babysitter"), safeHookEnabled, () =>
+    createUnstableAgentBabysitter({ ctx, backgroundManager, pluginConfig }))
 
   if (sessionRecovery) {
     const onAbortCallbacks: Array<(sessionID: string) => void> = []
@@ -97,9 +85,8 @@ export function createContinuationHooks(args: {
     }
   }
 
-  const backgroundNotificationHook = isHookEnabled("background-notification")
-    ? safeHook("background-notification", () => createBackgroundNotificationHook(backgroundManager))
-    : null
+  const backgroundNotificationHook = mount("background-notification", isHookEnabled("background-notification"), safeHookEnabled, () =>
+    createBackgroundNotificationHook(backgroundManager))
 
   return {
     stopContinuationGuard,

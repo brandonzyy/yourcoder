@@ -9,10 +9,11 @@ import { CategoriesConfigSchema } from "./categories"
 import { ClaudeCodeConfigSchema } from "./claude-code"
 import { BuiltinCommandNameSchema } from "./commands"
 import { ExperimentalConfigSchema } from "./experimental"
+import { HookNameSchema } from "./hooks"
 import { RalphLoopConfigSchema } from "./ralph-loop"
 import { RuntimeFallbackConfigSchema } from "./runtime-fallback"
 import { SkillsConfigSchema } from "./skills"
-import { SisyphusConfigSchema, SisyphusAgentConfigSchema } from "./sisyphus"
+import { YacConfigSchema, YacAgentConfigSchema } from "./yac"
 import { TmuxConfigSchema } from "./tmux"
 import { WebsearchConfigSchema } from "./websearch"
 
@@ -25,7 +26,8 @@ export const PluginConfigSchema = z.object({
   disabled_mcps: z.array(AnyMcpNameSchema).optional(),
   disabled_agents: z.array(z.string()).optional(),
   disabled_skills: z.array(BuiltinSkillNameSchema).optional(),
-  disabled_hooks: z.array(z.string()).optional(),
+  disabled_hooks: z.array(HookNameSchema).optional(),
+  enabled_hooks: z.array(HookNameSchema).optional(),
   disabled_commands: z.array(BuiltinCommandNameSchema).optional(),
   /** Disable specific tools by name (e.g., ["todowrite", "todoread"]) */
   disabled_tools: z.array(z.string()).optional(),
@@ -36,7 +38,7 @@ export const PluginConfigSchema = z.object({
   agents: AgentOverridesSchema.optional(),
   categories: CategoriesConfigSchema.optional(),
   claude_code: ClaudeCodeConfigSchema.optional(),
-  sisyphus_agent: SisyphusAgentConfigSchema.optional(),
+  yac_agent: YacAgentConfigSchema.optional(),
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
@@ -55,7 +57,7 @@ export const PluginConfigSchema = z.object({
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   websearch: WebsearchConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
-  sisyphus: SisyphusConfigSchema.optional(),
+  yac: YacConfigSchema.optional(),
   start_work: StartWorkConfigSchema.optional(),
   /** Migration history to prevent re-applying migrations (e.g., model version upgrades) */
   _migrations: z.array(z.string()).optional(),

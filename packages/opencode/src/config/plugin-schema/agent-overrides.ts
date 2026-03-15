@@ -58,18 +58,17 @@ export const AgentOverrideConfigSchema = z.object({
 export const AgentOverridesSchema = z.object({
   build: AgentOverrideConfigSchema.optional(),
   plan: AgentOverrideConfigSchema.optional(),
-  sisyphus: AgentOverrideConfigSchema.optional(),
+  yac: AgentOverrideConfigSchema.optional(),
   hephaestus: AgentOverrideConfigSchema.extend({
     allow_non_gpt_model: z.boolean().optional(),
   }).optional(),
-  "sisyphus-junior": AgentOverrideConfigSchema.optional(),
+  "coderhand": AgentOverrideConfigSchema.optional(),
   "OpenCode-Builder": AgentOverrideConfigSchema.optional(),
   prometheus: AgentOverrideConfigSchema.optional(),
   metis: AgentOverrideConfigSchema.optional(),
   momus: AgentOverrideConfigSchema.optional(),
   oracle: AgentOverrideConfigSchema.optional(),
   librarian: AgentOverrideConfigSchema.optional(),
-  explore: AgentOverrideConfigSchema.optional(),
   "multimodal-looker": AgentOverrideConfigSchema.optional(),
 })
 

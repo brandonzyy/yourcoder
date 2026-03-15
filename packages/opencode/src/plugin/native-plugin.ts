@@ -1,8 +1,6 @@
 import { initConfigContext } from "../config/config-manager/config-context"
 import type { Plugin } from "./sdk"
 
-import type { HookName } from "../config/plugin-schema"
-
 import { createHooks } from "./create-hooks"
 import { createManagers } from "./create-managers"
 import { createTools } from "./create-tools"
@@ -14,6 +12,7 @@ import { createFirstMessageVariantGate } from "./first-message-variant"
 import { log } from "../util/logger"
 import { injectServerAuthIntoClient } from "./opencode-server-auth"
 import { startBackgroundCheck as startTmuxCheck } from "../tool/interactive-bash"
+import { createHookPolicy, optionalHooks } from "./hook-policy"
 
 const NativePlugin: Plugin = async (ctx) => {
   // Initialize config context for plugin runtime (prevents warnings from hooks)
@@ -26,10 +25,14 @@ const NativePlugin: Plugin = async (ctx) => {
   startTmuxCheck()
 
   const pluginConfig = loadPluginConfig(ctx.directory, ctx)
-  const disabledHooks = new Set(pluginConfig.disabled_hooks ?? [])
-
-  const isHookEnabled = (hookName: HookName): boolean => !disabledHooks.has(hookName)
+  const isHookEnabled = createHookPolicy(pluginConfig)
   const safeHookEnabled = pluginConfig.experimental?.safe_hook_creation ?? true
+
+  if (!pluginConfig.enabled_hooks?.length) {
+    log("[NativePlugin] optional hooks are opt-in", {
+      hooks: optionalHooks(),
+    })
+  }
 
   const firstMessageVariantGate = createFirstMessageVariantGate()
 

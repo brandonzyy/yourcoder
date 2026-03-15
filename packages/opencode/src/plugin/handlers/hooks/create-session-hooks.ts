@@ -1,34 +1,48 @@
 import type { PluginConfig, HookName } from "../../../config/plugin-schema"
-import type { ModelCacheState } from "../../plugin-state"
-import type { PluginContext } from "../types"
-
 import {
-  createContextWindowMonitorHook,
-  createSessionRecoveryHook,
-  createSessionNotification,
-  createThinkModeHook,
-  createModelFallbackHook,
+  createAgentUsageReminderHook,
   createAnthropicContextWindowLimitRecoveryHook,
   createAutoUpdateCheckerHook,
-  createAgentUsageReminderHook,
-  createNonInteractiveEnvHook,
-  createInteractiveBashSessionHook,
-  createRalphLoopHook,
-  createEditErrorRecoveryHook,
+  createContextWindowMonitorHook,
   createDelegateTaskRetryHook,
-  createTaskResumeInfoHook,
-  createStartWorkHook,
-  createNoSisyphusGptHook,
-  createQuestionLabelTruncatorHook,
+  createEditErrorRecoveryHook,
+  createInteractiveBashSessionHook,
+  createModelFallbackHook,
+  createNoYacGptHook,
+  createNonInteractiveEnvHook,
   createPreemptiveCompactionHook,
+  createQuestionLabelTruncatorHook,
+  createRalphLoopHook,
   createRuntimeFallbackHook,
+  createSessionNotification,
+  createSessionRecoveryHook,
+  createStartWorkHook,
   createSubagentHealthCheckHook,
+  createTaskResumeInfoHook,
+  createThinkModeHook,
 } from "../../../hooks"
 import { createAnthropicEffortHook } from "../../../hooks/model-switching/anthropic-effort"
+import { normalizeSDKResponse } from "../../../model/normalize-sdk-response"
 import { log } from "../../../util/logger"
+import type { ModelCacheState } from "../../plugin-state"
 import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../external-plugin-detector"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
-import { safeCreateHook } from "../../safe-create-hook"
+import type { PluginContext } from "../types"
+import { mount } from "./mount"
+
+type Args = {
+  ctx: PluginContext
+  pluginConfig: PluginConfig
+  modelCacheState: ModelCacheState
+  isHookEnabled: (hookName: HookName) => boolean
+  safeHookEnabled: boolean
+}
+
+type Applied = (input: {
+  sessionID: string
+  providerID: string
+  modelID: string
+  variant?: string
+}) => void | Promise<void>
 
 export type SessionHooks = {
   contextWindowMonitor: ReturnType<typeof createContextWindowMonitorHook> | null
@@ -46,7 +60,7 @@ export type SessionHooks = {
   editErrorRecovery: ReturnType<typeof createEditErrorRecoveryHook> | null
   delegateTaskRetry: ReturnType<typeof createDelegateTaskRetryHook> | null
   startWork: ReturnType<typeof createStartWorkHook> | null
-  noSisyphusGpt: ReturnType<typeof createNoSisyphusGptHook> | null
+  noYacGpt: ReturnType<typeof createNoYacGptHook> | null
   questionLabelTruncator: ReturnType<typeof createQuestionLabelTruncatorHook> | null
   taskResumeInfo: ReturnType<typeof createTaskResumeInfoHook> | null
   anthropicEffort: ReturnType<typeof createAnthropicEffortHook> | null
@@ -54,220 +68,171 @@ export type SessionHooks = {
   subagentHealthCheck: ReturnType<typeof createSubagentHealthCheckHook> | null
 }
 
-export function createSessionHooks(args: {
-  ctx: PluginContext
-  pluginConfig: PluginConfig
-  modelCacheState: ModelCacheState
-  isHookEnabled: (hookName: HookName) => boolean
-  safeHookEnabled: boolean
-}): SessionHooks {
-  const { ctx, pluginConfig, modelCacheState, isHookEnabled, safeHookEnabled } = args
-  const safeHook = <T>(hookName: HookName, factory: () => T): T | null =>
-    safeCreateHook(hookName, factory, { enabled: safeHookEnabled })
-
-  const contextWindowMonitor = isHookEnabled("context-window-monitor")
-    ? safeHook("context-window-monitor", () =>
-        createContextWindowMonitorHook(ctx, modelCacheState))
-    : null
-
-  const preemptiveCompaction =
-    isHookEnabled("preemptive-compaction") &&
-    pluginConfig.experimental?.preemptive_compaction
-      ? safeHook("preemptive-compaction", () =>
-          createPreemptiveCompactionHook(ctx, pluginConfig, modelCacheState))
-      : null
-
-  const sessionRecovery = isHookEnabled("session-recovery")
-    ? safeHook("session-recovery", () =>
-        createSessionRecoveryHook(ctx, { experimental: pluginConfig.experimental }))
-    : null
-
-  let sessionNotification: ReturnType<typeof createSessionNotification> | null = null
-  if (isHookEnabled("session-notification")) {
-    const forceEnable = pluginConfig.notification?.force_enable ?? false
-    const externalNotifier = detectExternalNotificationPlugin(ctx.directory)
-    if (externalNotifier.detected && !forceEnable) {
-      log(getNotificationConflictWarning(externalNotifier.pluginName!))
-    } else {
-      sessionNotification = safeHook("session-notification", () => createSessionNotification(ctx))
-    }
+function title(args: Pick<Args, "ctx" | "pluginConfig">) {
+  if (!args.pluginConfig.experimental?.model_fallback_title) {
+    return
   }
 
-  const thinkMode = isHookEnabled("think-mode")
-    ? safeHook("think-mode", () => createThinkModeHook())
-    : null
+  const seen = new Map<string, { base?: string; last?: string }>()
 
-  const enableFallbackTitle = pluginConfig.experimental?.model_fallback_title ?? false
-  const fallbackTitleMaxEntries = 200
-  const fallbackTitleState = new Map<string, { baseTitle?: string; lastKey?: string }>()
-  const updateFallbackTitle = async (input: {
+  return async (input: {
     sessionID: string
     providerID: string
     modelID: string
     variant?: string
   }) => {
-    if (!enableFallbackTitle) return
     const key = `${input.providerID}/${input.modelID}${input.variant ? `:${input.variant}` : ""}`
-    const existing = fallbackTitleState.get(input.sessionID) ?? {}
-    if (existing.lastKey === key) return
+    const item = seen.get(input.sessionID) ?? {}
+    if (item.last === key) {
+      return
+    }
 
-    if (!existing.baseTitle) {
-      const sessionResp = await ctx.client.session.get({ path: { id: input.sessionID } }).catch(() => null)
-      const sessionInfo = sessionResp
-        ? normalizeSDKResponse(sessionResp, null as { title?: string } | null, { preferResponseOnMissingData: true })
+    if (!item.base) {
+      const session = await args.ctx.client.session.get({ path: { id: input.sessionID } }).catch(() => null)
+      const info = session
+        ? normalizeSDKResponse(session, null as { title?: string } | null, { preferResponseOnMissingData: true })
         : null
-      const rawTitle = sessionInfo?.title
-      if (typeof rawTitle === "string" && rawTitle.length > 0) {
-        existing.baseTitle = rawTitle.replace(/\s*\[fallback:[^\]]+\]$/i, "").trim()
-      } else {
-        existing.baseTitle = "Session"
+      const raw = info?.title
+      item.base = typeof raw === "string" && raw.length > 0
+        ? raw.replace(/\s*\[fallback:[^\]]+\]$/i, "").trim()
+        : "Session"
+    }
+
+    const next = `${item.base} [fallback: ${input.providerID}/${input.modelID}${input.variant ? ` ${input.variant}` : ""}]`
+
+    await args.ctx.client.session.update({
+      path: { id: input.sessionID },
+      body: { title: next },
+      query: { directory: args.ctx.directory },
+    }).catch(() => {})
+
+    item.last = key
+    seen.set(input.sessionID, item)
+    if (seen.size > 200) {
+      const first = seen.keys().next().value
+      if (first) {
+        seen.delete(first)
       }
     }
+  }
+}
 
-    const variantLabel = input.variant ? ` ${input.variant}` : ""
-    const newTitle = `${existing.baseTitle} [fallback: ${input.providerID}/${input.modelID}${variantLabel}]`
-
-    await ctx.client.session
-      .update({
-        path: { id: input.sessionID },
-        body: { title: newTitle },
-        query: { directory: ctx.directory },
-      })
-      .catch(() => {})
-
-    existing.lastKey = key
-    fallbackTitleState.set(input.sessionID, existing)
-    if (fallbackTitleState.size > fallbackTitleMaxEntries) {
-      const oldestKey = fallbackTitleState.keys().next().value
-      if (oldestKey) fallbackTitleState.delete(oldestKey)
-    }
+function notify(args: Pick<Args, "ctx" | "pluginConfig" | "isHookEnabled" | "safeHookEnabled">) {
+  if (!args.isHookEnabled("session-notification")) {
+    return null
   }
 
-  // Model fallback hook (configurable via model_fallback config + disabled_hooks)
-  // This handles automatic model switching when model errors occur
-  const isModelFallbackConfigEnabled = pluginConfig.model_fallback ?? false
-  const modelFallback = isModelFallbackConfigEnabled && isHookEnabled("model-fallback")
-    ? safeHook("model-fallback", () =>
-      createModelFallbackHook({
-        toast: async ({ title, message, variant, duration }) => {
-          await ctx.client.tui
-            .showToast({
+  const force = args.pluginConfig.notification?.force_enable ?? false
+  const item = detectExternalNotificationPlugin(args.ctx.directory)
+  if (item.detected && !force) {
+    log(getNotificationConflictWarning(item.pluginName!))
+    return null
+  }
+
+  return mount("session-notification", true, args.safeHookEnabled, () => createSessionNotification(args.ctx))
+}
+
+function core(args: Args) {
+  return {
+    contextWindowMonitor: mount("context-window-monitor", args.isHookEnabled("context-window-monitor"), args.safeHookEnabled, () =>
+      createContextWindowMonitorHook(args.ctx, args.modelCacheState)),
+    preemptiveCompaction: mount(
+      "preemptive-compaction",
+      args.isHookEnabled("preemptive-compaction") && !!args.pluginConfig.experimental?.preemptive_compaction,
+      args.safeHookEnabled,
+      () => createPreemptiveCompactionHook(args.ctx, args.pluginConfig, args.modelCacheState),
+    ),
+    thinkMode: mount("think-mode", args.isHookEnabled("think-mode"), args.safeHookEnabled, () => createThinkModeHook()),
+    nonInteractiveEnv: mount("non-interactive-env", args.isHookEnabled("non-interactive-env"), args.safeHookEnabled, () =>
+      createNonInteractiveEnvHook(args.ctx)),
+    interactiveBashSession: mount("interactive-bash-session", args.isHookEnabled("interactive-bash-session"), args.safeHookEnabled, () =>
+      createInteractiveBashSessionHook(args.ctx)),
+    anthropicEffort: mount("anthropic-effort", args.isHookEnabled("anthropic-effort"), args.safeHookEnabled, () =>
+      createAnthropicEffortHook()),
+  }
+}
+
+function guard(args: Args, onApplied?: Applied) {
+  const cfg =
+    typeof args.pluginConfig.runtime_fallback === "boolean"
+      ? { enabled: args.pluginConfig.runtime_fallback }
+      : args.pluginConfig.runtime_fallback
+
+  return {
+    sessionRecovery: mount("session-recovery", args.isHookEnabled("session-recovery"), args.safeHookEnabled, () =>
+      createSessionRecoveryHook(args.ctx, { experimental: args.pluginConfig.experimental })),
+    modelFallback: mount(
+      "model-fallback",
+      (args.pluginConfig.model_fallback ?? false) && args.isHookEnabled("model-fallback"),
+      args.safeHookEnabled,
+      () =>
+        createModelFallbackHook({
+          toast: async ({ title, message, variant, duration }) => {
+            await args.ctx.client.tui.showToast({
               body: {
                 title,
                 message,
                 variant: variant ?? "warning",
                 duration: duration ?? 5000,
               },
-            })
-            .catch(() => {})
-        },
-        onApplied: enableFallbackTitle ? updateFallbackTitle : undefined,
-      }))
-    : null
+            }).catch(() => {})
+          },
+          onApplied,
+        }),
+    ),
+    anthropicContextWindowLimitRecovery: mount(
+      "anthropic-context-window-limit-recovery",
+      args.isHookEnabled("anthropic-context-window-limit-recovery"),
+      args.safeHookEnabled,
+      () => createAnthropicContextWindowLimitRecoveryHook(args.ctx, { experimental: args.pluginConfig.experimental, pluginConfig: args.pluginConfig }),
+    ),
+    editErrorRecovery: mount("edit-error-recovery", args.isHookEnabled("edit-error-recovery"), args.safeHookEnabled, () =>
+      createEditErrorRecoveryHook(args.ctx)),
+    delegateTaskRetry: mount("delegate-task-retry", args.isHookEnabled("delegate-task-retry"), args.safeHookEnabled, () =>
+      createDelegateTaskRetryHook(args.ctx)),
+    runtimeFallback: mount("runtime-fallback", args.isHookEnabled("runtime-fallback"), args.safeHookEnabled, () =>
+      createRuntimeFallbackHook(args.ctx, {
+        config: cfg,
+        pluginConfig: args.pluginConfig,
+      })),
+    subagentHealthCheck: mount("subagent-health-check", args.isHookEnabled("subagent-health-check"), args.safeHookEnabled, () =>
+      createSubagentHealthCheckHook(args.ctx, {
+        enabled: true,
+        timeout: 10000,
+      })),
+  }
+}
 
-  const anthropicContextWindowLimitRecovery = isHookEnabled("anthropic-context-window-limit-recovery")
-    ? safeHook("anthropic-context-window-limit-recovery", () =>
-        createAnthropicContextWindowLimitRecoveryHook(ctx, { experimental: pluginConfig.experimental, pluginConfig }))
-    : null
-
-  const autoUpdateChecker = isHookEnabled("auto-update-checker")
-    ? safeHook("auto-update-checker", () =>
-        createAutoUpdateCheckerHook(ctx, {
-          showStartupToast: isHookEnabled("startup-toast"),
-          isSisyphusEnabled: pluginConfig.sisyphus_agent?.disabled !== true,
-          autoUpdate: pluginConfig.auto_update ?? true,
-        }))
-    : null
-
-  const agentUsageReminder = isHookEnabled("agent-usage-reminder")
-    ? safeHook("agent-usage-reminder", () => createAgentUsageReminderHook(ctx))
-    : null
-
-  const nonInteractiveEnv = isHookEnabled("non-interactive-env")
-    ? safeHook("non-interactive-env", () => createNonInteractiveEnvHook(ctx))
-    : null
-
-  const interactiveBashSession = isHookEnabled("interactive-bash-session")
-    ? safeHook("interactive-bash-session", () => createInteractiveBashSessionHook(ctx))
-    : null
-
-  const ralphLoop = isHookEnabled("ralph-loop")
-    ? safeHook("ralph-loop", () =>
-        createRalphLoopHook(ctx, {
-          config: pluginConfig.ralph_loop,
-          checkSessionExists: async (_sessionId) => false,
-        }))
-    : null
-
-  const editErrorRecovery = isHookEnabled("edit-error-recovery")
-    ? safeHook("edit-error-recovery", () => createEditErrorRecoveryHook(ctx))
-    : null
-
-  const delegateTaskRetry = isHookEnabled("delegate-task-retry")
-    ? safeHook("delegate-task-retry", () => createDelegateTaskRetryHook(ctx))
-    : null
-
-  const startWork = isHookEnabled("start-work")
-    ? safeHook("start-work", () => createStartWorkHook(ctx))
-    : null
-
-  const noSisyphusGpt = isHookEnabled("no-sisyphus-gpt")
-    ? safeHook("no-sisyphus-gpt", () => createNoSisyphusGptHook(ctx))
-    : null
-
-  const questionLabelTruncator = isHookEnabled("question-label-truncator")
-    ? safeHook("question-label-truncator", () => createQuestionLabelTruncatorHook())
-    : null
-  const taskResumeInfo = isHookEnabled("task-resume-info")
-    ? safeHook("task-resume-info", () => createTaskResumeInfoHook())
-    : null
-
-  const anthropicEffort = isHookEnabled("anthropic-effort")
-    ? safeHook("anthropic-effort", () => createAnthropicEffortHook())
-    : null
-
-  const runtimeFallbackConfig =
-    typeof pluginConfig.runtime_fallback === "boolean"
-      ? { enabled: pluginConfig.runtime_fallback }
-      : pluginConfig.runtime_fallback
-
-  const runtimeFallback = isHookEnabled("runtime-fallback")
-    ? safeHook("runtime-fallback", () =>
-        createRuntimeFallbackHook(ctx, {
-          config: runtimeFallbackConfig,
-          pluginConfig,
-        }))
-    : null
-
-  const subagentHealthCheck = isHookEnabled("subagent-health-check")
-    ? safeHook("subagent-health-check", () =>
-        createSubagentHealthCheckHook(ctx, {
-          enabled: true,
-          timeout: 10000,
-        }))
-    : null
-
+function ux(args: Args) {
   return {
-    contextWindowMonitor,
-    preemptiveCompaction,
-    sessionRecovery,
-    sessionNotification,
-    thinkMode,
-    modelFallback,
-    anthropicContextWindowLimitRecovery,
-    autoUpdateChecker,
-    agentUsageReminder,
-    nonInteractiveEnv,
-    interactiveBashSession,
-    ralphLoop,
-    editErrorRecovery,
-    delegateTaskRetry,
-    startWork,
-    noSisyphusGpt,
-    questionLabelTruncator,
-    taskResumeInfo,
-    anthropicEffort,
-    runtimeFallback,
-    subagentHealthCheck,
+    sessionNotification: notify(args),
+    autoUpdateChecker: mount("auto-update-checker", args.isHookEnabled("auto-update-checker"), args.safeHookEnabled, () =>
+      createAutoUpdateCheckerHook(args.ctx, {
+        showStartupToast: args.isHookEnabled("startup-toast"),
+        isYacEnabled: args.pluginConfig.yac_agent?.disabled !== true,
+        autoUpdate: args.pluginConfig.auto_update ?? true,
+      })),
+    agentUsageReminder: mount("agent-usage-reminder", args.isHookEnabled("agent-usage-reminder"), args.safeHookEnabled, () =>
+      createAgentUsageReminderHook(args.ctx)),
+    ralphLoop: mount("ralph-loop", args.isHookEnabled("ralph-loop"), args.safeHookEnabled, () =>
+      createRalphLoopHook(args.ctx, {
+        config: args.pluginConfig.ralph_loop,
+        checkSessionExists: async (_sessionId) => false,
+      })),
+    startWork: mount("start-work", args.isHookEnabled("start-work"), args.safeHookEnabled, () => createStartWorkHook(args.ctx)),
+    noYacGpt: mount("no-yac-gpt", args.isHookEnabled("no-yac-gpt"), args.safeHookEnabled, () =>
+      createNoYacGptHook(args.ctx)),
+    questionLabelTruncator: mount("question-label-truncator", args.isHookEnabled("question-label-truncator"), args.safeHookEnabled, () =>
+      createQuestionLabelTruncatorHook()),
+    taskResumeInfo: mount("task-resume-info", args.isHookEnabled("task-resume-info"), args.safeHookEnabled, () =>
+      createTaskResumeInfoHook()),
+  }
+}
+
+export function createSessionHooks(args: Args): SessionHooks {
+  return {
+    ...core(args),
+    ...guard(args, title(args)),
+    ...ux(args),
   }
 }
