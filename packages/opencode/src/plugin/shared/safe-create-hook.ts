@@ -1,4 +1,4 @@
-import { log } from "./logger"
+import { log } from "../../util/logger"
 
 interface SafeCreateHookOptions {
   enabled?: boolean

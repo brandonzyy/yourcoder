@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { CommandDefinition } from "../builtin-commands/command-types"
 import type { McpServerConfig } from "../claude-code-mcp-loader/types"

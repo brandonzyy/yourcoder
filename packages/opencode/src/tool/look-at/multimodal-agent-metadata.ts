@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { MULTIMODAL_LOOKER_AGENT } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 type AgentModel = { providerID: string; modelID: string }
 

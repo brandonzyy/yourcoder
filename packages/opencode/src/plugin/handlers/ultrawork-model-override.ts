@@ -1,8 +1,8 @@
 import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
 import type { AgentOverrides } from "../../config/plugin-schema/agent-overrides"
 import { getSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../shared/logger"
-import { getAgentConfigKey } from "../../shared/agent-display-names"
+import { log } from "../../util/logger"
+import { getAgentConfigKey } from "../../util/agent-display-names"
 import { scheduleDeferredModelOverride } from "./ultrawork-db-model-override"
 
 const CODE_BLOCK = /```[\s\S]*?```/g

@@ -1,7 +1,7 @@
 declare const require: (name: string) => any
 const { describe, expect, test } = require("bun:test")
 import { extractResumeConfig, resumeSession } from "./resume"
-import { OMO_INTERNAL_INITIATOR_MARKER } from "../../shared/internal-initiator-marker"
+import { OMO_INTERNAL_INITIATOR_MARKER } from "../../util/internal-initiator-marker"
 import type { MessageData } from "./types"
 
 describe("session-recovery resume", () => {

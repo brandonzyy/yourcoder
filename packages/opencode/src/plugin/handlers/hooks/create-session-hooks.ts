@@ -26,10 +26,10 @@ import {
   createSubagentHealthCheckHook,
 } from "../../../hooks"
 import { createAnthropicEffortHook } from "../../../hooks/anthropic-effort"
-import { log } from "../../../shared/logger"
-import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../../shared/external-plugin-detector"
+import { log } from "../../../util/logger"
+import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../shared/external-plugin-detector"
 import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
-import { safeCreateHook } from "../../../shared/safe-create-hook"
+import { safeCreateHook } from "../../shared/safe-create-hook"
 
 export type SessionHooks = {
   contextWindowMonitor: ReturnType<typeof createContextWindowMonitorHook> | null

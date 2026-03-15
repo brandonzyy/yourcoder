@@ -3,7 +3,7 @@ import { DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./constants"
 import { resolveModel } from "../../model/model-resolver"
 import { isModelAvailable } from "../../model/model-availability"
 import { CATEGORY_MODEL_REQUIREMENTS } from "../../model/model-requirements"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 export interface ResolveCategoryConfigOptions {
   userCategories?: CategoriesConfig

@@ -14,7 +14,7 @@ export async function spawnTmuxPane(
 	targetPaneId?: string,
 	splitDirection: SplitDirection = "-h",
 ): Promise<SpawnPaneResult> {
-	const { log } = await import("../../../../shared/logger")
+	const { log } = await import("../../../../util/logger")
 
 	log("[spawnTmuxPane] called", {
 		sessionId,

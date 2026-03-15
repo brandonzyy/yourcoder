@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process"
 import { existsSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 const SUPPORTED_FORMATS = new Set([
   "image/jpeg",

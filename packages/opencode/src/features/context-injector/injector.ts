@@ -1,6 +1,6 @@
 import type { ContextCollector } from "./collector"
 import type { Message, Part } from "@opencode-ai/sdk"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { getMainSessionID } from "../claude-code-session-state"
 
 interface OutputPart {

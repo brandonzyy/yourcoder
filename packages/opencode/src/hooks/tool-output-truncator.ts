@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { ExperimentalConfig } from "../config/plugin-schema"
-import { createDynamicTruncator } from "../shared/dynamic-truncator"
+import { createDynamicTruncator } from "./shared/dynamic-truncator"
 
 const DEFAULT_MAX_TOKENS = 50_000 // ~200k chars
 const WEBFETCH_MAX_TOKENS = 10_000 // ~40k chars - web pages need aggressive truncation

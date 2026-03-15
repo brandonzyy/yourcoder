@@ -1,7 +1,7 @@
 import type { FallbackEntry } from "../../model/model-requirements"
 import { normalizeModel } from "../../model/model-normalization"
 import { fuzzyMatchModel } from "../../model/model-availability"
-import { transformModelForProvider } from "../../shared/provider-model-id-transform"
+import { transformModelForProvider } from "../../util/provider-model-id-transform"
 
 function isExplicitHighModel(model: string): boolean {
   return /(?:^|\/)[^/]+-high$/.test(model)

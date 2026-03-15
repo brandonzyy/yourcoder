@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createRuntimeFallbackHook } from "./index"
 import type { RuntimeFallbackConfig, OhMyOpenCodeConfig } from "../../config/plugin-config-types"
-import * as logger from "../../shared/logger"
+import * as logger from "../../util/logger"
 import { SessionCategoryRegistry } from "../../session/session-category-registry"
 
 describe("runtime-fallback", () => {

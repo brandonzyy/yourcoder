@@ -1,10 +1,10 @@
 import type { createOpencodeClient } from "@opencode-ai/sdk"
-import { log } from "../shared/logger"
+import { log } from "../util/logger"
 import {
   createPromptTimeoutContext,
   PROMPT_TIMEOUT_MS,
   type PromptRetryOptions,
-} from "../shared/prompt-timeout-context"
+} from "./prompt-timeout-context"
 
 type Client = ReturnType<typeof createOpencodeClient>
 

@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
 import { getSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../shared/logger"
-import { getAgentConfigKey } from "../../shared/agent-display-names"
+import { log } from "../../util/logger"
+import { getAgentConfigKey } from "../../util/agent-display-names"
 import { buildReminderMessage } from "./formatter"
 
 /**

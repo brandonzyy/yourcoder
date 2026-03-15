@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { runBunInstall } from "../../../config/config-manager"
-import { log } from "../../../shared/logger"
+import { log } from "../../../util/logger"
 import { invalidatePackage } from "../cache"
 import { PACKAGE_NAME } from "../constants"
 import { extractChannel } from "../version-channel"

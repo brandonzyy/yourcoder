@@ -4,7 +4,7 @@ import type { BackgroundManager } from "../../features/background-agent"
 import {
   clearContinuationMarker,
 } from "../shared/continuation-state"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 import { DEFAULT_SKIP_AGENTS, HOOK_NAME } from "./constants"
 import type { SessionStateStore } from "./session-state"

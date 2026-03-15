@@ -1,8 +1,8 @@
-import { log } from "../shared/logger"
-import * as connectedProvidersCache from "../shared/connected-providers-cache"
+import { log } from "../util/logger"
+import * as connectedProvidersCache from "../util/connected-providers-cache"
 import { fuzzyMatchModel } from "./model-availability"
 import type { FallbackEntry } from "./model-requirements"
-import { transformModelForProvider } from "../shared/provider-model-id-transform"
+import { transformModelForProvider } from "../util/provider-model-id-transform"
 import { normalizeModel } from "./model-normalization"
 
 export type ModelResolutionRequest = {

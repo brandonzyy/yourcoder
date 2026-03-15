@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { getCachedVersion, getLocalDevVersion } from "./checker"
 import type { AutoUpdateCheckerOptions } from "./types"
 import { runBackgroundUpdateCheck } from "./hook/background-update-check"

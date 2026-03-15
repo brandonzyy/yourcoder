@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { TRUNCATION_MESSAGE } from "./storage-paths"
 import type { ToolResultInfo } from "./tool-part-types"
-import { patchPart } from "../../shared/opencode-http-api"
-import { log } from "../../shared/logger"
+import { patchPart } from "../shared/opencode-http-api"
+import { log } from "../../util/logger"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 type OpencodeClient = PluginInput["client"]

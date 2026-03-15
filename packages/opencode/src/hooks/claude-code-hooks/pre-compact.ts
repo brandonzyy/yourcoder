@@ -4,7 +4,7 @@ import type {
   ClaudeHooksConfig,
 } from "./types"
 import { findMatchingHooks } from "../shared/pattern-matcher"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"
 

@@ -1,5 +1,5 @@
 import type { FallbackEntry } from "./model-requirements"
-import { readConnectedProvidersCache } from "../shared/connected-providers-cache"
+import { readConnectedProvidersCache } from "../util/connected-providers-cache"
 
 /**
  * Error names that indicate a retryable model error (deadstop).

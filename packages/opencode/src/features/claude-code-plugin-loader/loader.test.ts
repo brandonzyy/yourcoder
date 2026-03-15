@@ -6,7 +6,7 @@ import * as skill from "./skill-loader"
 import * as agent from "./agent-loader"
 import * as mcp from "./mcp-server-loader"
 import * as hook from "./hook-loader"
-import * as logger from "../../shared/logger"
+import * as logger from "../../util/logger"
 
 const spies: Array<{ mockRestore(): void }> = []
 

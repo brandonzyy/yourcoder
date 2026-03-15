@@ -1,6 +1,6 @@
 import type { BackgroundTask, LaunchInput } from "./types"
 import type { QueueItem } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { subagentSessions } from "../claude-code-session-state"
 export class TaskStateManager {
   readonly tasks: Map<string, BackgroundTask> = new Map()

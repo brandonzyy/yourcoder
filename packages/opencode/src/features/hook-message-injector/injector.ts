@@ -4,9 +4,9 @@ import { join } from "node:path"
 import type { PluginInput } from "@opencode-ai/plugin"
 import { MESSAGE_STORAGE, PART_STORAGE } from "./constants"
 import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } from "./types"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 export interface StoredMessage {

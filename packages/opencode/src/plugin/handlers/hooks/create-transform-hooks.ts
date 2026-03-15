@@ -10,7 +10,7 @@ import {
   contextCollector,
   createContextInjectorMessagesTransformHook,
 } from "../../../features/context-injector"
-import { safeCreateHook } from "../../../shared/safe-create-hook"
+import { safeCreateHook } from "../../shared/safe-create-hook"
 
 export type TransformHooks = {
   claudeCodeHooks: ReturnType<typeof createClaudeCodeHooksHook> | null

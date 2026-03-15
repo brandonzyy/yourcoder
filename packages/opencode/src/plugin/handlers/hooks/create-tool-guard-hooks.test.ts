@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import * as hooks from "../../../hooks"
-import * as shared from "../../../shared/opencode-version"
-import * as safeHook from "../../../shared/safe-create-hook"
+import * as shared from "../../shared/opencode-version"
+import * as safeHook from "../../shared/safe-create-hook"
 import { createToolGuardHooks } from "./create-tool-guard-hooks"
 
 const cc = mock((cfg: unknown) => ({ id: "cc", cfg }))

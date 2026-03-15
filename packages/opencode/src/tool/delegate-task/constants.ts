@@ -3,7 +3,7 @@ import type {
    AvailableCategory,
    AvailableSkill,
  } from "../../agent/dynamic-agent-prompt-builder"
-import { truncateDescription } from "../../shared/truncate-description"
+import { truncateDescription } from "../truncate-description"
 
 export const VISUAL_CATEGORY_PROMPT_APPEND = `<Category_Context>
 You are working on VISUAL/UI tasks.

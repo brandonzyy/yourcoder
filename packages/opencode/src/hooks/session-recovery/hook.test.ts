@@ -6,7 +6,7 @@ import * as unavailable from "./recover-unavailable-tool"
 import * as thinkingOrder from "./recover-thinking-block-order"
 import * as thinkingDisabled from "./recover-thinking-disabled-violation"
 import * as resume from "./resume"
-import * as logger from "../../shared/logger"
+import * as logger from "../../util/logger"
 
 const spies: Array<{ mockRestore(): void }> = []
 

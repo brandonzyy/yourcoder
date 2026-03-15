@@ -3,7 +3,7 @@ import { mkdirSync, appendFileSync, existsSync, writeFileSync, unlinkSync } from
 import { tmpdir } from "os"
 import { randomUUID } from "crypto"
 import type { TranscriptEntry } from "./types"
-import { transformToolName } from "../../shared/tool-name"
+import { transformToolName } from "../shared/tool-name"
 import {getClaudeConfigDir} from "../../config/claude-config-dir"
 
 const TRANSCRIPT_DIR = join(getClaudeConfigDir(), "transcripts")

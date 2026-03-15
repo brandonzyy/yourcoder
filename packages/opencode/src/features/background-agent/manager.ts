@@ -6,9 +6,9 @@ import type {
   ResumeInput,
 } from "./types"
 import { TaskHistory } from "./task-history"
-import { log } from "../../shared/logger"
-import { normalizePromptTools, resolveInheritedPromptTools } from "../../shared/prompt-tools"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
+import { log } from "../../util/logger"
+import { normalizePromptTools, resolveInheritedPromptTools } from "../../util/prompt-tools"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import {promptWithModelSuggestionRetry} from "../../model/model-suggestion-retry"
 import { setSessionTools } from "../../session/session-tools-store"

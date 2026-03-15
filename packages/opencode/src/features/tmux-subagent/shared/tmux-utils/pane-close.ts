@@ -7,7 +7,7 @@ function delay(milliseconds: number): Promise<void> {
 }
 
 export async function closeTmuxPane(paneId: string): Promise<boolean> {
-	const { log } = await import("../../../../shared/logger")
+	const { log } = await import("../../../../util/logger")
 
 	if (!isInsideTmux()) {
 		log("[closeTmuxPane] SKIP: not inside tmux")

@@ -7,7 +7,7 @@ import { BackgroundManager } from "../features/background-agent"
 import { initTaskToastManager } from "../features/task-toast-manager"
 import { TmuxSessionManager } from "../features/tmux-subagent"
 import { createConfigHandler } from "./config-handler-stub"
-import { log } from "../shared/logger"
+import { log } from "../util/logger"
 
 export type Managers = {
   tmuxSessionManager: TmuxSessionManager

@@ -1,5 +1,5 @@
 import { getConfigDir } from "./config-context"
-import { spawnWithWindowsHide } from "../../shared/spawn-with-windows-hide"
+import { spawnWithWindowsHide } from "../../util/spawn-with-windows-hide"
 
 const BUN_INSTALL_TIMEOUT_SECONDS = 60
 const BUN_INSTALL_TIMEOUT_MS = BUN_INSTALL_TIMEOUT_SECONDS * 1000

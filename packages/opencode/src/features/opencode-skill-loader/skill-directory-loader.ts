@@ -1,6 +1,6 @@
 import { promises as fs } from "fs"
 import { join } from "path"
-import { resolveSymlinkAsync, isMarkdownFile } from "../../shared/file-utils"
+import { resolveSymlinkAsync, isMarkdownFile } from "../../util/file-utils"
 import type { LoadedSkill, SkillScope } from "./types"
 import { inferSkillNameFromFileName, loadSkillFromPath } from "./loaded-skill-from-path"
 

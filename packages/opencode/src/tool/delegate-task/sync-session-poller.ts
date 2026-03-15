@@ -1,7 +1,7 @@
 import type { ToolContextWithMetadata, OpencodeClient } from "./types"
 import type { SessionMessage } from "./executor-types"
 import { getDefaultSyncPollTimeoutMs, getTimingConfig } from "./timing"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 
 const NON_TERMINAL_FINISH_REASONS = new Set(["tool-calls", "unknown"])

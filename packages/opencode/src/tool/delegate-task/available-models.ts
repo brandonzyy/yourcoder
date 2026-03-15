@@ -1,6 +1,6 @@
 import type { OpencodeClient } from "./types"
-import { log } from "../../shared/logger"
-import { readConnectedProvidersCache, readProviderModelsCache } from "../../shared/connected-providers-cache"
+import { log } from "../../util/logger"
+import { readConnectedProvidersCache, readProviderModelsCache } from "../../util/connected-providers-cache"
 
 function addFromProviderModels(
   out: Set<string>,

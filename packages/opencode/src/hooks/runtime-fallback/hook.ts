@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { HookDeps, RuntimeFallbackHook, RuntimeFallbackOptions } from "./types"
 import { DEFAULT_CONFIG, HOOK_NAME } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { loadPluginConfig } from "../../plugin/plugin-config"
 import { createAutoRetryHelpers } from "./auto-retry"
 import { createEventHandler } from "./event-handler"

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { resolveParentContext } from "./parent-context-resolver"
 import * as injector from "../../features/hook-message-injector"
 import * as state from "../../features/claude-code-session-state"
-import * as dir from "../../shared/opencode-message-dir"
+import * as dir from "../../util/opencode-message-dir"
 
 const spies: Array<{ mockRestore(): void }> = []
 

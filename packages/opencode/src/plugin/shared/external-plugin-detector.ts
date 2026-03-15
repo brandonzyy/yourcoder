@@ -6,7 +6,7 @@
 import * as fs from "node:fs"
 import * as path from "node:path"
 import * as os from "node:os"
-import { log } from "./logger"
+import { log } from "../../util/logger"
 import { parseJsoncSafe } from "./jsonc-parser"
 
 interface OpencodeConfig {

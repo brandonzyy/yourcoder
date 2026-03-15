@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, readFileSync } from "fs"
 import { basename, join } from "path"
-import { parseFrontmatter } from "../../shared/frontmatter"
-import { isMarkdownFile } from "../../shared/file-utils"
+import { parseFrontmatter } from "../../util/frontmatter"
+import { isMarkdownFile } from "../../util/file-utils"
 import { sanitizeModelField } from "../../model/model-sanitizer"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import type { CommandDefinition, CommandFrontmatter } from "../builtin-commands/command-types"
 import type { LoadedPlugin } from "./types"
 

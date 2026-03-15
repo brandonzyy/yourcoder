@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from "fs"
 import { join } from "path"
-import { log } from "../shared/logger"
+import { log } from "../util/logger"
 import { getOpenCodeCacheDir } from "../config/data-path"
-import * as connectedProvidersCache from "../shared/connected-providers-cache"
+import * as connectedProvidersCache from "../util/connected-providers-cache"
 import { normalizeSDKResponse } from "./normalize-sdk-response"
 
 /**

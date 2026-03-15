@@ -1,17 +1,17 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 
 import type { BackgroundManager } from "../../features/background-agent"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
-import { resolveInheritedPromptTools } from "../../shared/prompt-tools"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
+import { resolveInheritedPromptTools } from "../../util/prompt-tools"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import {
   findNearestMessageWithFields,
   findNearestMessageWithFieldsFromSDK,
   type ToolPermission,
 } from "../../features/hook-message-injector"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import { getAgentConfigKey } from "../../shared/agent-display-names"
+import { getAgentConfigKey } from "../../util/agent-display-names"
 
 import {
   CONTINUATION_PROMPT,

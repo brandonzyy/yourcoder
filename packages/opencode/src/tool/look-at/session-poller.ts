@@ -1,5 +1,5 @@
 import type { createOpencodeClient } from "@opencode-ai/sdk"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 type Client = ReturnType<typeof createOpencodeClient>
 

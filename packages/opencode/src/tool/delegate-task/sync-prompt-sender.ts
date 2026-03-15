@@ -7,7 +7,7 @@ import {
 } from "../../model/model-suggestion-retry"
 import { formatDetailedError } from "./error-formatting"
 import { setSessionTools } from "../../session/session-tools-store"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 
 type SendSyncPromptDeps = {
   promptWithModelSuggestionRetry: typeof promptWithModelSuggestionRetry

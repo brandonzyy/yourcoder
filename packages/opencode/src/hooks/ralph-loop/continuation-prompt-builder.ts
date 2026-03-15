@@ -1,4 +1,4 @@
-import { SYSTEM_DIRECTIVE_PREFIX } from "../../shared/system-directive"
+import { SYSTEM_DIRECTIVE_PREFIX } from "../shared/system-directive"
 import type { RalphLoopState } from "./types"
 
 function getMaxIterationsLabel(state: RalphLoopState): string {

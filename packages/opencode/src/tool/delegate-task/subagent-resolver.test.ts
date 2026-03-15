@@ -3,8 +3,8 @@ const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("
 import { resolveSubagentExecution } from "./subagent-resolver"
 import type { DelegateTaskArgs } from "./types"
 import type { ExecutorContext } from "./executor-types"
-import * as logger from "../../shared/logger"
-import * as connectedProvidersCache from "../../shared/connected-providers-cache"
+import * as logger from "../../util/logger"
+import * as connectedProvidersCache from "../../util/connected-providers-cache"
 
 function createBaseArgs(overrides?: Partial<DelegateTaskArgs>): DelegateTaskArgs {
   return {

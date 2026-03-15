@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from "b
 import type { PluginInput } from "@opencode-ai/plugin"
 import * as originalExecutor from "./executor"
 import * as originalParser from "./parser"
-import * as originalLogger from "../../shared/logger"
+import * as originalLogger from "../../util/logger"
 
 const executeCompactMock = mock(async () => {})
 const getLastAssistantMock = mock(async () => ({

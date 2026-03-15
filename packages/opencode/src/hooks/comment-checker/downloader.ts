@@ -10,8 +10,8 @@ import {
   extractTarGz,
   extractZipArchive,
   getCachedBinaryPath as getCachedBinaryPathShared,
-} from "../../shared/binary-downloader"
-import { log } from "../../shared/logger"
+} from "../shared/binary-downloader"
+import { log } from "../../util/logger"
 
 const DEBUG = process.env.COMMENT_CHECKER_DEBUG === "1"
 const DEBUG_FILE = join(tmpdir(), "comment-checker-debug.log")

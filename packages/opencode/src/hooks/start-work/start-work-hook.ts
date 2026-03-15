@@ -10,7 +10,7 @@ import {
   getPlanName,
   clearBoulderState,
 } from "../../features/boulder-state"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { updateSessionAgent } from "../../features/claude-code-session-state"
 import { detectWorktreePath } from "./worktree-detector"
 import { parseUserRequest } from "./parse-user-request"

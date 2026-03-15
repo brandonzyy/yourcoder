@@ -11,7 +11,7 @@ export async function replaceTmuxPane(
 	config: TmuxConfig,
 	serverUrl: string,
 ): Promise<SpawnPaneResult> {
-	const { log } = await import("../../../../shared/logger")
+	const { log } = await import("../../../../util/logger")
 
 	log("[replaceTmuxPane] called", { paneId, sessionId, description })
 

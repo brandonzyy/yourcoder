@@ -3,7 +3,7 @@ import type { TmuxConfig } from '../../config/plugin-schema'
 import type { WindowState, PaneAction } from './types'
 import type { ActionResult, ExecuteContext } from './action-executor'
 import type { TmuxUtilDeps } from './manager'
-import * as logger from '../../shared/logger'
+import * as logger from '../../util/logger'
 
 type ExecuteActionsResult = {
   success: boolean

@@ -1,8 +1,8 @@
 import type { BackgroundManager } from "../../features/background-agent"
 import { getMainSessionID, getSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../shared/logger"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
-import { resolveInheritedPromptTools } from "../../shared/prompt-tools"
+import { log } from "../../util/logger"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
+import { resolveInheritedPromptTools } from "../../util/prompt-tools"
 import {
   buildReminder,
   extractMessages,

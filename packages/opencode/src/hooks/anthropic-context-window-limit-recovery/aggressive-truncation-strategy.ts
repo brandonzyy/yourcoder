@@ -4,8 +4,8 @@ import { truncateUntilTargetTokens } from "./storage"
 import type { Client } from "./client"
 import { clearSessionState } from "./state"
 import { formatBytes } from "./message-builder"
-import { log } from "../../shared/logger"
-import { resolveInheritedPromptTools } from "../../shared/prompt-tools"
+import { log } from "../../util/logger"
+import { resolveInheritedPromptTools } from "../../util/prompt-tools"
 
 export async function runAggressiveTruncationStrategy(params: {
   sessionID: string

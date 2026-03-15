@@ -1,11 +1,11 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { detectKeywordsWithType, extractPromptText } from "./detector"
 import { isPlannerAgent } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import {
   isSystemDirective,
   removeSystemReminders,
-} from "../../shared/system-directive"
+} from "../shared/system-directive"
 import {
   getMainSessionID,
   getSessionAgent,

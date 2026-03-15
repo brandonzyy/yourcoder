@@ -5,7 +5,7 @@ import { getMessageIds } from "./message-storage-directory"
 import { PART_STORAGE_DIR, TRUNCATION_MESSAGE } from "./storage-paths"
 import type { StoredToolPart, ToolResultInfo } from "./tool-part-types"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 let hasLoggedTruncateWarning = false
 

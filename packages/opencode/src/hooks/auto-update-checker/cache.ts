@@ -1,7 +1,7 @@
 import * as fs from "node:fs"
 import * as path from "node:path"
 import { CACHE_DIR, PACKAGE_NAME, USER_CONFIG_DIR } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 interface BunLockfile {
   workspaces?: {

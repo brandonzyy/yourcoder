@@ -5,7 +5,7 @@ import * as retry from "./auto-retry"
 import * as event from "./event-handler"
 import * as update from "./message-update-handler"
 import * as chat from "./chat-message-handler"
-import * as logger from "../../shared/logger"
+import * as logger from "../../util/logger"
 
 const spies: Array<{ mockRestore(): void }> = []
 

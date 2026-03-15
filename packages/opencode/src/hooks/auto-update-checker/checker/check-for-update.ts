@@ -1,4 +1,4 @@
-import { log } from "../../../shared/logger"
+import { log } from "../../../util/logger"
 import type { UpdateCheckResult } from "../types"
 import { extractChannel } from "../version-channel"
 import { isLocalDevMode } from "./local-dev-path"

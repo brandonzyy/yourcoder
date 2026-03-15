@@ -2,16 +2,16 @@ import type { BackgroundTask, LaunchInput } from "./types"
 import type { FallbackEntry } from "../../model/model-requirements"
 import type { ConcurrencyManager } from "./concurrency"
 import type { OpencodeClient, QueueItem } from "./constants"
-import { log } from "../../shared/logger"
-import { readConnectedProvidersCache } from "../../shared/connected-providers-cache"
-import {readProviderModelsCache} from "../../shared/connected-providers-cache"
+import { log } from "../../util/logger"
+import { readConnectedProvidersCache } from "../../util/connected-providers-cache"
+import {readProviderModelsCache} from "../../util/connected-providers-cache"
 import {
   shouldRetryError,
   getNextFallback,
   hasMoreFallbacks,
   selectFallbackProvider,
 } from "../../model/model-error-classifier"
-import { transformModelForProvider } from "../../shared/provider-model-id-transform"
+import { transformModelForProvider } from "../../util/provider-model-id-transform"
 
 export function tryFallbackRetry(args: {
   task: BackgroundTask

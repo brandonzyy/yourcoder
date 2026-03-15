@@ -1,6 +1,6 @@
 import { describe, expect, spyOn, test } from "bun:test"
 import { _resetForTesting, updateSessionAgent } from "../../features/claude-code-session-state"
-import { getAgentDisplayName } from "../../shared/agent-display-names"
+import { getAgentDisplayName } from "../../util/agent-display-names"
 import { createNoSisyphusGptHook } from "./index"
 
 const SISYPHUS_DISPLAY = getAgentDisplayName("sisyphus")

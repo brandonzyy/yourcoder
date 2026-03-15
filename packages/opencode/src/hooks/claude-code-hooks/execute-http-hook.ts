@@ -1,5 +1,5 @@
 import type { HookHttp } from "./types"
-import type { CommandResult } from "../../shared/command-executor/execute-hook-command"
+import type { CommandResult } from "../shared/command-executor/execute-hook-command"
 
 const DEFAULT_HTTP_HOOK_TIMEOUT_S = 30
 const ALLOWED_SCHEMES = new Set(["http:", "https:"])

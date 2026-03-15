@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync, unlinkSync, mkdirSync } from "node:fs"
 import { dirname, join } from "node:path"
-import { parseFrontmatter } from "../../shared/frontmatter"
+import { parseFrontmatter } from "../../util/frontmatter"
 import type { RalphLoopState } from "./types"
 import { DEFAULT_STATE_FILE, DEFAULT_COMPLETION_PROMISE, DEFAULT_MAX_ITERATIONS } from "./constants"
 

@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { isRecord } from "../../shared/record-type-guard"
-import { log } from "../../shared/logger"
+import { isRecord } from "../shared/record-type-guard"
+import { log } from "../../util/logger"
 
 export async function createIterationSession(
   ctx: PluginInput,

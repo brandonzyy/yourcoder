@@ -6,7 +6,7 @@ import {
 import { OMO_SESSION_PREFIX, buildSessionReminderMessage } from "./constants";
 import type { InteractiveBashSessionState } from "./types";
 import { subagentSessions } from "../../features/claude-code-session-state";
-import { spawnWithWindowsHide } from "../../shared/spawn-with-windows-hide";
+import { spawnWithWindowsHide } from "../../util/spawn-with-windows-hide";
 
 type AbortSession = (args: { path: { id: string } }) => Promise<unknown>
 

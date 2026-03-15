@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { _resetForTesting, setMainSession } from "../../features/claude-code-session-state"
 import type { BackgroundTask } from "../../features/background-agent"
-import { OMO_INTERNAL_INITIATOR_MARKER } from "../../shared/internal-initiator-marker"
+import { OMO_INTERNAL_INITIATOR_MARKER } from "../../util/internal-initiator-marker"
 import { createUnstableAgentBabysitterHook } from "./index"
 
 const projectDir = process.cwd()

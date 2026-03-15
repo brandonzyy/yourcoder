@@ -3,8 +3,8 @@ import type { OpencodeClient } from "./types"
 import type { ParentContext } from "./executor-types"
 import { resolveMessageContext } from "../../features/hook-message-injector"
 import { getSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../shared/logger"
-import { getMessageDir } from "../../shared/opencode-message-dir"
+import { log } from "../../util/logger"
+import { getMessageDir } from "../../util/opencode-message-dir"
 
 export async function resolveParentContext(
   ctx: ToolContextWithMetadata,

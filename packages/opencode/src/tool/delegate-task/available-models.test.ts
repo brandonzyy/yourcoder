@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { getAvailableModelsForDelegateTask } from "./available-models"
-import * as cache from "../../shared/connected-providers-cache"
+import * as cache from "../../util/connected-providers-cache"
 
 const spies: Array<{ mockRestore(): void }> = []
 

@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 import type { BackgroundTaskConfig } from "../../config/plugin-schema"
 import type { BackgroundTask } from "./types"

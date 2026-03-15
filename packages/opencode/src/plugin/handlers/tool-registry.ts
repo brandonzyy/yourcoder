@@ -10,7 +10,7 @@ import { createDelegateTask } from "../../tool/delegate-task"
 import { interactive_bash } from "../../tool/interactive-bash"
 import { createHashlineEditTool } from "../../tool/hashline-edit"
 import { createLookAt } from "../../tool/look-at"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { CapabilityRegistry, fromPluginTool } from "../../capability"
 
 import type { Managers } from "../create-managers"

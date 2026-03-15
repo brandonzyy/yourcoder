@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { HOOK_NAME } from "./constants"
 
 interface MessagePart {

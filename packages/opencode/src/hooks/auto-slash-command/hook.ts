@@ -4,7 +4,7 @@ import {
   findSlashCommandPartIndex,
 } from "./detector"
 import { executeSlashCommand, type ExecutorOptions } from "./executor"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import {
   AUTO_SLASH_COMMAND_TAG_CLOSE,
   AUTO_SLASH_COMMAND_TAG_OPEN,

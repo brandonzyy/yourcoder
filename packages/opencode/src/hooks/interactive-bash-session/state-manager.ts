@@ -1,7 +1,7 @@
 import type { InteractiveBashSessionState } from "./types";
 import { loadInteractiveBashSessionState } from "./storage";
 import { OMO_SESSION_PREFIX } from "./constants";
-import { spawnWithWindowsHide } from "../../shared/spawn-with-windows-hide";
+import { spawnWithWindowsHide } from "../../util/spawn-with-windows-hide";
 
 export function getOrCreateState(sessionID: string, sessionStates: Map<string, InteractiveBashSessionState>): InteractiveBashSessionState {
   if (!sessionStates.has(sessionID)) {

@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 
 import { isCallerOrchestrator } from "../../session/session-utils"
-import { SYSTEM_DIRECTIVE_PREFIX } from "../../shared/system-directive"
-import { log } from "../../shared/logger"
+import { SYSTEM_DIRECTIVE_PREFIX } from "../shared/system-directive"
+import { log } from "../../util/logger"
 import { HOOK_NAME, NOTEPAD_DIRECTIVE } from "./constants"
 
 export function createSisyphusJuniorNotepadHook(ctx: PluginInput) {

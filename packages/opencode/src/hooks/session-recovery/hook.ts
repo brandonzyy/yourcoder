@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { ExperimentalConfig } from "../../config/plugin-config-types"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { detectErrorType } from "./detect-error-type"
 import type { RecoveryErrorType } from "./detect-error-type"
 import type { MessageData } from "./types"

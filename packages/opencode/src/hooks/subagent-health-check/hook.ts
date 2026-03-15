@@ -1,6 +1,6 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { SubagentHealthCheckConfig } from "./types"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 const HOOK_NAME = "subagent-health-check"
 

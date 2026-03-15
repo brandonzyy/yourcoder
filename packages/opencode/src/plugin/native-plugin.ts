@@ -10,9 +10,9 @@ import { createPluginInterface } from "./plugin-interface"
 
 import { loadPluginConfig } from "./plugin-config"
 import { createModelCacheState } from "./plugin-state"
-import { createFirstMessageVariantGate } from "../shared/first-message-variant"
-import { log } from "../shared/logger"
-import { injectServerAuthIntoClient } from "../shared/opencode-server-auth"
+import { createFirstMessageVariantGate } from "./shared/first-message-variant"
+import { log } from "../util/logger"
+import { injectServerAuthIntoClient } from "./shared/opencode-server-auth"
 import { startBackgroundCheck as startTmuxCheck } from "../tool/interactive-bash"
 
 const NativePlugin: Plugin = async (ctx) => {

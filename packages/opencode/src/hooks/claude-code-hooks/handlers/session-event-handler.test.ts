@@ -4,7 +4,7 @@ import * as cfg from "../config"
 import * as ext from "../config-loader"
 import * as stop from "../stop"
 import * as disabled from "../../shared/hook-disabled"
-import * as initiatorMarker from "../../../shared/internal-initiator-marker"
+import * as initiatorMarker from "../../../util/internal-initiator-marker"
 import { clearSessionHookState, sessionErrorState } from "../session-hook-state"
 
 const spies: Array<{ mockRestore(): void }> = []

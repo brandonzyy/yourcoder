@@ -1,7 +1,7 @@
 import { spawn } from "bun"
 import type { WindowState, TmuxPaneInfo } from "./types"
 import { getTmuxPath } from "../../tool/interactive-bash/tmux-path-resolver"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 export async function queryWindowState(sourcePaneId: string): Promise<WindowState | null> {
   const tmux = await getTmuxPath()

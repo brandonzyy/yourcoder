@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { buildContinuationPrompt } from "./continuation-prompt-builder"
 import { HOOK_NAME } from "./constants"
 import { injectContinuationPrompt } from "./continuation-prompt-injector"

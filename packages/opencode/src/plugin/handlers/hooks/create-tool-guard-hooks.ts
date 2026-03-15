@@ -19,9 +19,9 @@ import {
   getOpenCodeVersion,
   isOpenCodeVersionAtLeast,
   OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
-} from "../../../shared/opencode-version"
-import { log } from "../../../shared/logger"
-import { safeCreateHook } from "../../../shared/safe-create-hook"
+} from "../../shared/opencode-version"
+import { log } from "../../../util/logger"
+import { safeCreateHook } from "../../shared/safe-create-hook"
 
 export type ToolGuardHooks = {
   commentChecker: ReturnType<typeof createCommentCheckerHooks> | null

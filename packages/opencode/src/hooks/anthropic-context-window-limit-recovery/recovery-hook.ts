@@ -5,7 +5,7 @@ import type { ExperimentalConfig, OhMyOpenCodeConfig } from "../../config/plugin
 import { parseAnthropicTokenLimitError } from "./parser"
 import { executeCompact, getLastAssistant } from "./executor"
 import { attemptDeduplicationRecovery } from "./deduplication-recovery"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 export interface AnthropicContextWindowLimitRecoveryOptions {
   experimental?: ExperimentalConfig

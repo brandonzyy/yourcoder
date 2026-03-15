@@ -7,7 +7,7 @@ import type { DelegateTaskArgs } from "./types"
 import { __resetModelCache } from "../../model/model-availability"
 import { clearSkillCache } from "../../features/opencode-skill-loader/skill-content"
 import { __setTimingConfig, __resetTimingConfig } from "./timing"
-import * as connectedProvidersCache from "../../shared/connected-providers-cache"
+import * as connectedProvidersCache from "../../util/connected-providers-cache"
 import * as executor from "./executor"
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-6"

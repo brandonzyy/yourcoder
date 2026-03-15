@@ -1,7 +1,7 @@
 import { existsSync } from "fs"
 import { join } from "path"
 import type { ClaudeHookEvent } from "./types"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import {getOpenCodeConfigDir} from "../../config/opencode-config-dir"
 
 export interface DisabledHooksConfig {

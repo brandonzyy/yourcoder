@@ -4,9 +4,9 @@ import type { CommandDefinition } from "../../builtin-commands/command-types"
 import { existsSync, readFileSync } from "fs"
 import { dirname, isAbsolute, resolve } from "path"
 import { homedir } from "os"
-import { parseFrontmatter } from "../../../shared/frontmatter"
+import { parseFrontmatter } from "../../../util/frontmatter"
 import { sanitizeModelField } from "../../../model/model-sanitizer"
-import { resolveSkillPathReferences } from "../../../shared/skill-path-resolver"
+import { resolveSkillPathReferences } from "../../../util/skill-path-resolver"
 import { parseAllowedTools } from "../allowed-tools-parser"
 
 function resolveFilePath(from: string, configDir?: string): string {

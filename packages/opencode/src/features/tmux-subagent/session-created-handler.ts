@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { TmuxConfig } from "../../config/plugin-schema"
 import type { CapacityConfig, TrackedSession } from "./types"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { queryWindowState } from "./pane-state-querier"
 import { decideSpawnActions, type SessionMapping } from "./decision-engine"
 import { executeActions } from "./action-executor"

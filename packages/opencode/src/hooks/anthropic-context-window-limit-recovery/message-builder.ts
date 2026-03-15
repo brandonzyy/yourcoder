@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import type { PluginInput } from "@opencode-ai/plugin"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"

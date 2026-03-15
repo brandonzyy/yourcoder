@@ -1,7 +1,7 @@
 import type { createOpencodeClient } from "@opencode-ai/sdk"
 import type { MessageData, ResumeConfig } from "./types"
-import { createInternalAgentTextPart } from "../../shared/internal-initiator-marker"
-import { resolveInheritedPromptTools } from "../../shared/prompt-tools"
+import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
+import { resolveInheritedPromptTools } from "../../util/prompt-tools"
 
 const RECOVERY_RESUME_TEXT = "[session recovered - continuing previous task]"
 

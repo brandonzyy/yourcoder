@@ -1,4 +1,4 @@
-import { createSystemDirective, SystemDirectiveTypes } from "../../shared/system-directive"
+import { createSystemDirective, SystemDirectiveTypes } from "../shared/system-directive"
 
 export const HOOK_NAME = "todo-continuation-enforcer"
 

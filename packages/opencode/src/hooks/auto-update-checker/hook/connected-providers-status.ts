@@ -1,7 +1,7 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { updateConnectedProvidersCache } from "../../../shared/connected-providers-cache"
+import { updateConnectedProvidersCache } from "../../../util/connected-providers-cache"
 import { isModelCacheAvailable } from "../../../model/model-availability"
-import { log } from "../../../shared/logger"
+import { log } from "../../../util/logger"
 
 const CACHE_UPDATE_TIMEOUT_MS = 10000
 

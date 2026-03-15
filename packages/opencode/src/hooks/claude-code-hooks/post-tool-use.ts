@@ -4,9 +4,9 @@ import type {
   ClaudeHooksConfig,
 } from "./types"
 import { findMatchingHooks } from "../shared/pattern-matcher"
-import { log } from "../../shared/logger"
-import { objectToSnakeCase } from "../../shared/snake-case"
-import { transformToolName } from "../../shared/tool-name"
+import { log } from "../../util/logger"
+import { objectToSnakeCase } from "../shared/snake-case"
+import { transformToolName } from "../shared/tool-name"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { buildTranscriptFromSession, deleteTempTranscript } from "./transcript"
 import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"

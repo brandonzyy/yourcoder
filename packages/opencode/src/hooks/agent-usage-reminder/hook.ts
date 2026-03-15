@@ -7,7 +7,7 @@ import {
 import { TARGET_TOOLS, AGENT_TOOLS, REMINDER_MESSAGE, EXECUTION_TOOLS, EXECUTION_REMINDER_MESSAGE } from "./constants";
 import type { AgentUsageState } from "./types";
 import { getSessionAgent } from "../../features/claude-code-session-state";
-import { getAgentConfigKey } from "../../shared/agent-display-names";
+import { getAgentConfigKey } from "../../util/agent-display-names";
 
 interface ToolExecuteInput {
   tool: string;

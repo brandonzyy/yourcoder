@@ -1,8 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import { isGptModel, isGpt5_4Model } from "../../agent/plugin-agent-types"
 import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
-import { log } from "../../shared/logger"
-import { getAgentConfigKey, getAgentDisplayName } from "../../shared/agent-display-names"
+import { log } from "../../util/logger"
+import { getAgentConfigKey, getAgentDisplayName } from "../../util/agent-display-names"
 
 const TOAST_TITLE = "NEVER Use Sisyphus with GPT"
 const TOAST_MESSAGE = [

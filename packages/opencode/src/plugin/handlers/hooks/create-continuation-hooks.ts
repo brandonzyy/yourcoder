@@ -9,7 +9,7 @@ import {
   createCompactionContextInjector,
   createCompactionTodoPreserverHook,
 } from "../../../hooks"
-import { safeCreateHook } from "../../../shared/safe-create-hook"
+import { safeCreateHook } from "../../shared/safe-create-hook"
 import { createUnstableAgentBabysitter } from "../unstable-agent-babysitter"
 
 export type ContinuationHooks = {

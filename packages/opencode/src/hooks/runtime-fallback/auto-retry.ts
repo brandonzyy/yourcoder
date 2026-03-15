@@ -1,6 +1,6 @@
 import type { HookDeps } from "./types"
 import { HOOK_NAME } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { normalizeAgentName, resolveAgentForSession } from "./agent-resolver"
 import { getSessionAgent } from "../../features/claude-code-session-state"
 import { getFallbackModelsForSession } from "./fallback-models"

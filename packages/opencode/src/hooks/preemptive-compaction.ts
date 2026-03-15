@@ -1,4 +1,4 @@
-import { log } from "../shared/logger"
+import { log } from "../util/logger"
 import type { OhMyOpenCodeConfig } from "../config/plugin-config-types"
 
 import { resolveCompactionModel } from "./shared/compaction-model-resolver"

@@ -4,7 +4,7 @@ import {
   POLL_INTERVAL_BACKGROUND_MS,
   SESSION_MISSING_GRACE_MS,
 } from "./shared"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import type { TrackedSession } from "./types"
 import { queryWindowState } from "./pane-state-querier"
 import { executeAction } from "./action-executor"

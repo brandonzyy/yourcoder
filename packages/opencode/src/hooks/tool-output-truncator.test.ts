@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, mock, spyOn } from "bun:test"
 import { createToolOutputTruncatorHook } from "./tool-output-truncator"
-import * as dynamicTruncator from "../shared/dynamic-truncator"
+import * as dynamicTruncator from "./shared/dynamic-truncator"
 
 describe("createToolOutputTruncatorHook", () => {
   let hook: ReturnType<typeof createToolOutputTruncatorHook>

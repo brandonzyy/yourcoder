@@ -1,7 +1,7 @@
 import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
 import { AGENT_NAMES, agentPattern } from "./agent-resolver"
 import { HOOK_NAME } from "./constants"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { SessionCategoryRegistry } from "../../session/session-category-registry"
 import { normalizeFallbackModels } from "../../model/model-resolver"
 

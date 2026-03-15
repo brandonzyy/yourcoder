@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "fs"
 import { homedir } from "os"
 import { join } from "path"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import type {
   InstalledPluginsDatabase,
   PluginInstallation,

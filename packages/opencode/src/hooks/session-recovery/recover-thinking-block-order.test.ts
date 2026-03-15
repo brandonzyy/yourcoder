@@ -5,7 +5,7 @@ import { tmpdir } from "node:os"
 import type { MessageData } from "./types"
 import { recoverThinkingBlockOrder } from "./recover-thinking-block-order"
 import { resetSqliteBackendCache } from "../../config/opencode-storage-detection"
-import { resetVersionCache, setVersionCache } from "../../shared/opencode-version"
+import { resetVersionCache, setVersionCache } from "../../plugin/shared/opencode-version"
 
 const oldFetch = globalThis.fetch
 const oldData = process.env.XDG_DATA_HOME

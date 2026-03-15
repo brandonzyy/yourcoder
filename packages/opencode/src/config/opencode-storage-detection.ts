@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs"
 import { join } from "node:path"
 import { getDataDir } from "./data-path"
-import { isOpenCodeVersionAtLeast, OPENCODE_SQLITE_VERSION } from "../shared/opencode-version"
+import { isOpenCodeVersionAtLeast, OPENCODE_SQLITE_VERSION } from "../plugin/shared/opencode-version"
 
 const NOT_CACHED = Symbol("NOT_CACHED")
 const FALSE_PENDING_RETRY = Symbol("FALSE_PENDING_RETRY")

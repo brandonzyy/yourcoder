@@ -1,4 +1,4 @@
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 type ProcessCleanupEvent = NodeJS.Signals | "beforeExit" | "exit"
 

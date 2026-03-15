@@ -3,7 +3,7 @@ import type { DelegateTaskArgs, ToolContextWithMetadata, DelegateTaskToolOptions
 import { CATEGORY_DESCRIPTIONS } from "./constants"
 import { SISYPHUS_JUNIOR_AGENT } from "./sisyphus-junior-agent"
 import { mergeCategories } from "../../config/plugin-utils/merge-categories"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 import { buildSystemContent } from "./prompt-builder"
 import type {
   AvailableCategory,

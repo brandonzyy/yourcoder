@@ -1,1 +1,1 @@
-export { getMessageDir } from "../../../shared/opencode-message-dir"
+export { getMessageDir } from "../../../util/opencode-message-dir"

@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin"
-import { log } from "../../shared/logger"
+import { log } from "../../util/logger"
 
 interface TodoSnapshot {
   id: string

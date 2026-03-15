@@ -10,7 +10,7 @@ vi.mock("./logger", () => ({
   log: vi.fn(),
 }))
 
-import { log } from "./logger"
+import { log } from "../../util/logger"
 
 describe("getServerBaseUrl", () => {
   it("returns baseUrl from client._client.getConfig().baseUrl", () => {

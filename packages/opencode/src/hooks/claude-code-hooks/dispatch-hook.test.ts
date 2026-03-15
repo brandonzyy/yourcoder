@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
-import * as commandExecutor from "../../shared/command-executor/execute-hook-command"
+import * as commandExecutor from "../shared/command-executor/execute-hook-command"
 import * as http from "./execute-http-hook"
 import { DEFAULT_CONFIG } from "./plugin-config"
 
