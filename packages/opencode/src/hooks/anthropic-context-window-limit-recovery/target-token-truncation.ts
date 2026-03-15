@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { AggressiveTruncateResult } from "./tool-part-types"
 import type { ToolResultInfo } from "./tool-part-types"
 import { findToolResultsBySize, truncateToolResult } from "./tool-result-storage"

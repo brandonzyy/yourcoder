@@ -1,5 +1,5 @@
 import type { AvailableCategory, AvailableSkill } from "../agent/dynamic-agent-prompt-builder"
-import type { OhMyOpenCodeConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-config-types"
 import type { BrowserAutomationProvider } from "../config/plugin-schema/browser-automation"
 import type { LoadedSkill } from "../features/opencode-skill-loader/types"
 import type { PluginContext, ToolsRecord } from "./handlers/types"
@@ -22,7 +22,7 @@ export type CreateToolsResult = {
 
 export async function createTools(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   managers: Pick<Managers, "backgroundManager" | "tmuxSessionManager">
 }): Promise<CreateToolsResult> {
   const { ctx, pluginConfig, managers } = args

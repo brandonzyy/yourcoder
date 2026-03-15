@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import * as originalExecutor from "./executor"
 import * as originalParser from "./parser"
 import * as originalLogger from "../../util/logger"

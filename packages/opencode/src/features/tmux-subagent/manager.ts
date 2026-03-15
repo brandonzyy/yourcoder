@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { TmuxConfig } from "../../config/plugin-schema"
 import type { TrackedSession, CapacityConfig } from "./types"
 import {log} from "../../util/logger"

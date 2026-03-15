@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../plugin/sdk"
 import type { ExperimentalConfig } from "../config/plugin-schema"
 import { createDynamicTruncator } from "./shared/dynamic-truncator"
 

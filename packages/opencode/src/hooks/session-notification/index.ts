@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { subagentSessions, getMainSessionID } from "../../features/claude-code-session-state"
 import {
   type Platform,

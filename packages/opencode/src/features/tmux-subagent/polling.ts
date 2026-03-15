@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { TmuxConfig } from "../../config/plugin-schema"
 import {
   POLL_INTERVAL_BACKGROUND_MS,

@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { HookDeps, RuntimeFallbackHook, RuntimeFallbackOptions } from "./types"
 import { DEFAULT_CONFIG, HOOK_NAME } from "./constants"
 import { log } from "../../util/logger"

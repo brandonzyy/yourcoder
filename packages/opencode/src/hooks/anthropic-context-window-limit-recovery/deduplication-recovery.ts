@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { ParsedTokenLimitError } from "./types"
 import type { ExperimentalConfig } from "../../config/plugin-config-types"
 import type { DeduplicationConfig } from "./pruning-deduplication"

@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { isRecord } from "../shared/record-type-guard"
 import { log } from "../../util/logger"
 

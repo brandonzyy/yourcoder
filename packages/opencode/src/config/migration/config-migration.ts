@@ -1,5 +1,5 @@
 import * as fs from "fs"
-import { log } from "../../../util/logger"
+import { log } from "../../util/logger"
 import { AGENT_NAME_MAP, migrateAgentNames } from "./agent-names"
 import { migrateHookNames } from "./hook-names"
 import { migrateModelVersions } from "./model-versions"

@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import { AGENT_NAMES, agentPattern } from "./agent-resolver"
 import { HOOK_NAME } from "./constants"
 import { log } from "../../util/logger"
@@ -8,7 +8,7 @@ import { normalizeFallbackModels } from "../../model/model-resolver"
 export function getFallbackModelsForSession(
   sessionID: string,
   agent: string | undefined,
-  pluginConfig: OhMyOpenCodeConfig | undefined
+  pluginConfig: PluginConfig | undefined
 ): string[] {
   if (!pluginConfig) return []
 

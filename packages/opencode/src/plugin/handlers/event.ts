@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types";
+import type { PluginConfig } from "../../config/plugin-config-types";
 import type { PluginContext } from "./types";
 
 import {
@@ -104,7 +104,7 @@ function isCompactionAgent(agent: string): boolean {
 type EventInput = Parameters<NonNullable<NonNullable<CreatedHooks["writeExistingFileGuard"]>["event"]>>[0];
 export function createEventHandler(args: {
   ctx: PluginContext;
-  pluginConfig: OhMyOpenCodeConfig;
+  pluginConfig: PluginConfig;
   firstMessageVariantGate: FirstMessageVariantGate;
   managers: Managers;
   hooks: CreatedHooks;

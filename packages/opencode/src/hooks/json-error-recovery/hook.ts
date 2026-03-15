@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 
 export const JSON_ERROR_TOOL_EXCLUDE_LIST = [
   "bash",

@@ -1,4 +1,4 @@
-import { tool, type ToolContext, type ToolDefinition } from "@opencode-ai/plugin/tool"
+import { tool, type ToolContext, type ToolDefinition } from "../../plugin/sdk"
 import { executeHashlineEditTool } from "./hashline-edit-executor"
 import { HASHLINE_EDIT_DESCRIPTION } from "./tool-description"
 import type { RawHashlineEdit } from "./normalize-edits"

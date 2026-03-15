@@ -1,4 +1,4 @@
-import type { HookName, OhMyOpenCodeConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
 import type { PluginContext } from "../types"
 import type { ModelCacheState } from "../../plugin-state"
 
@@ -8,7 +8,7 @@ import { createTransformHooks } from "./create-transform-hooks"
 
 export function createCoreHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   modelCacheState: ModelCacheState
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean

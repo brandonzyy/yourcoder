@@ -1,4 +1,4 @@
-import type { HookName, OhMyOpenCodeConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
 import type { ModelCacheState } from "../../plugin-state"
 import type { PluginContext } from "../types"
 
@@ -19,9 +19,9 @@ import {
   getOpenCodeVersion,
   isOpenCodeVersionAtLeast,
   OPENCODE_NATIVE_AGENTS_INJECTION_VERSION,
-} from "../../shared/opencode-version"
+} from "../../../config/opencode-version"
 import { log } from "../../../util/logger"
-import { safeCreateHook } from "../../shared/safe-create-hook"
+import { safeCreateHook } from "../../safe-create-hook"
 
 export type ToolGuardHooks = {
   commentChecker: ReturnType<typeof createCommentCheckerHooks> | null
@@ -39,7 +39,7 @@ export type ToolGuardHooks = {
 
 export function createToolGuardHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   modelCacheState: ModelCacheState
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean

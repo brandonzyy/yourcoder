@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../../plugin/sdk"
 import { isModelCacheAvailable } from "../../../model/model-availability"
 import { log } from "../../../util/logger"
 

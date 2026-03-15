@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test"
 import { tmpdir } from "node:os"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { BackgroundManager } from "./manager"
 
 function createManagerWithStatus(statusImpl: () => Promise<{ data: Record<string, { type: string }> }>): BackgroundManager {

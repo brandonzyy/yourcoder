@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../../plugin/sdk"
 import { PART_STORAGE } from "../constants"
 import type { StoredPart, StoredTextPart, MessageData } from "../types"
 import { readMessages } from "./messages-reader"

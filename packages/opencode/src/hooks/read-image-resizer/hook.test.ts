@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 
 import { afterEach, beforeEach, describe, expect, it, mock } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 
 import type { ImageDimensions, ResizeResult } from "./types"
 

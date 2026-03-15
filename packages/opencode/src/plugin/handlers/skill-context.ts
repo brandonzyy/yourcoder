@@ -1,5 +1,5 @@
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import type { BrowserAutomationProvider } from "../../config/plugin-schema/browser-automation"
 import type {
   LoadedSkill,
@@ -34,7 +34,7 @@ function mapScopeToLocation(scope: SkillScope): AvailableSkill["location"] {
 
 export async function createSkillContext(args: {
   directory: string
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
 }): Promise<SkillContext> {
   const { directory, pluginConfig } = args
 

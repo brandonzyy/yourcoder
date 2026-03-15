@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import type { AgentOverrides } from "../../config/plugin-schema/agent-overrides"
 import { getSessionAgent } from "../../features/claude-code-session-state"
 import { log } from "../../util/logger"
@@ -53,7 +53,7 @@ function isSameModel(
  * Returns null if no override should be applied.
  */
 export function resolveUltraworkOverride(
-  pluginConfig: OhMyOpenCodeConfig,
+  pluginConfig: PluginConfig,
   inputAgentName: string | undefined,
   output: {
     message: Record<string, unknown>
@@ -102,7 +102,7 @@ export function resolveUltraworkOverride(
  * Result: API call uses opus, TUI bottom bar stays on sonnet.
  */
 export function applyUltraworkModelOverrideOnMessage(
-  pluginConfig: OhMyOpenCodeConfig,
+  pluginConfig: PluginConfig,
   inputAgentName: string | undefined,
   output: {
     message: Record<string, unknown>

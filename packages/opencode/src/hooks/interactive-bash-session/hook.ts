@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin";
+import type { PluginInput } from "../../plugin/sdk";
 import { saveInteractiveBashSessionState, clearInteractiveBashSessionState } from "./storage";
 import { buildSessionReminderMessage } from "./constants";
 import type { InteractiveBashSessionState } from "./types";

@@ -1,5 +1,5 @@
 import { describe, expect, test, mock } from "bun:test"
-import type { ToolContext } from "@opencode-ai/plugin/tool"
+import type { ToolContext } from "../../plugin/sdk"
 import { normalizeArgs, validateArgs, createLookAt } from "./tools"
 
 describe("look-at tool", () => {

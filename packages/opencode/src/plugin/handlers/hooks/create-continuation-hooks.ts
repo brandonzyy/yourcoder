@@ -1,4 +1,4 @@
-import type { HookName, OhMyOpenCodeConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
 import type { BackgroundManager } from "../../../features/background-agent"
 import type { PluginContext } from "../types"
 
@@ -9,7 +9,7 @@ import {
   createCompactionContextInjector,
   createCompactionTodoPreserverHook,
 } from "../../../hooks"
-import { safeCreateHook } from "../../shared/safe-create-hook"
+import { safeCreateHook } from "../../safe-create-hook"
 import { createUnstableAgentBabysitter } from "../unstable-agent-babysitter"
 
 export type ContinuationHooks = {
@@ -28,7 +28,7 @@ type SessionRecovery = {
 
 export function createContinuationHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean
   backgroundManager: BackgroundManager

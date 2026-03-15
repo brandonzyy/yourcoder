@@ -1,5 +1,5 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
-import type { ToolDefinition } from "@opencode-ai/plugin"
+import type { ToolDefinition } from "../../plugin/sdk"
 import { BackgroundManager } from "../../features/background-agent"
 
 /**

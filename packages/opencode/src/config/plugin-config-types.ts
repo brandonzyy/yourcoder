@@ -1,9 +1,9 @@
 export {
-  OhMyOpenCodeConfigSchema,
+  PluginConfigSchema,
 } from "./plugin-schema"
 
 export type {
-  OhMyOpenCodeConfig,
+  PluginConfig,
   AgentOverrideConfig,
   AgentOverrides,
   McpName,

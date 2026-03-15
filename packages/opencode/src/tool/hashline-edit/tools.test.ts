@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, mock } from "bun:test"
-import type { ToolContext } from "@opencode-ai/plugin/tool"
+import type { ToolContext } from "../../plugin/sdk"
 import { createHashlineEditTool } from "./tools"
 import { computeLineHash } from "./hash-computation"
 import { canonicalizeFileText } from "./file-text-canonicalization"

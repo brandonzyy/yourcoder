@@ -1,4 +1,4 @@
-import type { ToolContext } from "@opencode-ai/plugin/tool"
+import type { ToolContext } from "../../plugin/sdk"
 import { storeToolMetadata } from "../../features/tool-metadata-store"
 import { applyHashlineEditsWithReport } from "./edit-operations"
 import { countLineDiffs, generateUnifiedDiff } from "./diff-utils"

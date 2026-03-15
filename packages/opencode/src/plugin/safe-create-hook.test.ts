@@ -1,5 +1,5 @@
 import { describe, test, expect, spyOn, afterEach } from "bun:test"
-import * as shared from "../../util/logger"
+import * as shared from "../util/logger"
 import { safeCreateHook } from "./safe-create-hook"
 
 afterEach(() => {

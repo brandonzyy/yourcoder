@@ -21,7 +21,7 @@ describe("checkForUpdate", () => {
   it("skips update checks in local dev mode", async () => {
     add(spyOn(local, "isLocalDevMode").mockReturnValue(true))
     add(spyOn(entry, "findPluginEntry").mockReturnValue({
-      entry: "oh-my-opencode",
+      entry: "opencode-plugin",
       isPinned: false,
       pinnedVersion: null,
       configPath: "/tmp/opencode.json",
@@ -57,7 +57,7 @@ describe("checkForUpdate", () => {
   it("uses cached version, fetches latest by channel, and reports an available update", async () => {
     add(spyOn(local, "isLocalDevMode").mockReturnValue(false))
     add(spyOn(entry, "findPluginEntry").mockReturnValue({
-      entry: "oh-my-opencode@3.4.0",
+      entry: "opencode-plugin@3.4.0",
       isPinned: true,
       pinnedVersion: "3.4.0",
       configPath: "/tmp/opencode.json",

@@ -1,10 +1,10 @@
 import type { AvailableSkill } from "../../../agent/dynamic-agent-prompt-builder"
-import type { HookName, OhMyOpenCodeConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
 import type { LoadedSkill } from "../../../features/opencode-skill-loader/types"
 import type { PluginContext } from "../types"
 
 import { createAutoSlashCommandHook, createCategorySkillReminderHook } from "../../../hooks"
-import { safeCreateHook } from "../../shared/safe-create-hook"
+import { safeCreateHook } from "../../safe-create-hook"
 
 export type SkillHooks = {
   categorySkillReminder: ReturnType<typeof createCategorySkillReminderHook> | null
@@ -13,7 +13,7 @@ export type SkillHooks = {
 
 export function createSkillHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean
   mergedSkills: LoadedSkill[]

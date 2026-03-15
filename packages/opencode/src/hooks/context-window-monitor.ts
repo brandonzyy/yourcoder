@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../plugin/sdk"
 import { createSystemDirective, SystemDirectiveTypes } from "./shared/system-directive"
 
 const ANTHROPIC_DISPLAY_LIMIT = 1_000_000

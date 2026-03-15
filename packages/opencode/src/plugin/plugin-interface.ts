@@ -1,5 +1,5 @@
 import type { PluginContext, PluginInterface, ToolsRecord } from "./handlers/types"
-import type { OhMyOpenCodeConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-config-types"
 
 import { createChatParamsHandler } from "./handlers/chat-params"
 import { createChatHeadersHandler } from "./handlers/chat-headers"
@@ -15,7 +15,7 @@ import type { Managers } from "./create-managers"
 
 export function createPluginInterface(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   firstMessageVariantGate: {
     shouldOverride: (sessionID: string) => boolean
     markApplied: (sessionID: string) => void

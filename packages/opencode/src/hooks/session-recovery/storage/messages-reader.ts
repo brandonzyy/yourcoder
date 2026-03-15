@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../../plugin/sdk"
 import type { StoredMessageMeta } from "../types"
 import { getMessageDir } from "./message-dir"
 import {isSqliteBackend} from "../../../config/opencode-storage-detection"

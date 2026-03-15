@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin";
+import type { PluginInput } from "../../plugin/sdk";
 import { createDynamicTruncator } from "../shared/dynamic-truncator";
 import { getRuleInjectionFilePath } from "./output-path";
 import { createSessionCacheStore } from "./cache";

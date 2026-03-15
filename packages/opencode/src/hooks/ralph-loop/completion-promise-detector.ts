@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { existsSync, readFileSync } from "node:fs"
 import { log } from "../../util/logger"
 import { HOOK_NAME } from "./constants"

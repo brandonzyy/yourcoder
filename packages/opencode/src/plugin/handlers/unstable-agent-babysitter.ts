@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import type { PluginContext } from "./types"
 
 import { createUnstableAgentBabysitterHook } from "../../hooks"
@@ -7,7 +7,7 @@ import type { BackgroundManager } from "../../features/background-agent"
 export function createUnstableAgentBabysitter(args: {
   ctx: PluginContext
   backgroundManager: BackgroundManager
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
 }) {
   const { ctx, backgroundManager, pluginConfig } = args
 

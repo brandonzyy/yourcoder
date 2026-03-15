@@ -25,7 +25,7 @@ describe("runBackgroundUpdateCheck", () => {
     const notify = mock(async () => {})
 
     add(spyOn(checker, "findPluginEntry").mockReturnValue({
-      entry: "oh-my-opencode@3.4.0",
+      entry: "opencode-plugin@3.4.0",
       isPinned: true,
       pinnedVersion: "3.4.0",
       configPath: "/tmp/opencode.json",
@@ -48,7 +48,7 @@ describe("runBackgroundUpdateCheck", () => {
     const invalidate = mock(() => {})
 
     add(spyOn(checker, "findPluginEntry").mockReturnValue({
-      entry: "oh-my-opencode@3.4.0",
+      entry: "opencode-plugin@3.4.0",
       isPinned: false,
       pinnedVersion: null,
       configPath: "/tmp/opencode.json",

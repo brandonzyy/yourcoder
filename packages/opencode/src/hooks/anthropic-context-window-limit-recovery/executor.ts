@@ -1,5 +1,5 @@
 import type { AutoCompactState } from "./types";
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types";
+import type { PluginConfig } from "../../config/plugin-config-types";
 import type { ExperimentalConfig } from "../../config/plugin-config-types";
 import { TRUNCATE_CONFIG } from "./types";
 
@@ -18,7 +18,7 @@ export async function executeCompact(
   autoCompactState: AutoCompactState,
   client: Client,
   directory: string,
-  pluginConfig: OhMyOpenCodeConfig,
+  pluginConfig: PluginConfig,
   _experimental?: ExperimentalConfig
 ): Promise<void> {
   void _experimental

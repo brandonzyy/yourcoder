@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { TRUNCATION_MESSAGE } from "./storage-paths"
 import type { ToolResultInfo } from "./tool-part-types"
 import { patchPart } from "../shared/opencode-http-api"

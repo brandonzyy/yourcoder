@@ -1,9 +1,9 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import { getSessionAgent } from "../../features/claude-code-session-state"
 import { getAgentConfigKey } from "../../util/agent-display-names"
 
 export function resolveCompactionModel(
-  pluginConfig: OhMyOpenCodeConfig,
+  pluginConfig: PluginConfig,
   sessionID: string,
   originalProviderID: string,
   originalModelID: string

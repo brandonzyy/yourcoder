@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-config-types"
 import type { ModelCacheState } from "./plugin-state"
 import type { PluginContext, TmuxConfig } from "./handlers/types"
 
@@ -17,7 +17,7 @@ export type Managers = {
 
 export function createManagers(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   tmuxConfig: TmuxConfig
   modelCacheState: ModelCacheState
   backgroundNotificationHookEnabled: boolean

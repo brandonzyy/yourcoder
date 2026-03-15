@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { ImageAttachment, ImageDimensions } from "./types"
 import { parseImageDimensions } from "./image-dimensions"
 import { calculateTargetDimensions, resizeImage } from "./image-resizer"

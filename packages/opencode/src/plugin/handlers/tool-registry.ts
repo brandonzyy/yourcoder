@@ -1,9 +1,9 @@
-import type { ToolDefinition } from "@opencode-ai/plugin"
+import type { ToolDefinition } from "../sdk"
 
 import type {
   AvailableCategory,
 } from "../../agent/dynamic-agent-prompt-builder"
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import type { PluginContext, ToolsRecord } from "./types"
 
 import { createDelegateTask } from "../../tool/delegate-task"
@@ -23,7 +23,7 @@ export type ToolRegistryResult = {
 
 export function createToolRegistry(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   managers: Pick<Managers, "backgroundManager" | "tmuxSessionManager">
   skillContext: SkillContext
   availableCategories: AvailableCategory[]

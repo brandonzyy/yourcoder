@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../plugin/sdk"
 import {normalizeSDKResponse} from "../model/normalize-sdk-response"
 
 interface Todo {

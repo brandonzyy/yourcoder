@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../../config/plugin-config-types"
+import type { PluginConfig } from "../../../config/plugin-config-types"
 import type { PluginContext } from "../types"
 
 import {
@@ -10,7 +10,7 @@ import {
   contextCollector,
   createContextInjectorMessagesTransformHook,
 } from "../../../features/context-injector"
-import { safeCreateHook } from "../../shared/safe-create-hook"
+import { safeCreateHook } from "../../safe-create-hook"
 
 export type TransformHooks = {
   claudeCodeHooks: ReturnType<typeof createClaudeCodeHooksHook> | null
@@ -21,7 +21,7 @@ export type TransformHooks = {
 
 export function createTransformHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   isHookEnabled: (hookName: string) => boolean
   safeHookEnabled?: boolean
 }): TransformHooks {

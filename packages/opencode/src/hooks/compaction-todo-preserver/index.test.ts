@@ -1,5 +1,5 @@
 import { describe, expect, it, afterAll, mock } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { createOpencodeClient } from "@opencode-ai/sdk"
 import type { Todo } from "@opencode-ai/sdk"
 import { createCompactionTodoPreserverHook } from "./index"

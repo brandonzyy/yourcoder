@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { isGptModel, isGpt5_4Model } from "../../agent/plugin-agent-types"
 import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
 import { log } from "../../util/logger"

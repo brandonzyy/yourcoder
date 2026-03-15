@@ -1,5 +1,5 @@
 import { log } from "../../util/logger"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import {

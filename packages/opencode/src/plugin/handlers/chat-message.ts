@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-config-types"
 import type { PluginContext } from "./types"
 
 import { hasConnectedProvidersCache } from "../../util/connected-providers-cache"
@@ -37,7 +37,7 @@ function isStartWorkHookOutput(value: unknown): value is StartWorkHookOutput {
 
 export function createChatMessageHandler(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   firstMessageVariantGate: FirstMessageVariantGate
   hooks: CreatedHooks
 }): (

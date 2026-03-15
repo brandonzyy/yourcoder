@@ -1,5 +1,5 @@
 import { initConfigContext } from "../config/config-manager/config-context"
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin } from "./sdk"
 
 import type { HookName } from "../config/plugin-config-types"
 
@@ -10,9 +10,9 @@ import { createPluginInterface } from "./plugin-interface"
 
 import { loadPluginConfig } from "./plugin-config"
 import { createModelCacheState } from "./plugin-state"
-import { createFirstMessageVariantGate } from "./shared/first-message-variant"
+import { createFirstMessageVariantGate } from "./first-message-variant"
 import { log } from "../util/logger"
-import { injectServerAuthIntoClient } from "./shared/opencode-server-auth"
+import { injectServerAuthIntoClient } from "./opencode-server-auth"
 import { startBackgroundCheck as startTmuxCheck } from "../tool/interactive-bash"
 
 const NativePlugin: Plugin = async (ctx) => {
@@ -99,7 +99,7 @@ const NativePlugin: Plugin = async (ctx) => {
 export default NativePlugin
 
 export type {
-  OhMyOpenCodeConfig,
+  PluginConfig,
   AgentName,
   AgentOverrideConfig,
   AgentOverrides,

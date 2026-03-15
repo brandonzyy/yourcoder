@@ -1,5 +1,5 @@
 import { log } from "../util/logger"
-import type { OhMyOpenCodeConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-config-types"
 
 import { resolveCompactionModel } from "./shared/compaction-model-resolver"
 const DEFAULT_ACTUAL_LIMIT = 200_000
@@ -75,7 +75,7 @@ type PluginInput = {
 
 export function createPreemptiveCompactionHook(
   ctx: PluginInput,
-  pluginConfig: OhMyOpenCodeConfig,
+  pluginConfig: PluginConfig,
   modelCacheState?: ModelCacheStateLike,
 ) {
   const compactionInProgress = new Set<string>()

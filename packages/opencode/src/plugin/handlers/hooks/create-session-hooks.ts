@@ -1,4 +1,4 @@
-import type { OhMyOpenCodeConfig, HookName } from "../../../config/plugin-config-types"
+import type { PluginConfig, HookName } from "../../../config/plugin-config-types"
 import type { ModelCacheState } from "../../plugin-state"
 import type { PluginContext } from "../types"
 
@@ -27,9 +27,9 @@ import {
 } from "../../../hooks"
 import { createAnthropicEffortHook } from "../../../hooks/anthropic-effort"
 import { log } from "../../../util/logger"
-import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../shared/external-plugin-detector"
+import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../external-plugin-detector"
 import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
-import { safeCreateHook } from "../../shared/safe-create-hook"
+import { safeCreateHook } from "../../safe-create-hook"
 
 export type SessionHooks = {
   contextWindowMonitor: ReturnType<typeof createContextWindowMonitorHook> | null
@@ -58,7 +58,7 @@ export type SessionHooks = {
 
 export function createSessionHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   modelCacheState: ModelCacheState
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean

@@ -1,5 +1,5 @@
 import type { AvailableSkill } from "../agent/dynamic-agent-prompt-builder"
-import type { HookName, OhMyOpenCodeConfig } from "../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../config/plugin-config-types"
 import type { LoadedSkill } from "../features/opencode-skill-loader/types"
 import type { BackgroundManager } from "../features/background-agent"
 import type { PluginContext } from "./handlers/types"
@@ -13,7 +13,7 @@ export type CreatedHooks = ReturnType<typeof createHooks>
 
 export function createHooks(args: {
   ctx: PluginContext
-  pluginConfig: OhMyOpenCodeConfig
+  pluginConfig: PluginConfig
   modelCacheState: ModelCacheState
   backgroundManager: BackgroundManager
   isHookEnabled: (hookName: HookName) => boolean

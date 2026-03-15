@@ -1,5 +1,5 @@
 import { statSync } from "node:fs"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import {
   readBoulderState,
   writeBoulderState,

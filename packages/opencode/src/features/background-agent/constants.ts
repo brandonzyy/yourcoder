@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { BackgroundTask, LaunchInput } from "./types"
 
 export const TASK_TTL_MS = 30 * 60 * 1000

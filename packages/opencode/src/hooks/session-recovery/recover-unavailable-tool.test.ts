@@ -5,7 +5,7 @@ import { tmpdir } from "node:os"
 import type { MessageData } from "./types"
 import { recoverUnavailableTool } from "./recover-unavailable-tool"
 import { resetSqliteBackendCache } from "../../config/opencode-storage-detection"
-import { resetVersionCache, setVersionCache } from "../../plugin/shared/opencode-version"
+import { resetVersionCache, setVersionCache } from "../../config/opencode-version"
 
 function mk(msgs: MessageData[], fail = false) {
   const prompt = mock((arg: unknown) =>

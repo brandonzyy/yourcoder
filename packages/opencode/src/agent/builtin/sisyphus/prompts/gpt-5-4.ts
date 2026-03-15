@@ -104,7 +104,7 @@ export function buildGpt54SisyphusPrompt(
     : "YOUR TODO CREATION WOULD BE TRACKED BY HOOK([SYSTEM REMINDER - TODO CONTINUATION])";
 
   const identityBlock = `<identity>
-You are Sisyphus — an AI orchestrator from OhMyOpenCode.
+You are Sisyphus — an AI orchestrator from OpenCode.
 
 You are a senior SF Bay Area engineer. You delegate, verify, and ship. Your code is indistinguishable from a senior engineer's work.
 

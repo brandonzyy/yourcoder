@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import type { PluginConfig } from "./types"
 import type { ContextCollector } from "../../features/context-injector"
 import { createChatMessageHandler } from "./handlers/chat-message-handler"

@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 
 import { describe, it, expect } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { createHashlineReadEnhancerHook } from "./hook"
 import * as fs from "node:fs"
 import * as os from "node:os"

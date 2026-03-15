@@ -1,4 +1,4 @@
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 import { computeLineHash } from "../../tool/hashline-edit/hash-computation"
 
 const WRITE_SUCCESS_MARKER = "File written successfully."

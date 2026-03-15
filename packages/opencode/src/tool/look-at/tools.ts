@@ -1,6 +1,6 @@
 import { basename } from "node:path"
 import { pathToFileURL } from "node:url"
-import { tool, type PluginInput, type ToolDefinition } from "@opencode-ai/plugin"
+import { tool, type PluginInput, type ToolDefinition } from "../../plugin/sdk"
 import { LOOK_AT_DESCRIPTION, MULTIMODAL_LOOKER_AGENT } from "./constants"
 import type { LookAtArgs } from "./types"
 import {log} from "../../util/logger"

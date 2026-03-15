@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput } from "../../plugin/sdk"
 
 import {
   createJsonErrorRecoveryHook,

@@ -1,4 +1,4 @@
-export const OMO_INTERNAL_INITIATOR_MARKER = "<!-- OMO_INTERNAL_INITIATOR -->"
+export const INTERNAL_INITIATOR_MARKER = "<!-- OMO_INTERNAL_INITIATOR -->"
 
 export function createInternalAgentTextPart(text: string): {
   type: "text"
@@ -6,6 +6,6 @@ export function createInternalAgentTextPart(text: string): {
 } {
   return {
     type: "text",
-    text: `${text}\n${OMO_INTERNAL_INITIATOR_MARKER}`,
+    text: `${text}\n${INTERNAL_INITIATOR_MARKER}`,
   }
 }

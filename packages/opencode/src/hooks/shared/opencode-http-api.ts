@@ -1,4 +1,4 @@
-import { getServerBasicAuthHeader } from "../../plugin/shared/opencode-server-auth"
+import { getServerBasicAuthHeader } from "../../plugin/opencode-server-auth"
 import { log } from "../../util/logger"
 import { isRecord } from "./record-type-guard"
 
