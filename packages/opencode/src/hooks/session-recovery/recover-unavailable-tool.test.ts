@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, it, expect, mock } from "bun:test"
+import { randomUUID } from "node:crypto"
 import { join } from "node:path"
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -6,11 +7,10 @@ import type { MessageData } from "./types"
 import { recoverUnavailableTool } from "./recover-unavailable-tool"
 import { resetSqliteBackendCache } from "../../config/opencode-storage-detection"
 import { resetVersionCache, setVersionCache } from "../../config/opencode-version"
+import { PART_STORAGE } from "../../config/opencode-storage-paths"
 
 function mk(msgs: MessageData[], fail = false) {
-  const prompt = mock((arg: unknown) =>
-    fail ? Promise.reject(new Error("boom")) : Promise.resolve(arg)
-  )
+  const prompt = mock((arg: unknown) => (fail ? Promise.reject(new Error("boom")) : Promise.resolve(arg)))
 
   return {
     client: {
@@ -42,6 +42,56 @@ describe("recoverUnavailableTool", () => {
     if (oldData === undefined) delete process.env.XDG_DATA_HOME
     else process.env.XDG_DATA_HOME = oldData
     rmSync(dir, { recursive: true, force: true })
+  })
+
+  it("recovers the named unavailable tool from file-backed storage when sqlite is disabled", async () => {
+    const messageID = `msg_${randomUUID()}`
+    const partDir = join(PART_STORAGE, messageID)
+
+    setVersionCache("1.1.52")
+    resetSqliteBackendCache()
+    mkdirSync(partDir, { recursive: true })
+
+    try {
+      writeFileSync(
+        join(partDir, "part.json"),
+        JSON.stringify({
+          id: "part_1",
+          messageID,
+          sessionID: "ses_1",
+          type: "tool",
+          callID: "call_disk",
+          tool: "bash",
+          state: { status: "pending", input: {} },
+        }),
+      )
+
+      const { client, prompt } = mk([])
+      const res = await recoverUnavailableTool(client, "ses_1", {
+        info: {
+          id: messageID,
+          role: "assistant",
+          error: new Error("No such tool: bash"),
+        },
+        parts: [],
+      })
+
+      expect(res).toBe(true)
+      expect(prompt).toHaveBeenCalledWith({
+        path: { id: "ses_1" },
+        body: {
+          parts: [
+            {
+              type: "tool_result",
+              tool_use_id: "call_disk",
+              content: '{"status":"error","error":"Tool not available. Please continue without this tool."}',
+            },
+          ],
+        },
+      })
+    } finally {
+      rmSync(partDir, { recursive: true, force: true })
+    }
   })
 
   it("repairs the named unavailable tool from sdk history", async () => {

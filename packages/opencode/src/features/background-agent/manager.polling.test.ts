@@ -3,7 +3,9 @@ import { tmpdir } from "node:os"
 import type { PluginInput } from "../../plugin/sdk"
 import { BackgroundManager } from "./manager"
 
-function createManagerWithStatus(statusImpl: () => Promise<{ data: Record<string, { type: string }> }>): BackgroundManager {
+function createManagerWithStatus(
+  statusImpl: () => Promise<{ data: Record<string, { type: string }> }>,
+): BackgroundManager {
   const client = {
     session: {
       status: statusImpl,

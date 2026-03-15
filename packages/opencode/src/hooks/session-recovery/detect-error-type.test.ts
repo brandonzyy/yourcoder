@@ -25,6 +25,17 @@ describe("detectErrorType", () => {
     expect(result).toBe("thinking_block_order")
   })
 
+  it("#given a correctly spelled preceding error #when detecting #then returns thinking_block_order", () => {
+    //#given
+    const error = { message: "messages.2: thinking requires preceding text block" }
+
+    //#when
+    const result = detectErrorType(error)
+
+    //#then
+    expect(result).toBe("thinking_block_order")
+  })
+
   it("#given a thinking disabled violation #when detecting #then returns thinking_disabled_violation", () => {
     //#given
     const error = { message: "thinking is disabled and cannot contain thinking blocks" }

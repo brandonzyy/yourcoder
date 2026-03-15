@@ -1,0 +1,394 @@
+declare const require: (name: string) => any
+const { describe, test, expect, beforeEach, afterEach } = require("bun:test")
+import {
+  BackgroundManager,
+  ConcurrencyManager,
+  MIN_IDLE_TIME_MS,
+  MockBackgroundManager,
+  TASK_TTL_MS,
+  createBackgroundManager,
+  createMockTask,
+  createToastRemoveTaskTracker,
+  getCleanupSignals,
+  getCompletionTimers,
+  getConcurrencyManager,
+  getListenerCounts,
+  getPendingByParent,
+  getPendingNotifications,
+  getQueuesByKey,
+  getTaskMap,
+  processKeyForTest,
+  pruneStaleTasksAndNotificationsForTest,
+  resetProcessCleanup,
+  stubNotifyParentSession,
+  tmpdir,
+  tryCompleteTaskForTest,
+  type BackgroundTask,
+  type LaunchInput,
+  type PluginInput,
+  type ResumeInput,
+} from "./manager.test.helpers"
+
+describe("BackgroundManager.getAllDescendantTasks", () => {
+  let manager: MockBackgroundManager
+
+  beforeEach(() => {
+    // given
+    manager = new MockBackgroundManager()
+  })
+
+  test("should return empty array when no tasks exist", () => {
+    // given - empty manager
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toEqual([])
+  })
+
+  test("should return direct children only when no nested tasks", () => {
+    // given
+    const taskB = createMockTask({
+      id: "task-b",
+      sessionID: "session-b",
+      parentSessionID: "session-a",
+    })
+    manager.addTask(taskB)
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toHaveLength(1)
+    expect(result[0].id).toBe("task-b")
+  })
+
+  test("should return all nested descendants (2 levels deep)", () => {
+    // given
+    // Session A -> Task B -> Task C
+    const taskB = createMockTask({
+      id: "task-b",
+      sessionID: "session-b",
+      parentSessionID: "session-a",
+    })
+    const taskC = createMockTask({
+      id: "task-c",
+      sessionID: "session-c",
+      parentSessionID: "session-b",
+    })
+    manager.addTask(taskB)
+    manager.addTask(taskC)
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toHaveLength(2)
+    expect(result.map((t) => t.id)).toContain("task-b")
+    expect(result.map((t) => t.id)).toContain("task-c")
+  })
+
+  test("should return all nested descendants (3 levels deep)", () => {
+    // given
+    // Session A -> Task B -> Task C -> Task D
+    const taskB = createMockTask({
+      id: "task-b",
+      sessionID: "session-b",
+      parentSessionID: "session-a",
+    })
+    const taskC = createMockTask({
+      id: "task-c",
+      sessionID: "session-c",
+      parentSessionID: "session-b",
+    })
+    const taskD = createMockTask({
+      id: "task-d",
+      sessionID: "session-d",
+      parentSessionID: "session-c",
+    })
+    manager.addTask(taskB)
+    manager.addTask(taskC)
+    manager.addTask(taskD)
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toHaveLength(3)
+    expect(result.map((t) => t.id)).toContain("task-b")
+    expect(result.map((t) => t.id)).toContain("task-c")
+    expect(result.map((t) => t.id)).toContain("task-d")
+  })
+
+  test("should handle multiple branches (tree structure)", () => {
+    // given
+    // Session A -> Task B1 -> Task C1
+    //           -> Task B2 -> Task C2
+    const taskB1 = createMockTask({
+      id: "task-b1",
+      sessionID: "session-b1",
+      parentSessionID: "session-a",
+    })
+    const taskB2 = createMockTask({
+      id: "task-b2",
+      sessionID: "session-b2",
+      parentSessionID: "session-a",
+    })
+    const taskC1 = createMockTask({
+      id: "task-c1",
+      sessionID: "session-c1",
+      parentSessionID: "session-b1",
+    })
+    const taskC2 = createMockTask({
+      id: "task-c2",
+      sessionID: "session-c2",
+      parentSessionID: "session-b2",
+    })
+    manager.addTask(taskB1)
+    manager.addTask(taskB2)
+    manager.addTask(taskC1)
+    manager.addTask(taskC2)
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toHaveLength(4)
+    expect(result.map((t) => t.id)).toContain("task-b1")
+    expect(result.map((t) => t.id)).toContain("task-b2")
+    expect(result.map((t) => t.id)).toContain("task-c1")
+    expect(result.map((t) => t.id)).toContain("task-c2")
+  })
+
+  test("should not include tasks from unrelated sessions", () => {
+    // given
+    // Session A -> Task B
+    // Session X -> Task Y (unrelated)
+    const taskB = createMockTask({
+      id: "task-b",
+      sessionID: "session-b",
+      parentSessionID: "session-a",
+    })
+    const taskY = createMockTask({
+      id: "task-y",
+      sessionID: "session-y",
+      parentSessionID: "session-x",
+    })
+    manager.addTask(taskB)
+    manager.addTask(taskY)
+
+    // when
+    const result = manager.getAllDescendantTasks("session-a")
+
+    // then
+    expect(result).toHaveLength(1)
+    expect(result[0].id).toBe("task-b")
+    expect(result.map((t) => t.id)).not.toContain("task-y")
+  })
+
+  test("getTasksByParentSession should only return direct children (not recursive)", () => {
+    // given
+    // Session A -> Task B -> Task C
+    const taskB = createMockTask({
+      id: "task-b",
+      sessionID: "session-b",
+      parentSessionID: "session-a",
+    })
+    const taskC = createMockTask({
+      id: "task-c",
+      sessionID: "session-c",
+      parentSessionID: "session-b",
+    })
+    manager.addTask(taskB)
+    manager.addTask(taskC)
+
+    // when
+    const result = manager.getTasksByParentSession("session-a")
+
+    // then
+    expect(result).toHaveLength(1)
+    expect(result[0].id).toBe("task-b")
+  })
+})
+
+describe("BackgroundManager.notifyParentSession - release ordering", () => {
+  test("should unblock queued task even when prompt hangs", async () => {
+    // given - concurrency limit 1, task1 running, task2 waiting
+    const { ConcurrencyManager } = await import("./concurrency")
+    const concurrencyManager = new ConcurrencyManager({ defaultConcurrency: 1 })
+
+    await concurrencyManager.acquire("explore")
+
+    let task2Resolved = false
+    const task2Promise = concurrencyManager.acquire("explore").then(() => {
+      task2Resolved = true
+    })
+
+    await Promise.resolve()
+    expect(task2Resolved).toBe(false)
+
+    // when - simulate notifyParentSession: release BEFORE prompt (fixed behavior)
+    let promptStarted = false
+    const simulateNotifyParentSession = async () => {
+      concurrencyManager.release("explore")
+
+      promptStarted = true
+      await new Promise(() => {})
+    }
+
+    simulateNotifyParentSession()
+
+    await Promise.resolve()
+    await Promise.resolve()
+
+    // then - task2 should be unblocked even though prompt never completes
+    expect(promptStarted).toBe(true)
+    await task2Promise
+    expect(task2Resolved).toBe(true)
+  })
+
+  test("should keep queue blocked if release is after prompt (demonstrates the bug)", async () => {
+    // given - same setup
+    const { ConcurrencyManager } = await import("./concurrency")
+    const concurrencyManager = new ConcurrencyManager({ defaultConcurrency: 1 })
+
+    await concurrencyManager.acquire("explore")
+
+    let task2Resolved = false
+    concurrencyManager.acquire("explore").then(() => {
+      task2Resolved = true
+    })
+
+    await Promise.resolve()
+    expect(task2Resolved).toBe(false)
+
+    // when - simulate BUGGY behavior: release AFTER prompt (in finally)
+    const simulateBuggyNotifyParentSession = async () => {
+      try {
+        await new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 50))
+      } finally {
+        concurrencyManager.release("explore")
+      }
+    }
+
+    await simulateBuggyNotifyParentSession().catch(() => {})
+
+    // then - task2 resolves only after prompt completes (blocked during hang)
+    await Promise.resolve()
+    expect(task2Resolved).toBe(true)
+  })
+})
+
+describe("BackgroundManager.pruneStaleTasksAndNotifications", () => {
+  let manager: MockBackgroundManager
+
+  beforeEach(() => {
+    // given
+    manager = new MockBackgroundManager()
+  })
+
+  test("should not prune fresh tasks", () => {
+    // given
+    const task = createMockTask({
+      id: "task-fresh",
+      sessionID: "session-fresh",
+      parentSessionID: "session-parent",
+      startedAt: new Date(),
+    })
+    manager.addTask(task)
+
+    // when
+    const result = manager.pruneStaleTasksAndNotifications()
+
+    // then
+    expect(result.prunedTasks).toHaveLength(0)
+    expect(manager.getTaskCount()).toBe(1)
+  })
+
+  test("should prune tasks older than 30 minutes", () => {
+    // given
+    const staleDate = new Date(Date.now() - 31 * 60 * 1000)
+    const task = createMockTask({
+      id: "task-stale",
+      sessionID: "session-stale",
+      parentSessionID: "session-parent",
+      startedAt: staleDate,
+    })
+    manager.addTask(task)
+
+    // when
+    const result = manager.pruneStaleTasksAndNotifications()
+
+    // then
+    expect(result.prunedTasks).toContain("task-stale")
+    expect(manager.getTaskCount()).toBe(0)
+  })
+
+  test("should prune stale notifications", () => {
+    // given
+    const staleDate = new Date(Date.now() - 31 * 60 * 1000)
+    const task = createMockTask({
+      id: "task-stale",
+      sessionID: "session-stale",
+      parentSessionID: "session-parent",
+      startedAt: staleDate,
+    })
+    manager.markForNotification(task)
+
+    // when
+    const result = manager.pruneStaleTasksAndNotifications()
+
+    // then
+    expect(result.prunedNotifications).toBe(1)
+    expect(manager.getNotificationCount()).toBe(0)
+  })
+
+  test("should clean up notifications when task is pruned", () => {
+    // given
+    const staleDate = new Date(Date.now() - 31 * 60 * 1000)
+    const task = createMockTask({
+      id: "task-stale",
+      sessionID: "session-stale",
+      parentSessionID: "session-parent",
+      startedAt: staleDate,
+    })
+    manager.addTask(task)
+    manager.markForNotification(task)
+
+    // when
+    manager.pruneStaleTasksAndNotifications()
+
+    // then
+    expect(manager.getTaskCount()).toBe(0)
+    expect(manager.getNotificationCount()).toBe(0)
+  })
+
+  test("should keep fresh tasks while pruning stale ones", () => {
+    // given
+    const staleDate = new Date(Date.now() - 31 * 60 * 1000)
+    const staleTask = createMockTask({
+      id: "task-stale",
+      sessionID: "session-stale",
+      parentSessionID: "session-parent",
+      startedAt: staleDate,
+    })
+    const freshTask = createMockTask({
+      id: "task-fresh",
+      sessionID: "session-fresh",
+      parentSessionID: "session-parent",
+      startedAt: new Date(),
+    })
+    manager.addTask(staleTask)
+    manager.addTask(freshTask)
+
+    // when
+    const result = manager.pruneStaleTasksAndNotifications()
+
+    // then
+    expect(result.prunedTasks).toHaveLength(1)
+    expect(result.prunedTasks).toContain("task-stale")
+    expect(manager.getTaskCount()).toBe(1)
+    expect(manager.getTask("task-fresh")).toBeDefined()
+  })
+})

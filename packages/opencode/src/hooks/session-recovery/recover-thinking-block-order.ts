@@ -5,7 +5,7 @@ import { findMessageByIndexNeedingThinking, findMessagesWithOrphanThinking, prep
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { prependThinkingPartAsync } from "./storage/thinking-prepend"
 import { THINKING_TYPES } from "./constants"
-import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../model/normalize-sdk-response"
 
 type Client = ReturnType<typeof createOpencodeClient>
 
@@ -14,7 +14,7 @@ export async function recoverThinkingBlockOrder(
   sessionID: string,
   _failedAssistantMsg: MessageData,
   _directory: string,
-  error: unknown
+  error: unknown,
 ): Promise<boolean> {
   if (isSqliteBackend()) {
     return recoverThinkingBlockOrderFromSDK(client, sessionID, error)
@@ -43,11 +43,7 @@ export async function recoverThinkingBlockOrder(
   return anySuccess
 }
 
-async function recoverThinkingBlockOrderFromSDK(
-  client: Client,
-  sessionID: string,
-  error: unknown
-): Promise<boolean> {
+async function recoverThinkingBlockOrderFromSDK(client: Client, sessionID: string, error: unknown): Promise<boolean> {
   const targetIndex = extractMessageIndex(error)
   if (targetIndex !== null) {
     const targetMessageID = await findMessageByIndexNeedingThinkingFromSDK(client, sessionID, targetIndex)
@@ -71,10 +67,7 @@ async function recoverThinkingBlockOrderFromSDK(
   return anySuccess
 }
 
-async function findMessagesWithOrphanThinkingFromSDK(
-  client: Client,
-  sessionID: string
-): Promise<string[]> {
+async function findMessagesWithOrphanThinkingFromSDK(client: Client, sessionID: string): Promise<string[]> {
   let messages: MessageData[]
   try {
     const response = await client.session.messages({ path: { id: sessionID } })
@@ -89,13 +82,10 @@ async function findMessagesWithOrphanThinkingFromSDK(
     if (!msg.info?.id) continue
     if (!msg.parts || msg.parts.length === 0) continue
 
-    const partsWithIds = msg.parts.filter(
-      (part): part is { id: string; type: string } => typeof part.id === "string"
-    )
+    const partsWithIds = msg.parts.filter((part): part is { id: string; type: string } => typeof part.id === "string")
     if (partsWithIds.length === 0) continue
 
-    const sortedParts = [...partsWithIds].sort((a, b) => a.id.localeCompare(b.id))
-    const firstPart = sortedParts[0]
+    const firstPart = partsWithIds[0]
     if (!THINKING_TYPES.has(firstPart.type)) {
       result.push(msg.info.id)
     }
@@ -107,7 +97,7 @@ async function findMessagesWithOrphanThinkingFromSDK(
 async function findMessageByIndexNeedingThinkingFromSDK(
   client: Client,
   sessionID: string,
-  targetIndex: number
+  targetIndex: number,
 ): Promise<string | null> {
   let messages: MessageData[]
   try {
@@ -125,12 +115,11 @@ async function findMessageByIndexNeedingThinkingFromSDK(
   if (!targetMessage.parts || targetMessage.parts.length === 0) return null
 
   const partsWithIds = targetMessage.parts.filter(
-    (part): part is { id: string; type: string } => typeof part.id === "string"
+    (part): part is { id: string; type: string } => typeof part.id === "string",
   )
   if (partsWithIds.length === 0) return null
 
-  const sortedParts = [...partsWithIds].sort((a, b) => a.id.localeCompare(b.id))
-  const firstPart = sortedParts[0]
+  const firstPart = partsWithIds[0]
   const firstIsThinking = THINKING_TYPES.has(firstPart.type)
 
   return firstIsThinking ? null : targetMessage.info.id

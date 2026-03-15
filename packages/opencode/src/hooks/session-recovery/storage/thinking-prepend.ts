@@ -7,8 +7,8 @@ import { readMessages } from "./messages-reader"
 import { readParts } from "./parts-reader"
 import { log } from "../../../util/logger"
 import { patchPart } from "../../shared/opencode-http-api"
-import {isSqliteBackend} from "../../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import { isSqliteBackend } from "../../../config/opencode-storage-detection"
+import { normalizeSDKResponse } from "../../../model/normalize-sdk-response"
 
 type OpencodeClient = PluginInput["client"]
 
@@ -23,7 +23,7 @@ function findLastThinkingContent(sessionID: string, beforeMessageID: string): st
     if (message.role !== "assistant") continue
 
     const parts = readParts(message.id)
-    for (const part of parts) {
+    for (const part of [...parts].reverse()) {
       if (THINKING_TYPES.has(part.type)) {
         const thinking = (part as { thinking?: string; text?: string }).thinking
         const reasoning = (part as { thinking?: string; text?: string }).text
@@ -73,7 +73,7 @@ export function prependThinkingPart(sessionID: string, messageID: string): boole
 async function findLastThinkingContentFromSDK(
   client: OpencodeClient,
   sessionID: string,
-  beforeMessageID: string
+  beforeMessageID: string,
 ): Promise<string> {
   try {
     const response = await client.session.messages({ path: { id: sessionID } })
@@ -87,7 +87,7 @@ async function findLastThinkingContentFromSDK(
       if (msg.info?.role !== "assistant") continue
       if (!msg.parts) continue
 
-      for (const part of msg.parts) {
+      for (const part of [...msg.parts].reverse()) {
         if (part.type && THINKING_TYPES.has(part.type)) {
           const content = part.thinking || part.text
           if (content && content.trim().length > 0) return content
@@ -103,7 +103,7 @@ async function findLastThinkingContentFromSDK(
 export async function prependThinkingPartAsync(
   client: OpencodeClient,
   sessionID: string,
-  messageID: string
+  messageID: string,
 ): Promise<boolean> {
   const previousThinking = await findLastThinkingContentFromSDK(client, sessionID, messageID)
 

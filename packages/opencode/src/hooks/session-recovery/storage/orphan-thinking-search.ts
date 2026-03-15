@@ -12,8 +12,7 @@ export function findMessagesWithOrphanThinking(sessionID: string): string[] {
     const parts = readParts(msg.id)
     if (parts.length === 0) continue
 
-    const sortedParts = [...parts].sort((a, b) => a.id.localeCompare(b.id))
-    const firstPart = sortedParts[0]
+    const firstPart = parts[0]
     const firstIsThinking = THINKING_TYPES.has(firstPart.type)
 
     if (!firstIsThinking) {
@@ -35,8 +34,7 @@ export function findMessageByIndexNeedingThinking(sessionID: string, targetIndex
   const parts = readParts(targetMessage.id)
   if (parts.length === 0) return null
 
-  const sortedParts = [...parts].sort((a, b) => a.id.localeCompare(b.id))
-  const firstPart = sortedParts[0]
+  const firstPart = parts[0]
   const firstIsThinking = THINKING_TYPES.has(firstPart.type)
 
   return firstIsThinking ? null : targetMessage.id

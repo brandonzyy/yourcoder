@@ -11,12 +11,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "string") return error.toLowerCase()
 
   const errorObj = error as Record<string, unknown>
-  const paths = [
-    errorObj.data,
-    errorObj.error,
-    errorObj,
-    (errorObj.data as Record<string, unknown>)?.error,
-  ]
+  const paths = [errorObj.data, errorObj.error, errorObj, (errorObj.data as Record<string, unknown>)?.error]
 
   for (const obj of paths) {
     if (obj && typeof obj === "object") {
@@ -69,6 +64,7 @@ export function detectErrorType(error: unknown): RecoveryErrorType {
       message.includes("thinking") &&
       (message.includes("first block") ||
         message.includes("must start with") ||
+        message.includes("preceding") ||
         message.includes("preceeding") ||
         message.includes("final block") ||
         message.includes("cannot be thinking") ||
