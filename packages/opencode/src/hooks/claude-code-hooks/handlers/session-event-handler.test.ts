@@ -4,7 +4,7 @@ import * as cfg from "../config"
 import * as ext from "../config-loader"
 import * as stop from "../stop"
 import * as disabled from "../../shared/hook-disabled"
-import * as shared from "../../../shared"
+import * as initiatorMarker from "../../../shared/internal-initiator-marker"
 import { clearSessionHookState, sessionErrorState } from "../session-hook-state"
 
 const spies: Array<{ mockRestore(): void }> = []
@@ -47,7 +47,7 @@ describe("createSessionEventHandler", () => {
       block: true,
       injectPrompt: "continue carefully",
     } as never))
-    add(spyOn(shared, "createInternalAgentTextPart").mockReturnValue({ type: "text", text: "continue carefully" } as never))
+    add(spyOn(initiatorMarker, "createInternalAgentTextPart").mockReturnValue({ type: "text", text: "continue carefully" } as never))
 
     await createSessionEventHandler(
       {

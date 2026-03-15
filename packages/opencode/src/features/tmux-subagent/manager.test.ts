@@ -3,7 +3,7 @@ import type { TmuxConfig } from '../../config/plugin-schema'
 import type { WindowState, PaneAction } from './types'
 import type { ActionResult, ExecuteContext } from './action-executor'
 import type { TmuxUtilDeps } from './manager'
-import * as sharedModule from '../../shared'
+import * as logger from '../../shared/logger'
 
 type ExecuteActionsResult = {
   success: boolean
@@ -663,7 +663,7 @@ describe('TmuxSessionManager', () => {
         // given
         mockIsInsideTmux.mockReturnValue(true)
         mockQueryWindowState.mockImplementation(async () => null)
-        const logSpy = spyOn(sharedModule, 'log').mockImplementation(() => {})
+        const logSpy = spyOn(logger, 'log').mockImplementation(() => {})
 
         const { TmuxSessionManager } = await import('./manager')
         const ctx = createMockContext()
@@ -704,7 +704,7 @@ describe('TmuxSessionManager', () => {
             result: { success: false, error: 'spawn failed' },
           })),
         }))
-        const logSpy = spyOn(sharedModule, 'log').mockImplementation(() => {})
+        const logSpy = spyOn(logger, 'log').mockImplementation(() => {})
 
         const { TmuxSessionManager } = await import('./manager')
         const ctx = createMockContext()
@@ -757,7 +757,7 @@ describe('TmuxSessionManager', () => {
             },
           ],
         }))
-        const logSpy = spyOn(sharedModule, 'log').mockImplementation(() => {})
+        const logSpy = spyOn(logger, 'log').mockImplementation(() => {})
 
         const { TmuxSessionManager } = await import('./manager')
         const ctx = createMockContext()

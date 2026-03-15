@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createCategorySkillReminderHook } from "./index"
 import { updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../features/claude-code-session-state"
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
-import * as sharedModule from "../../shared"
+import * as logger from "../../shared/logger"
 
 describe("category-skill-reminder hook", () => {
   let logCalls: Array<{ msg: string; data?: unknown }>
@@ -11,7 +11,7 @@ describe("category-skill-reminder hook", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })

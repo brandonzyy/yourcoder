@@ -2,7 +2,7 @@ import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createKeywordDetectorHook } from "./index"
 import { setMainSession, updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../features/claude-code-session-state"
 import { ContextCollector } from "../../features/context-injector"
-import * as sharedModule from "../../shared"
+import * as logger from "../../shared/logger"
 import * as sessionState from "../../features/claude-code-session-state"
 
 describe("keyword-detector message transform", () => {
@@ -13,7 +13,7 @@ describe("keyword-detector message transform", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })
@@ -104,7 +104,7 @@ describe("keyword-detector session filtering", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })
@@ -249,7 +249,7 @@ describe("keyword-detector word boundary", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })
@@ -346,7 +346,7 @@ describe("keyword-detector system-reminder filtering", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })
@@ -537,7 +537,7 @@ describe("keyword-detector agent-specific ultrawork messages", () => {
   beforeEach(() => {
     _resetForTesting()
     logCalls = []
-    logSpy = spyOn(sharedModule, "log").mockImplementation((msg: string, data?: unknown) => {
+    logSpy = spyOn(logger, "log").mockImplementation((msg: string, data?: unknown) => {
       logCalls.push({ msg, data })
     })
   })

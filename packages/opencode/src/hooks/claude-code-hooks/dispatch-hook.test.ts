@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
-import * as shared from "../../shared"
+import * as commandExecutor from "../../shared/command-executor/execute-hook-command"
 import * as http from "./execute-http-hook"
 import { DEFAULT_CONFIG } from "./plugin-config"
 
@@ -37,7 +37,7 @@ describe("dispatch-hook", () => {
 
   it("dispatches command hooks through executeHookCommand with plugin defaults", async () => {
     const exec = mock(async () => ({ exitCode: 0, stdout: "ok" }))
-    add(spyOn(shared, "executeHookCommand").mockImplementation(exec as never))
+    add(spyOn(commandExecutor, "executeHookCommand").mockImplementation(exec as never))
 
     const res = await dispatchHook(
       { type: "command", command: "echo hi" },
