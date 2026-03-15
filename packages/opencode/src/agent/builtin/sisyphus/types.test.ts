@@ -4,7 +4,7 @@ import {
   isGpt5_3CodexModel,
   isGpt5_4Model,
   isGptModel,
-} from "./types"
+} from "../../plugin-agent-types"
 
 describe("builtin sisyphus model helpers", () => {
   it("detects GPT model families from full ids and bare model names", () => {

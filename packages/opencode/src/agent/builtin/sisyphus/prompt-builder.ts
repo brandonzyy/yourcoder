@@ -1,4 +1,4 @@
-import type { AgentPromptMetadata } from "./types"
+import type { AgentPromptMetadata } from "../../plugin-agent-types"
 
 export interface AvailableAgent {
   name: string

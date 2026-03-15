@@ -22,4 +22,4 @@ export type {
 export type {
   AgentMode,
   AgentPromptMetadata,
-} from "./sisyphus/types"
+} from "../plugin-agent-types"

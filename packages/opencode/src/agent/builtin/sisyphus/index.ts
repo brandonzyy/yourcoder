@@ -1,6 +1,6 @@
 import type { AgentConfig } from "@opencode-ai/sdk";
-import type { AgentMode, AgentPromptMetadata } from "./types";
-import { isGptModel, isGeminiModel, isGpt5_4Model } from "./types";
+import type { AgentMode, AgentPromptMetadata } from "../../plugin-agent-types";
+import { isGptModel, isGeminiModel, isGpt5_4Model } from "../../plugin-agent-types";
 import {
   buildGeminiToolMandate,
   buildGeminiDelegationOverride,

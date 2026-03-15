@@ -1,5 +1,5 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
-import type { AgentPromptMetadata } from "../sisyphus/types"
+import type { AgentPromptMetadata } from "../../plugin-agent-types"
 
 export type AgentMode = "subagent" | "primary" | "all"
 
