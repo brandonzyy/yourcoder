@@ -1,6 +1,6 @@
 import { createMemo } from "solid-js"
 import { useSync } from "./sync"
-import { Global } from "@/global"
+import { Global } from "@/util/global"
 
 export function useDirectory() {
   const sync = useSync()

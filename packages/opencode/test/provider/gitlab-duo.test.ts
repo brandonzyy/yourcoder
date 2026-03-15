@@ -5,7 +5,7 @@ import { tmpdir } from "../fixture/fixture"
 import { Instance } from "../../src/project/instance"
 import { Provider } from "../../src/provider/provider"
 import { Env } from "../../src/config/env"
-import { Global } from "../../src/global"
+import { Global } from "../../src/util/global"
 
 test("GitLab Duo: loads provider with API key from environment", async () => {
   await using tmp = await tmpdir({

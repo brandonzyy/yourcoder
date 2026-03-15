@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
-import { Installation } from "../../src/installation"
+import { Installation } from "../../src/project/installation"
 import { Database } from "../../src/storage/db"
 
 describe("Database.Path", () => {

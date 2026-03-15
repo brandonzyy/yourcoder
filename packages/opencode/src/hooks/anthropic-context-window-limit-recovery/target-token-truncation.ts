@@ -1,9 +1,10 @@
 import type { PluginInput } from "@opencode-ai/plugin"
 import type { AggressiveTruncateResult } from "./tool-part-types"
+import type { ToolResultInfo } from "./tool-part-types"
 import { findToolResultsBySize, truncateToolResult } from "./tool-result-storage"
 import { truncateToolResultAsync } from "./tool-result-storage-sdk"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../model/normalize-sdk-response"
 
 type OpencodeClient = PluginInput["client"]
 
@@ -82,7 +83,7 @@ export async function truncateUntilTargetTokens(
 			toolPartsByKey = new Map<string, SDKToolPart>()
 		}
 
-		const results: import("./tool-part-types").ToolResultInfo[] = []
+		const results: ToolResultInfo[] = []
 		for (const [key, part] of toolPartsByKey) {
 			if (part.type === "tool" && part.state?.output && !part.state?.time?.compacted && part.tool) {
 				results.push({

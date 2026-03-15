@@ -1,6 +1,6 @@
 import z from "zod"
-import { Identifier } from "../id/id"
-import { Snapshot } from "../snapshot"
+import { Identifier } from "../util/id"
+import { Snapshot } from "../project/snapshot"
 import { MessageV2 } from "./message-v2"
 import { Session } from "."
 import { Log } from "../util/log"

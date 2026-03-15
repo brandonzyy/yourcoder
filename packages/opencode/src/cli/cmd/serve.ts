@@ -4,7 +4,7 @@ import { withNetworkOptions, resolveNetworkOptions } from "../network"
 import { Flag } from "../../config/flag"
 import { Workspace } from "../../control-plane/workspace"
 import { Project } from "../../project/project"
-import { Installation } from "../../installation"
+import { Installation } from "../../project/installation"
 
 export const ServeCommand = cmd({
   command: "serve",

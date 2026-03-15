@@ -10,7 +10,7 @@ import { Filesystem } from "../util/filesystem"
 import { Instance } from "../project/instance"
 import { Ripgrep } from "./ripgrep"
 import fuzzysort from "fuzzysort"
-import { Global } from "../global"
+import { Global } from "../util/global"
 
 export namespace File {
   const log = Log.create({ service: "file" })

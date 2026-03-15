@@ -5,7 +5,7 @@ import { type ParseError as JsoncParseError, parse as parseJsonc, printParseErro
 import { NamedError } from "@opencode-ai/util/error"
 import { Filesystem } from "@/util/filesystem"
 import { Flag } from "@/config/flag"
-import { Global } from "@/global"
+import { Global } from "@/util/global"
 
 export namespace ConfigPaths {
   export async function projectFiles(name: string, directory: string, worktree: string) {

@@ -7,8 +7,8 @@ import z from "zod"
 import { type ProviderMetadata } from "ai"
 import { Config } from "../config/config"
 import { Flag } from "../config/flag"
-import { Identifier } from "../id/id"
-import { Installation } from "../installation"
+import { Identifier } from "../util/id"
+import { Installation } from "../project/installation"
 
 import { Database, NotFoundError, eq, and, or, gte, isNull, desc, like, inArray, lt } from "../storage/db"
 import type { SQL } from "../storage/db"
@@ -20,13 +20,13 @@ import { MessageV2 } from "./message-v2"
 import { Instance } from "../project/instance"
 import { SessionPrompt } from "./prompt"
 import { fn } from "@/util/fn"
-import { Command } from "../command"
-import { Snapshot } from "@/snapshot"
+import { Command } from "./command"
+import { Snapshot } from "@/project/snapshot"
 import { WorkspaceContext } from "../control-plane/workspace-context"
 
 import type { Provider } from "@/provider/provider"
 import { PermissionNext } from "@/permission/next"
-import { Global } from "@/global"
+import { Global } from "@/util/global"
 import type { LanguageModelV2Usage } from "@ai-sdk/provider"
 import { iife } from "@/util/iife"
 
@@ -348,7 +348,7 @@ export namespace Session {
     if (cfg.share === "disabled") {
       throw new Error("Sharing is disabled in configuration")
     }
-    const { ShareNext } = await import("@/share/share-next")
+    const { ShareNext } = await import("@/session/share/share-next")
     const share = await ShareNext.create(id)
     Database.use((db) => {
       const row = db.update(SessionTable).set({ share_url: share.url }).where(eq(SessionTable.id, id)).returning().get()
@@ -361,7 +361,7 @@ export namespace Session {
 
   export const unshare = fn(Identifier.schema("session"), async (id) => {
     // Use ShareNext to remove the share (same as share function uses ShareNext to create)
-    const { ShareNext } = await import("@/share/share-next")
+    const { ShareNext } = await import("@/session/share/share-next")
     await ShareNext.remove(id)
     Database.use((db) => {
       const row = db.update(SessionTable).set({ share_url: null }).where(eq(SessionTable.id, id)).returning().get()

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import path from "path"
 import { InstructionPrompt } from "../../src/session/instruction"
 import { Instance } from "../../src/project/instance"
-import { Global } from "../../src/global"
+import { Global } from "../../src/util/global"
 import { tmpdir } from "../fixture/fixture"
 
 describe("InstructionPrompt.resolve", () => {

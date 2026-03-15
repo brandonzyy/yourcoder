@@ -1,7 +1,7 @@
 import path from "path"
 import { mkdir } from "fs/promises"
 import { Log } from "../util/log"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import { Filesystem } from "../util/filesystem"
 
 export namespace Discovery {

@@ -1,7 +1,7 @@
 import { Log } from "../util/log"
 import path from "path"
 import fs from "fs/promises"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import { Filesystem } from "../util/filesystem"
 import { lazy } from "../util/lazy"
 import { Lock } from "../util/lock"

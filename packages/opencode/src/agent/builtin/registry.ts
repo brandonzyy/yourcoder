@@ -132,7 +132,7 @@ export class BuiltinAgentRegistry {
     backgroundManager: BackgroundManager
   ): Promise<ToolDefinition | null> {
     try {
-      const { createDelegateTask } = await import("../../task")
+      const { createDelegateTask } = await import("../../features/background-agent/delegate-task-factory")
       return createDelegateTask(client, backgroundManager)
     } catch (error) {
       console.error("Failed to load delegate-task tool:", error)

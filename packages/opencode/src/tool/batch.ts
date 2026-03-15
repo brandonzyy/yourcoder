@@ -31,7 +31,7 @@ export const BatchTool = Tool.define("batch", async () => {
     },
     async execute(params, ctx) {
       const { Session } = await import("../session")
-      const { Identifier } = await import("../id/id")
+      const { Identifier } = await import("../util/id")
 
       const toolCalls = params.tool_calls.slice(0, 25)
       const discardedCalls = params.tool_calls.slice(25)

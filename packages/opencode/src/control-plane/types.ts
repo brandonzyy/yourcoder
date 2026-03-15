@@ -1,5 +1,5 @@
 import z from "zod"
-import { Identifier } from "@/id/id"
+import { Identifier } from "@/util/id"
 
 export const WorkspaceInfo = z.object({
   id: Identifier.schema("workspace"),

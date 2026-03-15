@@ -1,4 +1,4 @@
-import { Installation } from "@/installation"
+import { Installation } from "@/project/installation"
 import { Server } from "@/server/server"
 import { Log } from "@/util/log"
 import { Instance } from "@/project/instance"

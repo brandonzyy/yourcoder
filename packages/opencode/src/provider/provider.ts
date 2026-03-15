@@ -5,7 +5,7 @@ import { Config } from "../config/config"
 import { mapValues, mergeDeep, omit, pickBy, sortBy } from "remeda"
 import { NoSuchModelError, type Provider as SDK } from "ai"
 import { Log } from "../util/log"
-import { BunProc } from "../bun"
+import { BunProc } from "../util/bun"
 import { Hash } from "../util/hash"
 import { Plugin } from "../plugin"
 import { NamedError } from "@opencode-ai/util/error"
@@ -15,7 +15,7 @@ import { Env } from "../config/env"
 import { Instance } from "../project/instance"
 import { Flag } from "../config/flag"
 import { iife } from "@/util/iife"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import path from "path"
 import { Filesystem } from "../util/filesystem"
 
@@ -44,7 +44,7 @@ import { createGitLab, VERSION as GITLAB_PROVIDER_VERSION } from "@gitlab/gitlab
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers"
 import { GoogleAuth } from "google-auth-library"
 import { ProviderTransform } from "./transform"
-import { Installation } from "../installation"
+import { Installation } from "../project/installation"
 
 export namespace Provider {
   const log = Log.create({ service: "provider" })

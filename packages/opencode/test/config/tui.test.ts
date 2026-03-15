@@ -4,7 +4,7 @@ import fs from "fs/promises"
 import { tmpdir } from "../fixture/fixture"
 import { Instance } from "../../src/project/instance"
 import { TuiConfig } from "../../src/config/tui"
-import { Global } from "../../src/global"
+import { Global } from "../../src/util/global"
 import { Filesystem } from "../../src/util/filesystem"
 
 const managedConfigDir = process.env.OPENCODE_TEST_MANAGED_CONFIG_DIR!

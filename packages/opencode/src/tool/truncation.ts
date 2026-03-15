@@ -1,10 +1,10 @@
 import fs from "fs/promises"
 import path from "path"
-import { Global } from "../global"
-import { Identifier } from "../id/id"
+import { Global } from "../util/global"
+import { Identifier } from "../util/id"
 import { PermissionNext } from "../permission/next"
 import type { Agent } from "../agent/agent"
-import { Scheduler } from "../scheduler"
+import { Scheduler } from "../util/scheduler"
 import { Filesystem } from "../util/filesystem"
 import { Glob } from "../util/glob"
 

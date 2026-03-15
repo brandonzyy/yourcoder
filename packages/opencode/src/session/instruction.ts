@@ -1,6 +1,6 @@
 import path from "path"
 import os from "os"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import { Filesystem } from "../util/filesystem"
 import { Config } from "../config/config"
 import { Instance } from "../project/instance"

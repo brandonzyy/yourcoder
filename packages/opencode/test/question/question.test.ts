@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test"
-import { Question } from "../../src/question"
+import { Question } from "../../src/session/question"
 import { Instance } from "../../src/project/instance"
 import { tmpdir } from "../fixture/fixture"
 

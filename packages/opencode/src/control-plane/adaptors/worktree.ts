@@ -1,5 +1,5 @@
 import z from "zod"
-import { Worktree } from "@/worktree"
+import { Worktree } from "@/project/worktree"
 import { type Adaptor, WorkspaceInfo } from "../types"
 
 const Config = WorkspaceInfo.extend({

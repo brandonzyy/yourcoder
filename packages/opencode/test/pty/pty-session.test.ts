@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { Bus } from "../../src/bus"
 import { Instance } from "../../src/project/instance"
-import { Pty } from "../../src/pty"
+import { Pty } from "../../src/tool/pty"
 import { tmpdir } from "../fixture/fixture"
 import { setTimeout as sleep } from "node:timers/promises"
 

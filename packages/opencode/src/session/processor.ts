@@ -1,9 +1,9 @@
 import { MessageV2 } from "./message-v2"
 import { Log } from "@/util/log"
-import { Identifier } from "@/id/id"
+import { Identifier } from "@/util/id"
 import { Session } from "."
 import { Agent } from "@/agent/agent"
-import { Snapshot } from "@/snapshot"
+import { Snapshot } from "@/project/snapshot"
 import { SessionSummary } from "./summary"
 import { Bus } from "@/bus"
 import { SessionRetry } from "./retry"
@@ -14,7 +14,7 @@ import { LLM } from "./llm"
 import { Config } from "@/config/config"
 import { SessionCompaction } from "./compaction"
 import { PermissionNext } from "@/permission/next"
-import { Question } from "@/question"
+import { Question } from "@/session/question"
 
 export namespace SessionProcessor {
   const DOOM_LOOP_THRESHOLD = 3

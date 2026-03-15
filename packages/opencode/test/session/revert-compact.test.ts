@@ -6,7 +6,7 @@ import { SessionCompaction } from "../../src/session/compaction"
 import { MessageV2 } from "../../src/session/message-v2"
 import { Log } from "../../src/util/log"
 import { Instance } from "../../src/project/instance"
-import { Identifier } from "../../src/id/id"
+import { Identifier } from "../../src/util/id"
 import { tmpdir } from "../fixture/fixture"
 
 const projectRoot = path.join(__dirname, "../..")

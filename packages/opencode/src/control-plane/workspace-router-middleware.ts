@@ -1,6 +1,6 @@
 import { Instance } from "@/project/instance"
 import type { MiddlewareHandler } from "hono"
-import { Installation } from "../installation"
+import { Installation } from "../project/installation"
 import { getAdaptor } from "./adaptors"
 import { Workspace } from "./workspace"
 import { WorkspaceContext } from "./workspace-context"

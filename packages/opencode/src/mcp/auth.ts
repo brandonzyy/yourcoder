@@ -1,6 +1,6 @@
 import path from "path"
 import z from "zod"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import { Filesystem } from "../util/filesystem"
 
 export namespace McpAuth {

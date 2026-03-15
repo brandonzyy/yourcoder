@@ -6,7 +6,7 @@ import { bootstrap } from "../bootstrap"
 import { Database } from "../../storage/db"
 import { SessionTable, MessageTable, PartTable } from "../../session/session.sql"
 import { Instance } from "../../project/instance"
-import { ShareNext } from "../../share/share-next"
+import { ShareNext } from "../../session/share/share-next"
 import { EOL } from "os"
 import { Filesystem } from "../../util/filesystem"
 

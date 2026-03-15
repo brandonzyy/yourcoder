@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, spyOn, test } from "bun:test"
 import path from "path"
 import { GlobalBus } from "../../src/bus/global"
-import { Snapshot } from "../../src/snapshot"
+import { Snapshot } from "../../src/project/snapshot"
 import { InstanceBootstrap } from "../../src/project/bootstrap"
 import { Instance } from "../../src/project/instance"
 import { Server } from "../../src/server/server"

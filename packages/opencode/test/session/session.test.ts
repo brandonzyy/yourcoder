@@ -5,7 +5,7 @@ import { Bus } from "../../src/bus"
 import { Log } from "../../src/util/log"
 import { Instance } from "../../src/project/instance"
 import { MessageV2 } from "../../src/session/message-v2"
-import { Identifier } from "../../src/id/id"
+import { Identifier } from "../../src/util/id"
 
 const projectRoot = path.join(__dirname, "../..")
 Log.init({ print: false })

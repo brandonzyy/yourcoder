@@ -1,5 +1,5 @@
 import path from "path"
-import { Global } from "../global"
+import { Global } from "../util/global"
 import z from "zod"
 import { Filesystem } from "../util/filesystem"
 

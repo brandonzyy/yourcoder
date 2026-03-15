@@ -2,7 +2,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, mock, test } from "b
 import path from "path"
 import type { ModelMessage } from "ai"
 import { LLM } from "../../src/session/llm"
-import { Global } from "../../src/global"
+import { Global } from "../../src/util/global"
 import { Instance } from "../../src/project/instance"
 import { Provider } from "../../src/provider/provider"
 import { ProviderTransform } from "../../src/provider/transform"

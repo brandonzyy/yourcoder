@@ -6,7 +6,7 @@ import { tmpdir } from "../fixture/fixture"
 import path from "path"
 import fs from "fs/promises"
 import { pathToFileURL } from "url"
-import { Global } from "../../src/global"
+import { Global } from "../../src/util/global"
 import { Filesystem } from "../../src/util/filesystem"
 
 // Get managed config directory from environment (set in preload.ts)

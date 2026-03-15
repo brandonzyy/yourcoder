@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { Identifier } from "../../src/id/id"
+import { Identifier } from "../../src/util/id"
 import { Log } from "../../src/util/log"
 import { tmpdir } from "../fixture/fixture"
 import { Project } from "../../src/project/project"

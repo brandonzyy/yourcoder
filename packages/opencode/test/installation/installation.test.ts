@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { Installation } from "../../src/installation"
+import { Installation } from "../../src/project/installation"
 
 const fetch0 = globalThis.fetch
 

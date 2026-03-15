@@ -1,4 +1,4 @@
-import { Global } from "@/global"
+import { Global } from "@/util/global"
 import { Filesystem } from "@/util/filesystem"
 import { createSignal, type Setter } from "solid-js"
 import { createStore } from "solid-js/store"
