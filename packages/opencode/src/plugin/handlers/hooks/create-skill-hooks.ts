@@ -1,6 +1,6 @@
 import type { AvailableSkill } from "../../../agent/dynamic-agent-prompt-builder"
 import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
-import type { LoadedSkill } from "../../../features/opencode-skill-loader/types"
+import type { LoadedSkill } from "../../../skill/loader/types"
 import type { PluginContext } from "../types"
 
 import { createAutoSlashCommandHook, createCategorySkillReminderHook } from "../../../hooks"

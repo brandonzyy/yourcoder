@@ -1,6 +1,6 @@
 import type { GitMasterConfig, BrowserAutomationProvider } from "../../config/plugin-schema"
-import { resolveMultipleSkillsAsync } from "../../features/opencode-skill-loader/skill-template-resolver"
-import { discoverSkills } from "../../features/opencode-skill-loader"
+import { resolveMultipleSkillsAsync } from "../../skill/loader/skill-template-resolver"
+import { discoverSkills } from "../../skill/loader"
 
 export async function resolveSkillContent(
   skills: string[],

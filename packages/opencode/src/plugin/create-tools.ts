@@ -1,7 +1,7 @@
 import type { AvailableCategory, AvailableSkill } from "../agent/dynamic-agent-prompt-builder"
 import type { PluginConfig } from "../config/plugin-config-types"
 import type { BrowserAutomationProvider } from "../config/plugin-schema/browser-automation"
-import type { LoadedSkill } from "../features/opencode-skill-loader/types"
+import type { LoadedSkill } from "../skill/loader/types"
 import type { PluginContext, ToolsRecord } from "./handlers/types"
 import type { Managers } from "./create-managers"
 

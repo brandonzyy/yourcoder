@@ -15,7 +15,7 @@ import type {
   CommandExecuteBeforeInput,
   CommandExecuteBeforeOutput,
 } from "./types"
-import type { LoadedSkill } from "../../features/opencode-skill-loader"
+import type { LoadedSkill } from "../../skill/loader"
 
 const sessionProcessedCommands = new Set<string>()
 const sessionProcessedCommandExecutions = new Set<string>()

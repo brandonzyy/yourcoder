@@ -10,7 +10,7 @@ import { discoverPluginCommandDefinitions } from "../../plugin/plugin-command-di
 import { loadBuiltinCommands } from "../../cli/commands"
 import type { CommandFrontmatter } from "../../cli/commands/command-types"
 import { isMarkdownFile } from "../../util/file-utils"
-import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../features/opencode-skill-loader"
+import { discoverAllSkills, type LoadedSkill, type LazyContentLoader } from "../../skill/loader"
 import type { ParsedSlashCommand } from "./types"
 
 interface CommandScope {

@@ -1,4 +1,4 @@
-import type { BuiltinSkill } from "../../builtin-skills/types"
+import type { BuiltinSkill } from "../../builtin/types"
 import type { CommandDefinition } from "../../../cli/commands/command-types"
 import type { LoadedSkill } from "../types"
 

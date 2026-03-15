@@ -8,7 +8,7 @@ import { resolveSymlink, isMarkdownFile } from "../../util/file-utils"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
 import type { CommandDefinition } from "../../cli/commands/command-types"
 import type { SkillScope, SkillMetadata, LoadedSkill } from "./types"
-import type { SkillMcpConfig } from "../builtin-skills/types"
+import type { SkillMcpConfig } from "../../skill/builtin/types"
 
 export async function mapWithConcurrency<T, R>(
   items: T[],

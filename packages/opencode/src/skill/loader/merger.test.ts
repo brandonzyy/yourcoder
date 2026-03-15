@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import type { BuiltinSkill } from "../builtin-skills/types"
+import type { BuiltinSkill } from "../../skill/builtin/types"
 import type { CommandDefinition } from "../../cli/commands/command-types"
 import { mergeSkills } from "./merger"
 import type { LoadedSkill, SkillScope } from "./types"

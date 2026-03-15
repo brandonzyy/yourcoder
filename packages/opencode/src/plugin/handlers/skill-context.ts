@@ -4,7 +4,7 @@ import type { BrowserAutomationProvider } from "../../config/plugin-schema/brows
 import type {
   LoadedSkill,
   SkillScope,
-} from "../../features/opencode-skill-loader/types"
+} from "../../skill/loader/types"
 
 import {
   discoverConfigSourceSkills,
@@ -15,8 +15,8 @@ import {
   discoverProjectAgentsSkills,
   discoverGlobalAgentsSkills,
   mergeSkills,
-} from "../../features/opencode-skill-loader"
-import { createBuiltinSkills } from "../../features/builtin-skills"
+} from "../../skill/loader"
+import { createBuiltinSkills } from "../../skill/builtin"
 import { getSystemMcpServerNames } from "../../mcp/loader"
 
 export type SkillContext = {

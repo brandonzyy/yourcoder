@@ -1,4 +1,4 @@
-import { createBuiltinSkills } from "../builtin-skills/skills"
+import { createBuiltinSkills } from "../../skill/builtin/skills"
 import { discoverSkills } from "./loader"
 import type { LoadedSkill } from "./types"
 import type { SkillResolutionOptions } from "./types"

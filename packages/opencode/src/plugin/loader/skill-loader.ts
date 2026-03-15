@@ -6,7 +6,7 @@ import { sanitizeModelField } from "../../model/model-sanitizer"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
 import { log } from "../../util/logger"
 import type { CommandDefinition } from "../../cli/commands/command-types"
-import type { SkillMetadata } from "../../features/opencode-skill-loader/types"
+import type { SkillMetadata } from "../../skill/loader/types"
 import type { LoadedPlugin } from "./types"
 
 export function loadPluginSkillsAsCommands(

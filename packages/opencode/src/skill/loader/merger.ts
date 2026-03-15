@@ -1,6 +1,6 @@
 import type { LoadedSkill } from "./types"
 import type { SkillsConfig } from "../../config/plugin-schema"
-import type { BuiltinSkill } from "../builtin-skills/types"
+import type { BuiltinSkill } from "../../skill/builtin/types"
 import { builtinToLoadedSkill } from "./merger/builtin-skill-converter"
 import { configEntryToLoadedSkill } from "./merger/config-skill-entry-loader"
 import { mergeSkillDefinitions } from "./merger/skill-definition-merger"

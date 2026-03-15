@@ -1,7 +1,7 @@
 import { promises as fs } from "fs"
 import { join } from "path"
 import yaml from "js-yaml"
-import type { SkillMcpConfig } from "../builtin-skills/types"
+import type { SkillMcpConfig } from "../../skill/builtin/types"
 
 export function parseSkillMcpConfigFromFrontmatter(content: string): SkillMcpConfig | undefined {
   const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)

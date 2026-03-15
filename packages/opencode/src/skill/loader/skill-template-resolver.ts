@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs"
-import { createBuiltinSkills } from "../builtin-skills/skills"
+import { createBuiltinSkills } from "../../skill/builtin/skills"
 import { parseFrontmatter } from "../../util/frontmatter"
 import type { LoadedSkill } from "./types"
 import type { SkillResolutionOptions } from "./types"

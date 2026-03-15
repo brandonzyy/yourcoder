@@ -1,5 +1,5 @@
 import type { CommandDefinition } from "../../cli/commands/command-types"
-import type { SkillMcpConfig } from "../builtin-skills/types"
+import type { SkillMcpConfig } from "../../skill/builtin/types"
 import type { BrowserAutomationProvider, GitMasterConfig } from "../../config/plugin-schema"
 
 export interface SkillResolutionOptions {
