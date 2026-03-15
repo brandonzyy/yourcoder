@@ -180,7 +180,7 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       let agentToUse: string
       let categoryModel: { providerID: string; modelID: string; variant?: string } | undefined
       let categoryPromptAppend: string | undefined
-      let modelInfo: import("../../features/task-toast-manager/types").ModelFallbackInfo | undefined
+      let modelInfo: import("../../cli/toast/types").ModelFallbackInfo | undefined
       let actualModel: string | undefined
       let isUnstableAgent = false
       let fallbackChain: import("../../model/model-requirements").FallbackEntry[] | undefined

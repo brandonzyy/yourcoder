@@ -1,4 +1,4 @@
-import type { BackgroundManager } from "../../features/background-agent"
+import type { BackgroundManager } from "../../agent/background"
 import type { CategoriesConfig, GitMasterConfig, BrowserAutomationProvider, AgentOverrides } from "../../config/plugin-schema"
 import type { OpencodeClient } from "./types"
 

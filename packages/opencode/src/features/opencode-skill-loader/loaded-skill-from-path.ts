@@ -3,7 +3,7 @@ import { basename } from "path"
 import { parseFrontmatter } from "../../util/frontmatter"
 import { sanitizeModelField } from "../../model/model-sanitizer"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
-import type { CommandDefinition } from "../builtin-commands/command-types"
+import type { CommandDefinition } from "../../cli/commands/command-types"
 import { loadMcpJsonFromDir, parseSkillMcpConfigFromFrontmatter } from "./skill-mcp-config"
 
 export function parseAllowedTools(allowedTools: string | string[] | undefined): string[] | undefined {

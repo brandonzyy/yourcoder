@@ -6,7 +6,7 @@ import { parseFrontmatter } from "../../util/frontmatter"
 import { sanitizeModelField } from "../../model/model-sanitizer"
 import { resolveSymlink, isMarkdownFile } from "../../util/file-utils"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
-import type { CommandDefinition } from "../builtin-commands/command-types"
+import type { CommandDefinition } from "../../cli/commands/command-types"
 import type { SkillScope, SkillMetadata, LoadedSkill } from "./types"
 import type { SkillMcpConfig } from "../builtin-skills/types"
 

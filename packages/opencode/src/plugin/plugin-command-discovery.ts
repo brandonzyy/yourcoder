@@ -2,8 +2,8 @@ import {
   discoverInstalledPlugins,
   loadPluginCommands,
   loadPluginSkillsAsCommands,
-} from "../features/plugin-loader"
-import type { CommandDefinition } from "../features/builtin-commands/command-types"
+} from "../plugin/loader"
+import type { CommandDefinition } from "../cli/commands/command-types"
 
 export interface PluginCommandDiscoveryOptions {
   pluginsEnabled?: boolean

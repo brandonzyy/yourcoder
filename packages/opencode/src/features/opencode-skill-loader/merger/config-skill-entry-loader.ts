@@ -1,6 +1,6 @@
 import type { LoadedSkill, SkillMetadata } from "../types"
 import type { SkillDefinition } from "../../../config/plugin-schema"
-import type { CommandDefinition } from "../../builtin-commands/command-types"
+import type { CommandDefinition } from "../../../cli/commands/command-types"
 import { existsSync, readFileSync } from "fs"
 import { dirname, isAbsolute, resolve } from "path"
 import { homedir } from "os"

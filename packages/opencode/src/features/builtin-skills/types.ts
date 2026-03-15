@@ -1,4 +1,4 @@
-import type { ClaudeCodeMcpServer } from "../mcp-loader/types"
+import type { ClaudeCodeMcpServer } from "../../mcp/loader/types"
 
 export type SkillMcpConfig = Record<string, ClaudeCodeMcpServer>
 

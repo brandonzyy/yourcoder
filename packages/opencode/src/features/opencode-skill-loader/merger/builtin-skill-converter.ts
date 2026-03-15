@@ -1,5 +1,5 @@
 import type { BuiltinSkill } from "../../builtin-skills/types"
-import type { CommandDefinition } from "../../builtin-commands/command-types"
+import type { CommandDefinition } from "../../../cli/commands/command-types"
 import type { LoadedSkill } from "../types"
 
 export function builtinToLoadedSkill(builtin: BuiltinSkill): LoadedSkill {

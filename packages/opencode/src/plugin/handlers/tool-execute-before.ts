@@ -2,7 +2,7 @@ import type { PluginContext } from "./types"
 import { randomUUID } from "node:crypto"
 
 import { getMainSessionID } from "../../session/state"
-import { clearBoulderState } from "../../features/boulder-state"
+import { clearBoulderState } from "../../session/boulder-state"
 import { log } from "../../util/logger"
 import { resolveSessionAgent } from "./session-agent-resolver"
 import { parseRalphLoopArguments } from "../../hooks/continuation/ralph-loop/command-arguments"

@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 
-import type { BackgroundManager } from "../../../features/background-agent"
+import type { BackgroundManager } from "../../../agent/background"
 import { setMainSession, subagentSessions, _resetForTesting } from "../../../session/state"
 import { createTodoContinuationEnforcer } from "."
 import {

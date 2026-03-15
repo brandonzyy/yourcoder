@@ -1,4 +1,4 @@
-import type { BackgroundManager } from "../../../features/background-agent"
+import type { BackgroundManager } from "../../../agent/background"
 import { getMainSessionID, getSessionAgent } from "../../../session/state"
 import { log } from "../../../util/logger"
 import { createInternalAgentTextPart } from "../../../util/internal-initiator-marker"

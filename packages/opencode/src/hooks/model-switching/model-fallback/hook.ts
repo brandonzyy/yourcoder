@@ -5,7 +5,7 @@ import { readConnectedProvidersCache, readProviderModelsCache } from "../../../u
 import { selectFallbackProvider } from "../../../model/model-error-classifier"
 import { transformModelForProvider } from "../../../util/provider-model-id-transform"
 import { log } from "../../../util/logger"
-import { getTaskToastManager } from "../../../features/task-toast-manager"
+import { getTaskToastManager } from "../../../cli/toast"
 import type { ChatMessageInput, ChatMessageHandlerOutput } from "../../../plugin/handlers/chat-message"
 
 type FallbackToast = (input: {

@@ -1,4 +1,4 @@
-import type { ModelFallbackInfo } from "../../features/task-toast-manager/types"
+import type { ModelFallbackInfo } from "../../cli/toast/types"
 import type { DelegateTaskArgs } from "./types"
 import type { ExecutorContext } from "./executor-types"
 import type { FallbackEntry } from "../../model/model-requirements"

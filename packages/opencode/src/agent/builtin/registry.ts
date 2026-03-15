@@ -1,6 +1,6 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { ToolDefinition } from "../../plugin/sdk"
-import { BackgroundManager } from "../../features/background-agent"
+import { BackgroundManager } from "../../agent/background"
 
 /**
  * Native builtin agent registry
@@ -132,7 +132,7 @@ export class BuiltinAgentRegistry {
     backgroundManager: BackgroundManager
   ): Promise<ToolDefinition | null> {
     try {
-      const { createDelegateTask } = await import("../../features/background-agent/delegate-task-factory")
+      const { createDelegateTask } = await import("../../agent/background/delegate-task-factory")
       return createDelegateTask(client, backgroundManager)
     } catch (error) {
       console.error("Failed to load delegate-task tool:", error)

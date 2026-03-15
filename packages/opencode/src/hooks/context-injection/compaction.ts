@@ -1,4 +1,4 @@
-import type { BackgroundManager } from "../../features/background-agent"
+import type { BackgroundManager } from "../../agent/background"
 import {
   createSystemDirective,
   SystemDirectiveTypes,

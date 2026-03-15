@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../../plugin/sdk"
 
-import type { BackgroundManager } from "../../../features/background-agent"
+import type { BackgroundManager } from "../../../agent/background"
 import { log } from "../../../util/logger"
 
 import {

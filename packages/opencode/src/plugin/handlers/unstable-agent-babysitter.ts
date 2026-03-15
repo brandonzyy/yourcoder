@@ -2,7 +2,7 @@ import type { PluginConfig } from "../../config/plugin-config-types"
 import type { PluginContext } from "./types"
 
 import { createUnstableAgentBabysitterHook } from "../../hooks"
-import type { BackgroundManager } from "../../features/background-agent"
+import type { BackgroundManager } from "../../agent/background"
 
 export function createUnstableAgentBabysitter(args: {
   ctx: PluginContext

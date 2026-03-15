@@ -24,7 +24,7 @@ describe("executeSyncTask - cleanup on error paths", () => {
     addCalls = []
 
     //#given - initialize real task toast manager (avoid global module mocks)
-    const { initTaskToastManager, _resetTaskToastManagerForTesting } = require("../../features/task-toast-manager/manager")
+    const { initTaskToastManager, _resetTaskToastManagerForTesting } = require("../../cli/toast/manager")
     _resetTaskToastManagerForTesting()
     resetToastManager = _resetTaskToastManagerForTesting
 

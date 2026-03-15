@@ -9,7 +9,7 @@ import {
   createBoulderState,
   getPlanName,
   clearBoulderState,
-} from "../../features/boulder-state"
+} from "../../session/boulder-state"
 import { log } from "../../util/logger"
 import { updateSessionAgent } from "../../session/state"
 import { detectWorktreePath } from "./worktree-detector"

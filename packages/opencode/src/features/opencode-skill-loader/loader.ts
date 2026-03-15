@@ -2,7 +2,7 @@ import { join } from "path"
 import { homedir } from "os"
 import { getClaudeConfigDir } from "../../config/claude-config-dir"
 import { getOpenCodeConfigDir } from "../../config/opencode-config-dir"
-import type { CommandDefinition } from "../builtin-commands/command-types"
+import type { CommandDefinition } from "../../cli/commands/command-types"
 import type { LoadedSkill } from "./types"
 import { loadSkillsFromDir } from "./skill-directory-loader"
 

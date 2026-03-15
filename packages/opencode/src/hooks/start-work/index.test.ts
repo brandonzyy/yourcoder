@@ -8,8 +8,8 @@ import {
   writeBoulderState,
   clearBoulderState,
   readBoulderState,
-} from "../../features/boulder-state"
-import type { BoulderState } from "../../features/boulder-state"
+} from "../../session/boulder-state"
+import type { BoulderState } from "../../session/boulder-state"
 import * as sessionState from "../../session/state"
 import * as worktreeDetector from "./worktree-detector"
 

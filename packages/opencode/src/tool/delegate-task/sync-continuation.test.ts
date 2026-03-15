@@ -20,7 +20,7 @@ describe("executeSyncContinuation - toast cleanup error paths", () => {
     addTaskCalls = []
 
     //#given - initialize real task toast manager (avoid global module mocks)
-    const { initTaskToastManager, _resetTaskToastManagerForTesting } = require("../../features/task-toast-manager/manager")
+    const { initTaskToastManager, _resetTaskToastManagerForTesting } = require("../../cli/toast/manager")
     _resetTaskToastManagerForTesting()
     resetToastManager = _resetTaskToastManagerForTesting
 
@@ -296,7 +296,7 @@ describe("executeSyncContinuation - toast cleanup error paths", () => {
 
   test("no crash when toastManager is null", async () => {
 		//#given - reset toast manager instance to null
-    const { _resetTaskToastManagerForTesting } = require("../../features/task-toast-manager/manager")
+    const { _resetTaskToastManagerForTesting } = require("../../cli/toast/manager")
     _resetTaskToastManagerForTesting()
 
     const mockClient = {

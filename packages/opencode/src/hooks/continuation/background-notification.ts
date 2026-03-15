@@ -1,4 +1,4 @@
-import type { BackgroundManager, BackgroundTask } from "../../features/background-agent"
+import type { BackgroundManager, BackgroundTask } from "../../agent/background"
 
 export interface BackgroundNotificationHookConfig {
   formatNotification?: (tasks: BackgroundTask[]) => string

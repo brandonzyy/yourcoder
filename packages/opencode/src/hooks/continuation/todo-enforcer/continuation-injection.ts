@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../../plugin/sdk"
 
-import type { BackgroundManager } from "../../../features/background-agent"
+import type { BackgroundManager } from "../../../agent/background"
 import { createInternalAgentTextPart } from "../../../util/internal-initiator-marker"
 import { resolveInheritedPromptTools } from "../../../util/prompt-tools"
 import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
