@@ -1,5 +1,5 @@
 import type { AvailableCategory } from "../../agent/dynamic-agent-prompt-builder"
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import { CATEGORY_DESCRIPTIONS } from "../../tool/delegate-task/constants"
 import { mergeCategories } from "../../config/plugin-utils/merge-categories"
 

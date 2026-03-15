@@ -1,4 +1,4 @@
-import type { PluginConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-schema"
 import type { ModelCacheState } from "./plugin-state"
 import type { PluginContext, TmuxConfig } from "./handlers/types"
 

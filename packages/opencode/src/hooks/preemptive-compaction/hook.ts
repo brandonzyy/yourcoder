@@ -1,5 +1,5 @@
 import { log } from "../../util/logger"
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 
 import { resolveCompactionModel } from "../shared/compaction-model-resolver"
 const DEFAULT_ACTUAL_LIMIT = 200_000

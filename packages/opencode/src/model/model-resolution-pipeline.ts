@@ -22,7 +22,7 @@ export type ModelResolutionRequest = {
   }
 }
 
-export type ModelResolutionProvenance =
+export type ModelSource =
   | "override"
   | "category-default"
   | "provider-fallback"
@@ -30,7 +30,7 @@ export type ModelResolutionProvenance =
 
 export type ModelResolutionResult = {
   model: string
-  provenance: ModelResolutionProvenance
+  source: ModelSource
   variant?: string
   attempted?: string[]
   reason?: string
@@ -49,13 +49,13 @@ export function resolveModelPipeline(
   const normalizedUiModel = normalizeModel(intent?.uiSelectedModel)
   if (normalizedUiModel) {
     log("Model resolved via UI selection", { model: normalizedUiModel })
-    return { model: normalizedUiModel, provenance: "override" }
+    return { model: normalizedUiModel, source: "override" }
   }
 
   const normalizedUserModel = normalizeModel(intent?.userModel)
   if (normalizedUserModel) {
     log("Model resolved via config override", { model: normalizedUserModel })
-    return { model: normalizedUserModel, provenance: "override" }
+    return { model: normalizedUserModel, source: "override" }
   }
 
   const normalizedCategoryDefault = normalizeModel(intent?.categoryDefaultModel)
@@ -70,7 +70,7 @@ export function resolveModelPipeline(
           original: normalizedCategoryDefault,
           matched: match,
         })
-        return { model: match, provenance: "category-default", attempted }
+        return { model: match, source: "category-default", attempted }
       }
     } else {
       const connectedProviders = constraints.connectedProviders ?? connectedProvidersCache.readConnectedProvidersCache()
@@ -78,7 +78,7 @@ export function resolveModelPipeline(
         log("Model resolved via category default (no cache, first run)", {
           model: normalizedCategoryDefault,
         })
-        return { model: normalizedCategoryDefault, provenance: "category-default", attempted }
+        return { model: normalizedCategoryDefault, source: "category-default", attempted }
       }
       const parts = normalizedCategoryDefault.split("/")
       if (parts.length >= 2) {
@@ -90,7 +90,7 @@ export function resolveModelPipeline(
             model: transformedModel,
             original: normalizedCategoryDefault,
           })
-          return { model: transformedModel, provenance: "category-default", attempted }
+          return { model: transformedModel, source: "category-default", attempted }
         }
       }
     }
@@ -116,7 +116,7 @@ export function resolveModelPipeline(
               const modelName = parts.slice(1).join("/")
               const transformedModel = `${provider}/${transformModelForProvider(provider, modelName)}`
               log("Model resolved via user fallback_models (connected provider)", { model: transformedModel, original: model })
-              return { model: transformedModel, provenance: "provider-fallback", attempted }
+              return { model: transformedModel, source: "provider-fallback", attempted }
             }
           }
         }
@@ -130,7 +130,7 @@ export function resolveModelPipeline(
         const match = fuzzyMatchModel(model, availableModels, providerHint)
         if (match) {
           log("Model resolved via user fallback_models (availability confirmed)", { model: model, match })
-          return { model: match, provenance: "provider-fallback", attempted }
+          return { model: match, source: "provider-fallback", attempted }
         }
       }
       log("No available model found in user fallback_models, falling through to hardcoded chain")
@@ -157,7 +157,7 @@ export function resolveModelPipeline(
               })
               return {
                 model,
-                provenance: "provider-fallback",
+                source: "provider-fallback",
                 variant: entry.variant,
                 attempted,
               }
@@ -180,7 +180,7 @@ export function resolveModelPipeline(
             })
             return {
               model: match,
-              provenance: "provider-fallback",
+              source: "provider-fallback",
               variant: entry.variant,
               attempted,
             }
@@ -196,7 +196,7 @@ export function resolveModelPipeline(
           })
           return {
             model: crossProviderMatch,
-            provenance: "provider-fallback",
+            source: "provider-fallback",
             variant: entry.variant,
             attempted,
           }
@@ -212,5 +212,5 @@ export function resolveModelPipeline(
   }
 
   log("Model resolved via system default", { model: systemDefaultModel })
-  return { model: systemDefaultModel, provenance: "system-default", attempted }
+  return { model: systemDefaultModel, source: "system-default", attempted }
 }

@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { FallbackModelsSchema } from "./fallback-models"
+import { FallbackModelsSchema } from "./runtime-fallback"
 import { AgentPermissionSchema } from "./internal/permission"
 
 export const AgentOverrideConfigSchema = z.object({

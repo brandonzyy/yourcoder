@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import type { RuntimeFallbackConfig, PluginConfig } from "../../../config/plugin-config-types"
+import type { RuntimeFallbackConfig, PluginConfig } from "../../../config/plugin-schema"
 
 export interface FallbackState {
   originalModel: string

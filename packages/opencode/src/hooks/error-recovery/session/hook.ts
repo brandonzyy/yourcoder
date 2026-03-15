@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import type { ExperimentalConfig } from "../../../config/plugin-config-types"
+import type { ExperimentalConfig } from "../../../config/plugin-schema"
 import { log } from "../../../util/logger"
 import { detectErrorType } from "./detect-error-type"
 import type { RecoveryErrorType } from "./detect-error-type"

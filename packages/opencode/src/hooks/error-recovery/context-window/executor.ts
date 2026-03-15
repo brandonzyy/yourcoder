@@ -1,6 +1,6 @@
 import type { AutoCompactState } from "./types";
-import type { PluginConfig } from "../../../config/plugin-config-types";
-import type { ExperimentalConfig } from "../../../config/plugin-config-types";
+import type { PluginConfig } from "../../../config/plugin-schema";
+import type { ExperimentalConfig } from "../../../config/plugin-schema";
 import { TRUNCATE_CONFIG } from "./types";
 
 import type { Client } from "./client";

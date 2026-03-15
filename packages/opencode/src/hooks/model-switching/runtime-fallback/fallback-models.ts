@@ -1,4 +1,4 @@
-import type { PluginConfig } from "../../../config/plugin-config-types"
+import type { PluginConfig } from "../../../config/plugin-schema"
 import { AGENT_NAMES, agentPattern } from "./agent-resolver"
 import { HOOK_NAME } from "./constants"
 import { log } from "../../../util/logger"

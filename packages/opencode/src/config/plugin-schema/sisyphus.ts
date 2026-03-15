@@ -1,5 +1,14 @@
 import { z } from "zod"
 
+export const SisyphusAgentConfigSchema = z.object({
+  disabled: z.boolean().optional(),
+  default_builder_enabled: z.boolean().optional(),
+  planner_enabled: z.boolean().optional(),
+  replace_plan: z.boolean().optional(),
+})
+
+export type SisyphusAgentConfig = z.infer<typeof SisyphusAgentConfigSchema>
+
 export const SisyphusTasksConfigSchema = z.object({
   /** Absolute or relative storage path override. When set, bypasses global config dir. */
   storage_path: z.string().optional(),

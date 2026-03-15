@@ -1,4 +1,4 @@
-import type { PluginConfig, HookName } from "../../../config/plugin-config-types"
+import type { PluginConfig, HookName } from "../../../config/plugin-schema"
 import type { ModelCacheState } from "../../plugin-state"
 import type { PluginContext } from "../types"
 
@@ -18,7 +18,6 @@ import {
   createDelegateTaskRetryHook,
   createTaskResumeInfoHook,
   createStartWorkHook,
-  createSisyphusJuniorNotepadHook,
   createNoSisyphusGptHook,
   createQuestionLabelTruncatorHook,
   createPreemptiveCompactionHook,
@@ -47,7 +46,6 @@ export type SessionHooks = {
   editErrorRecovery: ReturnType<typeof createEditErrorRecoveryHook> | null
   delegateTaskRetry: ReturnType<typeof createDelegateTaskRetryHook> | null
   startWork: ReturnType<typeof createStartWorkHook> | null
-  sisyphusJuniorNotepad: ReturnType<typeof createSisyphusJuniorNotepadHook> | null
   noSisyphusGpt: ReturnType<typeof createNoSisyphusGptHook> | null
   questionLabelTruncator: ReturnType<typeof createQuestionLabelTruncatorHook> | null
   taskResumeInfo: ReturnType<typeof createTaskResumeInfoHook> | null
@@ -213,10 +211,6 @@ export function createSessionHooks(args: {
     ? safeHook("start-work", () => createStartWorkHook(ctx))
     : null
 
-  const sisyphusJuniorNotepad = isHookEnabled("sisyphus-junior-notepad")
-    ? safeHook("sisyphus-junior-notepad", () => createSisyphusJuniorNotepadHook(ctx))
-    : null
-
   const noSisyphusGpt = isHookEnabled("no-sisyphus-gpt")
     ? safeHook("no-sisyphus-gpt", () => createNoSisyphusGptHook(ctx))
     : null
@@ -269,7 +263,6 @@ export function createSessionHooks(args: {
     editErrorRecovery,
     delegateTaskRetry,
     startWork,
-    sisyphusJuniorNotepad,
     noSisyphusGpt,
     questionLabelTruncator,
     taskResumeInfo,

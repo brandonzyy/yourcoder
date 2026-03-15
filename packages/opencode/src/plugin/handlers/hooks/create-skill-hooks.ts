@@ -1,5 +1,5 @@
 import type { AvailableSkill } from "../../../agent/dynamic-agent-prompt-builder"
-import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-schema"
 import type { LoadedSkill } from "../../../skill/loader/types"
 import type { PluginContext } from "../types"
 

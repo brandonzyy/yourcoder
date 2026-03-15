@@ -1,4 +1,4 @@
-import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-schema"
 import type { BackgroundManager } from "../../../agent/background"
 import type { PluginContext } from "../types"
 

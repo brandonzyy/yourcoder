@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
 import { runSummarizeRetryStrategy } from "./summarize-retry-strategy"
 import type { AutoCompactState, ParsedTokenLimitError, RetryState } from "./types"
-import type { PluginConfig } from "../../../config/plugin-config-types"
+import type { PluginConfig } from "../../../config/plugin-schema"
 
 type TimeoutCall = {
   delay: number

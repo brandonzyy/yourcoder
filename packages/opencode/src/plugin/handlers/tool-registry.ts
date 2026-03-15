@@ -3,7 +3,7 @@ import type { ToolDefinition } from "../sdk"
 import type {
   AvailableCategory,
 } from "../../agent/dynamic-agent-prompt-builder"
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import type { PluginContext, ToolsRecord } from "./types"
 
 import { createDelegateTask } from "../../tool/delegate-task"

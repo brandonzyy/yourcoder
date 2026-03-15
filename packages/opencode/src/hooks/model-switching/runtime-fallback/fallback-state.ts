@@ -1,7 +1,7 @@
 import type { FallbackState, FallbackResult } from "./types"
 import { HOOK_NAME } from "./constants"
 import { log } from "../../../util/logger"
-import type { RuntimeFallbackConfig } from "../../../config/plugin-config-types"
+import type { RuntimeFallbackConfig } from "../../../config/plugin-schema"
 
 export function createFallbackState(originalModel: string): FallbackState {
   return {

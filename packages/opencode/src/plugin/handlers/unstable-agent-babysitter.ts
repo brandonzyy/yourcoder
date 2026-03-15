@@ -1,4 +1,4 @@
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import type { PluginContext } from "./types"
 
 import { createUnstableAgentBabysitterHook } from "../../hooks"

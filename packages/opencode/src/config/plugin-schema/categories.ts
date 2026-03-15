@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { FallbackModelsSchema } from "./fallback-models"
+import { FallbackModelsSchema } from "./runtime-fallback"
 
 export const CategoryConfigSchema = z.object({
   /** Human-readable description of the category's purpose. Shown in task prompt. */

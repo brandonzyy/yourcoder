@@ -1,5 +1,5 @@
 import type { AutoCompactState } from "./types"
-import type { PluginConfig } from "../../../config/plugin-config-types"
+import type { PluginConfig } from "../../../config/plugin-schema"
 import { RETRY_CONFIG } from "./types"
 import type { Client } from "./client"
 import { clearSessionState, getEmptyContentAttempt, getOrCreateRetryState } from "./state"

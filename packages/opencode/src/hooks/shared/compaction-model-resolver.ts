@@ -1,4 +1,4 @@
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import { getSessionAgent } from "../../session/state"
 import { getAgentConfigKey } from "../../util/agent-display-names"
 

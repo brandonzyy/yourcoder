@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { PluginConfigSchema, type PluginConfig } from "../config/plugin-config-types";
+import { PluginConfigSchema, type PluginConfig } from "../config/plugin-schema";
 import { log } from "../util/logger";
 import { deepMerge } from "../util/deep-merge";
 import { parseJsonc, detectConfigFile } from "../util/jsonc-parser";

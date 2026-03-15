@@ -1,4 +1,4 @@
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import type { AgentOverrides } from "../../config/plugin-schema/agent-overrides"
 import { getSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"

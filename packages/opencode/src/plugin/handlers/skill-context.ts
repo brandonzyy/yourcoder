@@ -1,5 +1,5 @@
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
-import type { PluginConfig } from "../../config/plugin-config-types"
+import type { PluginConfig } from "../../config/plugin-schema"
 import type { BrowserAutomationProvider } from "../../config/plugin-schema/browser-automation"
 import type {
   LoadedSkill,

@@ -1,5 +1,5 @@
 import type { PluginContext, PluginInterface, ToolsRecord } from "./handlers/types"
-import type { PluginConfig } from "../config/plugin-config-types"
+import type { PluginConfig } from "../config/plugin-schema"
 
 import { createChatParamsHandler } from "./handlers/chat-params"
 import { createChatHeadersHandler } from "./handlers/chat-headers"

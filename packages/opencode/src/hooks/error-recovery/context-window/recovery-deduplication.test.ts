@@ -1,6 +1,6 @@
 import { describe, test, expect, mock, beforeEach, afterAll } from "bun:test"
 import type { PluginInput } from "../../../plugin/sdk"
-import type { ExperimentalConfig } from "../../../config/plugin-config-types"
+import type { ExperimentalConfig } from "../../../config/plugin-schema"
 import * as originalDeduplicationRecovery from "./deduplication-recovery"
 
 const attemptDeduplicationRecoveryMock = mock(async () => {})

@@ -1,7 +1,7 @@
 import { initConfigContext } from "../config/config-manager/config-context"
 import type { Plugin } from "./sdk"
 
-import type { HookName } from "../config/plugin-config-types"
+import type { HookName } from "../config/plugin-schema"
 
 import { createHooks } from "./create-hooks"
 import { createManagers } from "./create-managers"
@@ -106,6 +106,6 @@ export type {
   McpName,
   HookName,
   BuiltinCommandName,
-} from "../config/plugin-config-types"
+} from "../config/plugin-schema"
 
 export type { ConfigLoadError } from "../config/config-errors"

@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createRuntimeFallbackHook } from "./index"
-import type { RuntimeFallbackConfig, PluginConfig } from "../../../config/plugin-config-types"
+import type { RuntimeFallbackConfig, PluginConfig } from "../../../config/plugin-schema"
 import * as logger from "../../../util/logger"
 import { SessionCategoryRegistry } from "../../../session/session-category-registry"
 

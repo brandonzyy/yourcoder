@@ -4,7 +4,7 @@
  * Default values and configuration constants for the runtime fallback feature.
  */
 
-import type { RuntimeFallbackConfig } from "../../../config/plugin-config-types"
+import type { RuntimeFallbackConfig } from "../../../config/plugin-schema"
 
 /**
  * Default configuration values for runtime fallback

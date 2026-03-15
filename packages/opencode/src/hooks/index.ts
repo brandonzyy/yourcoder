@@ -29,7 +29,6 @@ export { createNoSisyphusGptHook } from "./agent-guardrails/no-sisyphus-gpt";
 export { createAutoSlashCommandHook } from "./auto-slash-command";
 export { createEditErrorRecoveryHook } from "./error-recovery/edit";
 
-export { createSisyphusJuniorNotepadHook } from "./agent-guardrails/sisyphus-junior-notepad";
 export { createTaskResumeInfoHook } from "./continuation/task-resume-info";
 export { createStartWorkHook } from "./start-work";
 export { createDelegateTaskRetryHook } from "./delegate-task-retry";

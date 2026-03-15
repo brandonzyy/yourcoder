@@ -1,4 +1,4 @@
-import type { HookName, PluginConfig } from "../../../config/plugin-config-types"
+import type { HookName, PluginConfig } from "../../../config/plugin-schema"
 import type { PluginContext } from "../types"
 import type { ModelCacheState } from "../../plugin-state"
 

@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../../plugin/sdk"
 import type { ParsedTokenLimitError } from "./types"
-import type { ExperimentalConfig } from "../../../config/plugin-config-types"
+import type { ExperimentalConfig } from "../../../config/plugin-schema"
 import type { DeduplicationConfig } from "./pruning-deduplication"
 import type { PruningState } from "./pruning-types"
 import { executeDeduplication } from "./pruning-deduplication"
