@@ -1,4 +1,4 @@
-import { GlobalBus } from "../../bus/global"
+import { GlobalBus } from "../../util/bus/global"
 import { Hono } from "hono"
 import { streamSSE } from "hono/streaming"
 

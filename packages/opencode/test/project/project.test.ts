@@ -5,7 +5,7 @@ import { $ } from "bun"
 import path from "path"
 import { tmpdir } from "../fixture/fixture"
 import { Filesystem } from "../../src/util/filesystem"
-import { GlobalBus } from "../../src/bus/global"
+import { GlobalBus } from "../../src/util/bus/global"
 
 Log.init({ print: false })
 

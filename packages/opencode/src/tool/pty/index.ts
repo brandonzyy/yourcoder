@@ -1,5 +1,5 @@
-import { BusEvent } from "@/bus/bus-event"
-import { Bus } from "@/bus"
+import { BusEvent } from "@/util/bus/bus-event"
+import { Bus } from "@/util/bus"
 import { type IPty } from "bun-pty"
 import z from "zod"
 import { Identifier } from "../../util/id"

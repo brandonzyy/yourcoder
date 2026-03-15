@@ -1,4 +1,4 @@
-import { Bus } from "@/bus"
+import { Bus } from "@/util/bus"
 import { Config } from "@/config/config"
 import { Provider } from "@/provider/provider"
 import { Session } from "@/session"

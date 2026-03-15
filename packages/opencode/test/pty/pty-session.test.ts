@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { Bus } from "../../src/bus"
+import { Bus } from "../../src/util/bus"
 import { Instance } from "../../src/project/instance"
 import { Pty } from "../../src/tool/pty"
 import { tmpdir } from "../fixture/fixture"

@@ -74,7 +74,7 @@ describe("tool.edit", () => {
       await Instance.provide({
         directory: tmp.path,
         fn: async () => {
-          const { Bus } = await import("../../src/bus")
+          const { Bus } = await import("../../src/util/bus")
           const { File } = await import("../../src/file")
           const { FileWatcher } = await import("../../src/file/watcher")
 
@@ -295,7 +295,7 @@ describe("tool.edit", () => {
         fn: async () => {
           FileTime.read(ctx.sessionID, filepath)
 
-          const { Bus } = await import("../../src/bus")
+          const { Bus } = await import("../../src/util/bus")
           const { File } = await import("../../src/file")
           const { FileWatcher } = await import("../../src/file/watcher")
 

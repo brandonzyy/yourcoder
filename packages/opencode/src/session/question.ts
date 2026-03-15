@@ -1,5 +1,5 @@
-import { Bus } from "@/bus"
-import { BusEvent } from "@/bus/bus-event"
+import { Bus } from "@/util/bus"
+import { BusEvent } from "@/util/bus/bus-event"
 import { Identifier } from "@/util/id"
 import { Instance } from "@/project/instance"
 import { Log } from "@/util/log"

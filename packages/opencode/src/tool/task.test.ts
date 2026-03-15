@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { TaskTool } from "./task"
 import { Agent } from "../agent/agent"
-import { PermissionNext } from "../permission/next"
+import { PermissionNext } from "../capability/permission/next"
 import { Session } from "../session"
 import { MessageV2 } from "../session/message-v2"
 import { Identifier } from "../util/id"

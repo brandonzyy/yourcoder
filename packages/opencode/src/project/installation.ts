@@ -1,4 +1,4 @@
-import { BusEvent } from "@/bus/bus-event"
+import { BusEvent } from "@/util/bus/bus-event"
 import path from "path"
 import { $ } from "bun"
 import z from "zod"

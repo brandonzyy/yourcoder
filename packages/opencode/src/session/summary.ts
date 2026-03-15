@@ -7,7 +7,7 @@ import { Identifier } from "@/util/id"
 import { Snapshot } from "@/project/snapshot"
 
 import { Storage } from "@/storage/storage"
-import { Bus } from "@/bus"
+import { Bus } from "@/util/bus"
 
 export namespace SessionSummary {
   function unquoteGitPath(input: string) {

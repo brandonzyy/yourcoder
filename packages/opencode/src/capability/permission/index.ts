@@ -1,11 +1,11 @@
-import { BusEvent } from "@/bus/bus-event"
-import { Bus } from "@/bus"
+import { BusEvent } from "@/util/bus/bus-event"
+import { Bus } from "@/util/bus"
 import z from "zod"
-import { Log } from "../util/log"
-import { Identifier } from "../util/id"
-import { Plugin } from "../plugin"
-import { Instance } from "../project/instance"
-import { Wildcard } from "../util/wildcard"
+import { Log } from "../../util/log"
+import { Identifier } from "../../util/id"
+import { Plugin } from "../../plugin"
+import { Instance } from "../../project/instance"
+import { Wildcard } from "../../util/wildcard"
 
 export namespace Permission {
   const log = Log.create({ service: "permission" })

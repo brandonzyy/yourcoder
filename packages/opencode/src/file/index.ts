@@ -1,4 +1,4 @@
-import { BusEvent } from "@/bus/bus-event"
+import { BusEvent } from "@/util/bus/bus-event"
 import z from "zod"
 import { $ } from "bun"
 import { formatPatch, structuredPatch } from "diff"

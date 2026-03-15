@@ -1,4 +1,4 @@
-import { Bus } from "../../bus"
+import { Bus } from "../../util/bus"
 import { File } from "../../file"
 import { Log } from "../../util/log"
 import path from "path"

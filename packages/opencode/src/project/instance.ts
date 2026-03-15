@@ -3,7 +3,7 @@ import { Context } from "../util/context"
 import { Project } from "./project"
 import { State } from "./state"
 import { iife } from "@/util/iife"
-import { GlobalBus } from "@/bus/global"
+import { GlobalBus } from "@/util/bus/global"
 import { Filesystem } from "@/util/filesystem"
 
 interface Context {

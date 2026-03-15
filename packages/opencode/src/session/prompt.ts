@@ -4,7 +4,7 @@ globalThis.AI_SDK_LOG_WARNINGS = false
 import { fn } from "@/util/fn"
 import { SessionRevert } from "./revert"
 import { Session } from "."
-import { PermissionNext } from "@/permission/next"
+import { PermissionNext } from "@/capability/permission/next"
 import { createUserMessage } from "./prompt/user-message"
 import { lastModel } from "./prompt/last-model"
 import { assertNotBusy as assertNotBusyImpl, cancel as cancelImpl } from "./prompt/state"

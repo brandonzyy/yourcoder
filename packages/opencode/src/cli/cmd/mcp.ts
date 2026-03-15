@@ -14,7 +14,7 @@ import path from "path"
 import { Global } from "../../util/global"
 import { modify, applyEdits } from "jsonc-parser"
 import { Filesystem } from "../../util/filesystem"
-import { Bus } from "../../bus"
+import { Bus } from "../../util/bus"
 
 function getAuthStatusIcon(status: MCP.AuthStatus): string {
   switch (status) {

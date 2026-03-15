@@ -7,7 +7,7 @@ import { Log } from "../util/log"
 import { Database, eq } from "../storage/db"
 import { MessageTable, PartTable } from "./session.sql"
 import { Storage } from "@/storage/storage"
-import { Bus } from "../bus"
+import { Bus } from "../util/bus"
 import { SessionPrompt } from "./prompt"
 import { SessionSummary } from "./summary"
 

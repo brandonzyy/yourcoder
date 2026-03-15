@@ -1,4 +1,4 @@
-import { BusEvent } from "@/bus/bus-event"
+import { BusEvent } from "@/util/bus/bus-event"
 import z from "zod"
 import { NamedError } from "@opencode-ai/util/error"
 import { toModelMessages as toModelMessagesImpl } from "./message-v2/model"

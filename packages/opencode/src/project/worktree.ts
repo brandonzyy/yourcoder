@@ -11,8 +11,8 @@ import { Database, eq } from "../storage/db"
 import { ProjectTable } from "./project.sql"
 import { fn } from "../util/fn"
 import { Log } from "../util/log"
-import { BusEvent } from "@/bus/bus-event"
-import { GlobalBus } from "@/bus/global"
+import { BusEvent } from "@/util/bus/bus-event"
+import { GlobalBus } from "@/util/bus/global"
 
 export namespace Worktree {
   const log = Log.create({ service: "worktree" })
