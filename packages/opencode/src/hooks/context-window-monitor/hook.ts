@@ -1,5 +1,5 @@
-import type { PluginInput } from "../plugin/sdk"
-import { createSystemDirective, SystemDirectiveTypes } from "./shared/system-directive"
+import type { PluginInput } from "../../plugin/sdk"
+import { createSystemDirective, SystemDirectiveTypes } from "../shared/system-directive"
 
 const ANTHROPIC_DISPLAY_LIMIT = 1_000_000
 const DEFAULT_ANTHROPIC_ACTUAL_LIMIT = 200_000

@@ -24,11 +24,11 @@ function resetContextLimitEnv(): void {
 
 const logMock = mock(() => {})
 
-mock.module("../shared/logger", () => ({
+mock.module("../../util/logger", () => ({
   log: logMock,
 }))
 
-const { createPreemptiveCompactionHook } = await import("./preemptive-compaction")
+const { createPreemptiveCompactionHook } = await import("./hook")
 
 function createMockCtx() {
   return {

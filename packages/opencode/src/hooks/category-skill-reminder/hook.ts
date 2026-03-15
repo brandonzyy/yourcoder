@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../plugin/sdk"
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
-import { getSessionAgent } from "../../features/claude-code-session-state"
+import { getSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"
 import { getAgentConfigKey } from "../../util/agent-display-names"
 import { buildReminderMessage } from "./formatter"

@@ -4,7 +4,7 @@ import { PluginConfigSchema, type PluginConfig } from "../config/plugin-config-t
 import { log } from "../util/logger";
 import { deepMerge } from "../util/deep-merge";
 import { parseJsonc, detectConfigFile } from "../util/jsonc-parser";
-import { migrateConfigFile } from "../config/migration";
+import { migrateConfigFile } from "../config/migration/config-migration";
 import {getOpenCodeConfigDir} from "../config/opencode-config-dir";
 import {addConfigLoadError} from "../config/config-errors";
 

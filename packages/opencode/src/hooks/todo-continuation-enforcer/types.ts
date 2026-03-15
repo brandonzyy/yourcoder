@@ -1,5 +1,5 @@
 import type { BackgroundManager } from "../../features/background-agent"
-import type { ToolPermission } from "../../features/hook-message-injector"
+import type { ToolPermission } from "../message-injector"
 
 export interface TodoContinuationEnforcerOptions {
   backgroundManager?: BackgroundManager

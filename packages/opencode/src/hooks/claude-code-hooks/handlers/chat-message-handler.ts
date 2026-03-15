@@ -7,7 +7,7 @@ import {
 	type UserPromptSubmitContext,
 } from "../user-prompt-submit"
 import type { PluginConfig } from "../types"
-import type { ContextCollector } from "../../../features/context-injector"
+import type { ContextCollector } from "../../context-injector"
 import { isHookDisabled } from "../../shared/hook-disabled"
 import { log } from "../../../util/logger"
 import { appendTranscriptEntry } from "../transcript"

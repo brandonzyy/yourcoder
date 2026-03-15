@@ -9,7 +9,7 @@ import {
   subagentSessions,
   syncSubagentSessions,
   updateSessionAgent,
-} from "../../features/claude-code-session-state";
+} from "../../session/state";
 import {
   clearPendingModelFallback,
   clearSessionFallbackChain,

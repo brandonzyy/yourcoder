@@ -1,5 +1,5 @@
 import { describe, expect, spyOn, test } from "bun:test"
-import { _resetForTesting, updateSessionAgent } from "../../features/claude-code-session-state"
+import { _resetForTesting, updateSessionAgent } from "../../session/state"
 import { getAgentDisplayName } from "../../util/agent-display-names"
 import { createNoSisyphusGptHook } from "./index"
 

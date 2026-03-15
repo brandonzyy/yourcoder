@@ -10,8 +10,8 @@ import {
   getMainSessionID,
   getSessionAgent,
   subagentSessions,
-} from "../../features/claude-code-session-state"
-import type { ContextCollector } from "../../features/context-injector"
+} from "../../session/state"
+import type { ContextCollector } from "../context-injector"
 
 export function createKeywordDetectorHook(ctx: PluginInput, _collector?: ContextCollector) {
   return {

@@ -3,7 +3,7 @@ import type { PluginContext } from "./types"
 
 import { hasConnectedProvidersCache } from "../../util/connected-providers-cache"
 import { setSessionModel } from "../../session/session-model-state"
-import { setSessionAgent } from "../../features/claude-code-session-state"
+import { setSessionAgent } from "../../session/state"
 import { applyUltraworkModelOverrideOnMessage } from "./ultrawork-model-override"
 import { parseRalphLoopArguments } from "../../hooks/ralph-loop/command-arguments"
 

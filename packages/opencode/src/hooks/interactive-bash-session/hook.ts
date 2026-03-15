@@ -4,7 +4,7 @@ import { buildSessionReminderMessage } from "./constants";
 import type { InteractiveBashSessionState } from "./types";
 import { tokenizeCommand, findSubcommand, extractSessionNameFromTokens } from "./parser";
 import { getOrCreateState, isOmoSession, killAllTrackedSessions } from "./state-manager";
-import { subagentSessions } from "../../features/claude-code-session-state";
+import { subagentSessions } from "../../session/state";
 
 interface ToolExecuteInput {
   tool: string;

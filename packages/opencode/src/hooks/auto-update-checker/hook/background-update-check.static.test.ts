@@ -3,7 +3,7 @@ import { runBackgroundUpdateCheck } from "./background-update-check"
 import * as checker from "../checker"
 import * as version from "../version-channel"
 import * as cache from "../cache"
-import * as config from "../../../config/config-manager"
+import * as config from "../../../config/config-manager/bun-install"
 import * as toasts from "./update-toasts"
 
 const spies: Array<{ mockRestore(): void }> = []

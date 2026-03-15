@@ -1,8 +1,8 @@
 import type { ToolContextWithMetadata } from "./types"
 import type { OpencodeClient } from "./types"
 import type { ParentContext } from "./executor-types"
-import { resolveMessageContext } from "../../features/hook-message-injector"
-import { getSessionAgent } from "../../features/claude-code-session-state"
+import { resolveMessageContext } from "../../hooks/message-injector"
+import { getSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"
 import { getMessageDir } from "../../util/opencode-message-dir"
 

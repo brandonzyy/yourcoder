@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../plugin/sdk"
 import { isGptModel, isGpt5_4Model } from "../../agent/plugin-agent-types"
-import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
+import { getSessionAgent, updateSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"
 import { getAgentConfigKey, getAgentDisplayName } from "../../util/agent-display-names"
 

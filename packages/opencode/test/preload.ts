@@ -92,7 +92,7 @@ let _resetForTesting: (() => void) | undefined
 
 beforeEach(async () => {
   if (_resetForTesting === undefined) {
-    const mod = await import("../src/features/claude-code-session-state/state")
+    const mod = await import("../src/session/state/state")
     _resetForTesting = mod._resetForTesting
   }
   _resetForTesting()

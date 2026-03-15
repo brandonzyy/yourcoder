@@ -1,4 +1,4 @@
-import type { PluginInput } from "../plugin/sdk"
+import type { PluginInput } from "../../plugin/sdk"
 
 const EMPTY_RESPONSE_WARNING = `[Task Empty Response Warning]
 

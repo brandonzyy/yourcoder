@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 
 import { describe, it, expect, mock, beforeEach, afterEach } from "bun:test"
-import { createContextWindowMonitorHook } from "./context-window-monitor"
+import { createContextWindowMonitorHook } from "./hook"
 
 const ANTHROPIC_CONTEXT_ENV_KEY = "ANTHROPIC_1M_CONTEXT"
 const VERTEX_CONTEXT_ENV_KEY = "VERTEX_ANTHROPIC_1M_CONTEXT"

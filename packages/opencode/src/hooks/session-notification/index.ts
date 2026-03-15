@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../plugin/sdk"
-import { subagentSessions, getMainSessionID } from "../../features/claude-code-session-state"
+import { subagentSessions, getMainSessionID } from "../../session/state"
 import {
   type Platform,
   startBackgroundCheck,
@@ -9,7 +9,7 @@ import {
   playSessionNotificationSound,
   createIdleNotificationScheduler,
 } from "./notification"
-import { hasIncompleteTodos } from "../session-todo-status"
+import { hasIncompleteTodos } from "../session-todo-status/hook"
 
 interface SessionNotificationConfig {
   title?: string

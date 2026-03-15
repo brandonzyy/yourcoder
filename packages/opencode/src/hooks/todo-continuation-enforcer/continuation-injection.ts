@@ -8,7 +8,7 @@ import {
   findNearestMessageWithFields,
   findNearestMessageWithFieldsFromSDK,
   type ToolPermission,
-} from "../../features/hook-message-injector"
+} from "../message-injector"
 import { log } from "../../util/logger"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import { getAgentConfigKey } from "../../util/agent-display-names"

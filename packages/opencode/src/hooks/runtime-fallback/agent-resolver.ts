@@ -1,4 +1,4 @@
-import { getSessionAgent } from "../../features/claude-code-session-state"
+import { getSessionAgent } from "../../session/state"
 
 export const AGENT_NAMES = [
   "sisyphus",

@@ -1,4 +1,4 @@
-import { consumeToolMetadata } from "../../features/tool-metadata-store"
+import { consumeToolMetadata } from "../../tool/metadata-store"
 import type { CreatedHooks } from "../create-hooks"
 import type { PluginContext } from "./types"
 import { readState, writeState } from "../../hooks/ralph-loop/storage"

@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../plugin/sdk"
 import { log } from "../../util/logger"
-import { findNearestMessageWithFields } from "../../features/hook-message-injector"
+import { findNearestMessageWithFields } from "../message-injector"
 import { getMessageDir } from "./message-storage-directory"
 import { withTimeout } from "./with-timeout"
 import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"

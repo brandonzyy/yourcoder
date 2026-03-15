@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../plugin/sdk"
 import type { PluginConfig } from "./types"
-import type { ContextCollector } from "../../features/context-injector"
+import type { ContextCollector } from "../context-injector"
 import { createChatMessageHandler } from "./handlers/chat-message-handler"
 import { createPreCompactHandler } from "./handlers/pre-compact-handler"
 import { createSessionEventHandler } from "./handlers/session-event-handler"

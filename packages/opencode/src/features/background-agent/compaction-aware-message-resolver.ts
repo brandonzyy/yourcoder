@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import type { StoredMessage } from "../hook-message-injector"
+import type { StoredMessage } from "../../hooks/message-injector"
 
 export function isCompactionAgent(agent: string | undefined): boolean {
   return agent?.trim().toLowerCase() === "compaction"

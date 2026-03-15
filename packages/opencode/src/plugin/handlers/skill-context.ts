@@ -17,7 +17,7 @@ import {
   mergeSkills,
 } from "../../features/opencode-skill-loader"
 import { createBuiltinSkills } from "../../features/builtin-skills"
-import { getSystemMcpServerNames } from "../../features/claude-code-mcp-loader"
+import { getSystemMcpServerNames } from "../../features/mcp-loader"
 
 export type SkillContext = {
   mergedSkills: LoadedSkill[]

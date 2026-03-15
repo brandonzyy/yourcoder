@@ -1,7 +1,7 @@
 import type { PluginContext } from "./types"
 import { randomUUID } from "node:crypto"
 
-import { getMainSessionID } from "../../features/claude-code-session-state"
+import { getMainSessionID } from "../../session/state"
 import { clearBoulderState } from "../../features/boulder-state"
 import { log } from "../../util/logger"
 import { resolveSessionAgent } from "./session-agent-resolver"

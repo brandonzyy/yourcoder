@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { _resetForTesting, setMainSession } from "../../features/claude-code-session-state"
+import { _resetForTesting, setMainSession } from "../../session/state"
 import type { BackgroundTask } from "../../features/background-agent"
 import { INTERNAL_INITIATOR_MARKER } from "../../util/internal-initiator-marker"
 import { createUnstableAgentBabysitterHook } from "./index"

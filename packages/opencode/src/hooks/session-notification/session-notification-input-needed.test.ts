@@ -1,8 +1,8 @@
 const { describe, expect, test, beforeEach, afterEach, spyOn } = require("bun:test")
 
-import { createSessionNotification } from "./session-notification"
-import { setMainSession, subagentSessions, _resetForTesting } from "../features/claude-code-session-state"
-import * as notification from "./session-notification/notification"
+import { createSessionNotification } from "./index"
+import { setMainSession, subagentSessions, _resetForTesting } from "../../session/state"
+import * as notification from "./notification"
 
 describe("session-notification input-needed events", () => {
   let notificationCalls: string[]

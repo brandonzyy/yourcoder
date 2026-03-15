@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { AGENT_MODEL_REQUIREMENTS } from "../model/model-requirements"
 import { getAgentDisplayName } from "../util/agent-display-names"
-import { migrateAgentNames } from "../config/migration"
+import { migrateAgentNames } from "../config/migration/agent-names"
 
 describe("Agent Config Integration", () => {
   test("migrates legacy sisyphus aliases into current keys", () => {

@@ -25,7 +25,7 @@ import {
   TASK_CLEANUP_DELAY_MS,
 } from "./constants"
 
-import { subagentSessions } from "../claude-code-session-state"
+import { subagentSessions } from "../../session/state"
 import { getTaskToastManager } from "../task-toast-manager"
 import { formatDuration } from "./duration-formatter"
 import {
@@ -39,7 +39,7 @@ import { tryFallbackRetry } from "./fallback-retry-handler"
 import { registerManagerForCleanup, unregisterManagerForCleanup } from "./process-cleanup"
 import { isCompactionAgent, findNearestMessageExcludingCompaction } from "./compaction-aware-message-resolver"
 import { handleSessionIdleBackgroundEvent } from "./session-idle-event-handler"
-import { MESSAGE_STORAGE } from "../hook-message-injector"
+import { MESSAGE_STORAGE } from "../../hooks/message-injector"
 import { join } from "node:path"
 import { pruneStaleTasksAndNotifications } from "./task-poller"
 import { checkAndInterruptStaleTasks } from "./task-poller"

@@ -10,7 +10,7 @@ import {
   readBoulderState,
 } from "../../features/boulder-state"
 import type { BoulderState } from "../../features/boulder-state"
-import * as sessionState from "../../features/claude-code-session-state"
+import * as sessionState from "../../session/state"
 import * as worktreeDetector from "./worktree-detector"
 
 describe("start-work hook", () => {

@@ -1,12 +1,12 @@
 export { createTodoContinuationEnforcer, type TodoContinuationEnforcer } from "./todo-continuation-enforcer";
-export { createContextWindowMonitorHook } from "./context-window-monitor";
+export { createContextWindowMonitorHook } from "./context-window-monitor/hook";
 export { createSessionNotification, sendSessionNotification, playSessionNotificationSound, detectPlatform, getDefaultSoundPath, buildWindowsToastScript, escapeAppleScriptText, escapePowerShellSingleQuotedText, createIdleNotificationScheduler } from "./session-notification";
-export { hasIncompleteTodos } from "./session-todo-status";
+export { hasIncompleteTodos } from "./session-todo-status/hook";
 export { createSessionRecoveryHook, type SessionRecoveryHook, type SessionRecoveryOptions } from "./session-recovery";
 export { createCommentCheckerHooks } from "./comment-checker";
-export { createToolOutputTruncatorHook } from "./tool-output-truncator";
+export { createToolOutputTruncatorHook } from "./tool-output-truncator/hook";
 export { createDirectoryAgentsInjectorHook, createDirectoryReadmeInjectorHook } from "./content-injector";
-export { createEmptyTaskResponseDetectorHook } from "./empty-task-response-detector";
+export { createEmptyTaskResponseDetectorHook } from "./empty-task-response-detector/hook";
 export { createAnthropicContextWindowLimitRecoveryHook, type AnthropicContextWindowLimitRecoveryOptions } from "./anthropic-context-window-limit-recovery";
 
 export { createThinkModeHook } from "./think-mode";
@@ -38,7 +38,7 @@ export { createStopContinuationGuardHook, type StopContinuationGuard } from "./s
 export { createCompactionContextInjector } from "./compaction-context-injector";
 export { createCompactionTodoPreserverHook } from "./compaction-todo-preserver";
 export { createUnstableAgentBabysitterHook } from "./unstable-agent-babysitter";
-export { createPreemptiveCompactionHook } from "./preemptive-compaction";
+export { createPreemptiveCompactionHook } from "./preemptive-compaction/hook";
 export { createTasksTodowriteDisablerHook } from "./tasks-todowrite-disabler";
 export { createRuntimeFallbackHook, type RuntimeFallbackHook, type RuntimeFallbackOptions } from "./runtime-fallback";
 export { createWriteExistingFileGuardHook } from "./write-existing-file-guard";

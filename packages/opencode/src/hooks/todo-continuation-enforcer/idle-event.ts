@@ -1,7 +1,7 @@
 import type { PluginInput } from "../../plugin/sdk"
 
 import type { BackgroundManager } from "../../features/background-agent"
-import type { ToolPermission } from "../../features/hook-message-injector"
+import type { ToolPermission } from "../message-injector"
 import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
 import { log } from "../../util/logger"
 import { getAgentConfigKey } from "../../util/agent-display-names"

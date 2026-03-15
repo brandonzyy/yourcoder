@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import { runBunInstall } from "../../../config/config-manager"
+import { runBunInstall } from "../../../config/config-manager/bun-install"
 import { log } from "../../../util/logger"
 import { invalidatePackage } from "../cache"
 import { PACKAGE_NAME } from "../constants"

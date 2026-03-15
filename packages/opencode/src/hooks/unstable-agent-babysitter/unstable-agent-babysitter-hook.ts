@@ -1,5 +1,5 @@
 import type { BackgroundManager } from "../../features/background-agent"
-import { getMainSessionID, getSessionAgent } from "../../features/claude-code-session-state"
+import { getMainSessionID, getSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"
 import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import { resolveInheritedPromptTools } from "../../util/prompt-tools"
