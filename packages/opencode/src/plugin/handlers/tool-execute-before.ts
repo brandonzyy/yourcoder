@@ -5,9 +5,9 @@ import { getMainSessionID } from "../../session/state"
 import { clearBoulderState } from "../../features/boulder-state"
 import { log } from "../../util/logger"
 import { resolveSessionAgent } from "./session-agent-resolver"
-import { parseRalphLoopArguments } from "../../hooks/ralph-loop/command-arguments"
-import { ULTRAWORK_VERIFICATION_PROMISE } from "../../hooks/ralph-loop/constants"
-import { readState, writeState } from "../../hooks/ralph-loop/storage"
+import { parseRalphLoopArguments } from "../../hooks/continuation/ralph-loop/command-arguments"
+import { ULTRAWORK_VERIFICATION_PROMISE } from "../../hooks/continuation/ralph-loop/constants"
+import { readState, writeState } from "../../hooks/continuation/ralph-loop/storage"
 
 import type { CreatedHooks } from "../create-hooks"
 

@@ -9,7 +9,7 @@ import {
   playSessionNotificationSound,
   createIdleNotificationScheduler,
 } from "./notification"
-import { hasIncompleteTodos } from "../session-todo-status"
+import { hasIncompleteTodos } from "../continuation/session-todo-status"
 
 interface SessionNotificationConfig {
   title?: string

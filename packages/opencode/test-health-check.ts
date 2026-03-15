@@ -6,7 +6,7 @@
  * that the hook correctly injects the health check reminder.
  */
 
-import { createSubagentHealthCheckHook } from "./src/hooks/subagent-health-check/hook.js"
+import { createSubagentHealthCheckHook } from "./src/hooks/agent-guardrails/health-check/hook.js"
 
 console.log("🧪 Testing subagent-health-check hook...\n")
 

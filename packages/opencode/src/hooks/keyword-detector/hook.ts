@@ -11,7 +11,7 @@ import {
   getSessionAgent,
   subagentSessions,
 } from "../../session/state"
-import type { ContextCollector } from "../context-injector"
+import type { ContextCollector } from "../context-injection/context-injector"
 
 export function createKeywordDetectorHook(ctx: PluginInput, _collector?: ContextCollector) {
   return {

@@ -25,7 +25,7 @@ import {
   createRuntimeFallbackHook,
   createSubagentHealthCheckHook,
 } from "../../../hooks"
-import { createAnthropicEffortHook } from "../../../hooks/anthropic-effort"
+import { createAnthropicEffortHook } from "../../../hooks/model-switching/anthropic-effort"
 import { log } from "../../../util/logger"
 import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../external-plugin-detector"
 import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"

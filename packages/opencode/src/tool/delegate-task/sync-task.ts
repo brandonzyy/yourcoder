@@ -9,7 +9,7 @@ import { SessionCategoryRegistry } from "../../session/session-category-registry
 import { formatDuration } from "./time-formatter"
 import { formatDetailedError } from "./error-formatting"
 import { syncTaskDeps, type SyncTaskDeps } from "./sync-task-deps"
-import { setSessionFallbackChain, clearSessionFallbackChain } from "../../hooks/model-fallback/hook"
+import { setSessionFallbackChain, clearSessionFallbackChain } from "../../hooks/model-switching/model-fallback/hook"
 
 export async function executeSyncTask(
   args: DelegateTaskArgs,

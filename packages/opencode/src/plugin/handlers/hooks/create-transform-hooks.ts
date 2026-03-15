@@ -9,7 +9,7 @@ import {
 import {
   contextCollector,
   createContextInjectorMessagesTransformHook,
-} from "../../../hooks/context-injector"
+} from "../../../hooks/context-injection/context-injector"
 import { safeCreateHook } from "../../safe-create-hook"
 
 export type TransformHooks = {

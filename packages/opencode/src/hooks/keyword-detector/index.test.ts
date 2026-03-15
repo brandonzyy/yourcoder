@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { createKeywordDetectorHook } from "./index"
 import { setMainSession, updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../session/state"
-import { ContextCollector } from "../context-injector"
+import { ContextCollector } from "../context-injection/context-injector"
 import * as logger from "../../util/logger"
 import * as sessionState from "../../session/state"
 

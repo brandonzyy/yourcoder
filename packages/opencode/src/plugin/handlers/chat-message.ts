@@ -5,7 +5,7 @@ import { hasConnectedProvidersCache } from "../../util/connected-providers-cache
 import { setSessionModel } from "../../session/session-model-state"
 import { setSessionAgent } from "../../session/state"
 import { applyUltraworkModelOverrideOnMessage } from "./ultrawork-model-override"
-import { parseRalphLoopArguments } from "../../hooks/ralph-loop/command-arguments"
+import { parseRalphLoopArguments } from "../../hooks/continuation/ralph-loop/command-arguments"
 
 import type { CreatedHooks } from "../create-hooks"
 
