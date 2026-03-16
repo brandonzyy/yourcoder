@@ -1,14 +1,14 @@
 import { statSync } from "node:fs"
 import type { PluginInput } from "../../plugin/sdk"
 import {
-  readBoulderState,
-  writeBoulderState,
-  appendSessionId,
-  findPrometheusPlans,
+  readPlanState,
+  writePlanState,
+  appendPlanSession,
+  findPlanFiles,
   getPlanProgress,
-  createBoulderState,
+  createPlanState,
   getPlanName,
-  clearBoulderState,
+  clearPlanState,
 } from "../../session/boulder-state"
 import { log } from "../../util/logger"
 import { updateSessionAgent } from "../../session/state"
@@ -60,7 +60,7 @@ function resolveWorktreeContext(
 
   return {
     worktreePath: undefined,
-    block: `\n**Worktree** (needs setup): \`git worktree add ${explicitWorktreePath} <branch>\`, then add \`"worktree_path"\` to boulder.json`,
+    block: `\n**Worktree** (needs setup): \`git worktree add ${explicitWorktreePath} <branch>\`, then add \`"worktree_path"\` to the plan state file`,
   }
 }
 
@@ -80,7 +80,7 @@ export function createStartWorkHook(ctx: PluginInput) {
       log(`[${HOOK_NAME}] Processing start-work command`, { sessionID: input.sessionID })
       updateSessionAgent(input.sessionID, "atlas")
 
-      const existingState = readBoulderState(ctx.directory)
+      const existingState = readPlanState(ctx.directory)
       const sessionId = input.sessionID
       const timestamp = new Date().toISOString()
 
@@ -92,7 +92,7 @@ export function createStartWorkHook(ctx: PluginInput) {
       if (explicitPlanName) {
         log(`[${HOOK_NAME}] Explicit plan name requested: ${explicitPlanName}`, { sessionID: input.sessionID })
 
-        const allPlans = findPrometheusPlans(ctx.directory)
+        const allPlans = findPlanFiles(ctx.directory)
         const matchedPlan = findPlanByName(allPlans, explicitPlanName)
 
         if (matchedPlan) {
@@ -105,9 +105,9 @@ export function createStartWorkHook(ctx: PluginInput) {
 The requested plan "${getPlanName(matchedPlan)}" has been completed.
 All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
           } else {
-            if (existingState) clearBoulderState(ctx.directory)
-            const newState = createBoulderState(matchedPlan, sessionId, "atlas", worktreePath)
-            writeBoulderState(ctx.directory, newState)
+            if (existingState) clearPlanState(ctx.directory)
+            const newState = createPlanState(matchedPlan, sessionId, "atlas", worktreePath)
+            writePlanState(ctx.directory, newState)
 
             contextInfo = `
 ## Auto-Selected Plan
@@ -119,7 +119,7 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
 **Started**: ${timestamp}
 ${worktreeBlock}
 
-boulder.json has been created. Read the plan and begin execution.`
+The plan state file has been created. Read the plan and begin execution.`
           }
         } else {
           const incompletePlans = allPlans.filter((p) => !getPlanProgress(p).isComplete)
@@ -158,13 +158,13 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
             const updatedSessions = existingState.session_ids.includes(sessionId)
               ? existingState.session_ids
               : [...existingState.session_ids, sessionId]
-            writeBoulderState(ctx.directory, {
+            writePlanState(ctx.directory, {
               ...existingState,
               worktree_path: worktreePath,
               session_ids: updatedSessions,
             })
           } else {
-            appendSessionId(ctx.directory, sessionId)
+            appendPlanSession(ctx.directory, sessionId)
           }
 
           const worktreeDisplay = effectiveWorktree ? createWorktreeActiveBlock(effectiveWorktree) : worktreeBlock
@@ -195,14 +195,14 @@ Looking for new plans...`
         (!existingState && !explicitPlanName) ||
         (existingState && !explicitPlanName && getPlanProgress(existingState.active_plan).isComplete)
       ) {
-        const plans = findPrometheusPlans(ctx.directory)
+        const plans = findPlanFiles(ctx.directory)
         const incompletePlans = plans.filter((p) => !getPlanProgress(p).isComplete)
 
         if (plans.length === 0) {
           contextInfo += `
 ## No Plans Found
 
-No Prometheus plan files found at .sisyphus/plans/
+No Prometheus plan files found at .yac/plans/
 Use Prometheus to create a work plan first: /plan "your task"`
         } else if (incompletePlans.length === 0) {
           contextInfo += `
@@ -213,8 +213,8 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
         } else if (incompletePlans.length === 1) {
           const planPath = incompletePlans[0]
           const progress = getPlanProgress(planPath)
-          const newState = createBoulderState(planPath, sessionId, "atlas", worktreePath)
-          writeBoulderState(ctx.directory, newState)
+          const newState = createPlanState(planPath, sessionId, "atlas", worktreePath)
+          writePlanState(ctx.directory, newState)
 
           contextInfo += `
 
@@ -227,7 +227,7 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
 **Started**: ${timestamp}
 ${worktreeBlock}
 
-boulder.json has been created. Read the plan and begin execution.`
+The plan state file has been created. Read the plan and begin execution.`
         } else {
           const planList = incompletePlans
             .map((p, i) => {

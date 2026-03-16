@@ -50,13 +50,13 @@ describe("parseConfigPartially", () => {
   test("does not auto-upgrade legacy model versions anymore", () => {
     const cfg = parseConfigPartially({
       agents: {
-        sisyphus: { model: "anthropic/claude-opus-4-5" },
+        yac: { model: "anthropic/claude-opus-4-5" },
       },
     })
 
     expect(cfg).toEqual({
       agents: {
-        sisyphus: { model: "anthropic/claude-opus-4-5" },
+        yac: { model: "anthropic/claude-opus-4-5" },
       },
     })
   })

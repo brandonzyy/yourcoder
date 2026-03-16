@@ -1,6 +1,6 @@
 import type { CommandDefinition } from "./command-types"
-
-export type BuiltinCommandName = "init-deep" | "ralph-loop" | "cancel-ralph" | "ulw-loop" | "refactor" | "start-work" | "stop-continuation" | "handoff"
+import type { BuiltinCommandName } from "./names"
+export type { BuiltinCommandName } from "./names"
 
 export interface BuiltinCommandConfig {
   disabled_commands?: BuiltinCommandName[]

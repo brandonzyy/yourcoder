@@ -1,11 +1,10 @@
 /**
- * Boulder State Types
+ * Plan state types.
  *
- * Manages the active work plan state for Sisyphus orchestrator.
- * Named after Sisyphus's boulder - the eternal task that must be rolled.
+ * Manages the active work plan state for Yac orchestrator.
  */
 
-export interface BoulderState {
+export interface PlanState {
   /** Absolute path to the active plan file */
   active_plan: string
   /** ISO timestamp when work started */

@@ -2,7 +2,7 @@ import type { PluginContext } from "./types"
 import { randomUUID } from "node:crypto"
 
 import { getMainSessionID } from "../../session/state"
-import { clearBoulderState } from "../../session/boulder-state"
+import { clearPlanState } from "../../session/boulder-state"
 import { log } from "../../util/logger"
 import { resolveSessionAgent } from "./session-agent-resolver"
 import { parseRalphLoopArguments } from "../../hooks/continuation/ralph-loop/command-arguments"
@@ -30,8 +30,6 @@ export function createToolExecuteBeforeHandler(args: {
     await hooks.directoryReadmeInjector?.["tool.execute.before"]?.(input, output)
     await hooks.rulesInjector?.["tool.execute.before"]?.(input, output)
     await hooks.tasksTodowriteDisabler?.["tool.execute.before"]?.(input, output)
-    await hooks.sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output)
-
     const normalizedToolName = input.tool.toLowerCase()
     if (
       normalizedToolName === "question"
@@ -58,7 +56,7 @@ export function createToolExecuteBeforeHandler(args: {
       const sessionId = typeof argsObject.session_id === "string" ? argsObject.session_id : undefined
 
       if (category) {
-        argsObject.subagent_type = "sisyphus-junior"
+        argsObject.subagent_type = "coderhand"
       } else if (!subagentType && sessionId) {
         const resolvedAgent = await resolveSessionAgent(ctx.client, sessionId)
         argsObject.subagent_type = resolvedAgent ?? "continue"
@@ -125,7 +123,7 @@ export function createToolExecuteBeforeHandler(args: {
         hooks.stopContinuationGuard?.stop(sessionID)
         hooks.todoContinuationEnforcer?.cancelAllCountdowns()
         hooks.ralphLoop?.cancelLoop(sessionID)
-        clearBoulderState(ctx.directory)
+        clearPlanState(ctx.directory)
         log("[stop-continuation] All continuation mechanisms stopped", {
           sessionID,
         })

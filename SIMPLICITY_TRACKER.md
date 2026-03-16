@@ -22,6 +22,11 @@ Bring `packages/opencode` closer to `Simplicity is the ultimate sophistication` 
 | S12 | Agent and config legacy paths | Agent alias migration, old config file names, and old field aliases (`omo_agent`, `experimental.hashline_edit`) kept historical naming alive in runtime config loading. | Remove the alias migrations and old file-name fallback paths. Legacy agent keys and legacy config names are no longer accepted. | Done |
 | S13 | Config auto-migration engine | Config loading still mutated parsed configs, wrote backup files, and silently upgraded model versions. | Remove config auto-migration entirely. Config loading now only parses, validates, and reports errors. | Done |
 | S14 | Plugin test layout | Plugin tests were split between `src/plugin` and the package-level `test/` tree, which made the repo harder to scan and violated its own layout conventions. | Move plugin tests into `packages/opencode/test/plugin` and keep source tree focused on runtime code. | Done |
+| S15 | Delegate-task duplication | The repo kept two `createDelegateTask` implementations: the real orchestration path in `tool/delegate-task` and a second simplified wrapper in `agent/background`. | Delete the duplicate factory, bootstrap builtin runtime from the real task tool, and keep one task entrypoint. | Done |
+| S16 | Builtin runtime coupling | `BuiltinAgentRegistry` mixed agent loading with background runtime construction and inline task-tool wiring. | Move runtime construction into a small builtin runtime loader so the registry just assembles agents and tools. | Done |
+| S17 | Provider/model resolution | `resolveModelPipeline()` repeated the same availability-vs-connected-provider decision tree for category defaults, user fallbacks, and hardcoded fallback chains. | Collapse those branches into shared resolution helpers so model selection has one semantic path instead of three near-copies. | Done |
+| S18 | Builtin naming surface | Builtin agent descriptions and command names were duplicated across registry, task descriptions, CLI types, and config schema, letting concept drift leak into multiple files. | Add one builtin agent catalog and one builtin command name list, reuse them everywhere, and remove dead aliases like `Librarian`. | Done |
+| S19 | Boulder naming debt | The runtime still exposed `BoulderState`, `findPrometheusPlans`, and similar history-heavy names even though the underlying storage is just a simple plan-state file. | Keep the file storage behavior, but rename the runtime API to neutral plan-state terminology. | Done |
 
 ## Keep vs Remove
 
@@ -56,7 +61,13 @@ These are mostly reminders, nudges, or UX frosting. They increase the default co
 5. Rebuild session hook assembly around grouped intent.
 6. Validate targeted plugin and hook tests.
 7. Remove no-value relay layers in hook assembly.
+8. Collapse duplicate delegate-task factories and registry/runtime coupling.
+9. Simplify model resolution into one shared fallback path.
+10. Unify builtin agent and builtin command naming sources.
+11. Rename plan-state APIs away from `boulder`/`prometheus` history labels while keeping the same storage file.
 
 ## Completion Note
 
 This pass intentionally avoids deleting the resilience chain. The current evidence says those paths are compensating for real model/provider/runtime weaknesses, not just historical clutter. The simplification win comes from making them explicit and shrinking the default surface, not from removing guardrails blindly.
+
+The second pass also avoids a large behavioral rewrite of `delegate-task` or provider loading. The simplification came from deleting duplicate entrypoints, shrinking naming surfaces, and forcing shared resolution paths. That is closer to the principle here: fewer concepts, fewer special cases, same core behavior.

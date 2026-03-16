@@ -5,17 +5,17 @@ import { tmpdir, homedir } from "node:os"
 import { randomUUID } from "node:crypto"
 import { createStartWorkHook } from "./index"
 import {
-  writeBoulderState,
-  clearBoulderState,
-  readBoulderState,
+  writePlanState,
+  clearPlanState,
+  readPlanState,
 } from "../../session/boulder-state"
-import type { BoulderState } from "../../session/boulder-state"
+import type { PlanState } from "../../session/boulder-state"
 import * as sessionState from "../../session/state"
 import * as worktreeDetector from "./worktree-detector"
 
 describe("start-work hook", () => {
   let testDir: string
-  let sisyphusDir: string
+  let yacDir: string
 
   function createMockPluginInput() {
     return {
@@ -26,18 +26,18 @@ describe("start-work hook", () => {
 
   beforeEach(() => {
     testDir = join(tmpdir(), `start-work-test-${randomUUID()}`)
-    sisyphusDir = join(testDir, ".sisyphus")
+    yacDir = join(testDir, ".yac")
     if (!existsSync(testDir)) {
       mkdirSync(testDir, { recursive: true })
     }
-    if (!existsSync(sisyphusDir)) {
-      mkdirSync(sisyphusDir, { recursive: true })
+    if (!existsSync(yacDir)) {
+      mkdirSync(yacDir, { recursive: true })
     }
-    clearBoulderState(testDir)
+    clearPlanState(testDir)
   })
 
   afterEach(() => {
-    clearBoulderState(testDir)
+    clearPlanState(testDir)
     if (existsSync(testDir)) {
       rmSync(testDir, { recursive: true, force: true })
     }
@@ -88,13 +88,13 @@ describe("start-work hook", () => {
       const planPath = join(testDir, "test-plan.md")
       writeFileSync(planPath, "# Plan\n- [ ] Task 1\n- [x] Task 2")
 
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: planPath,
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "test-plan",
       }
-      writeBoulderState(testDir, state)
+      writePlanState(testDir, state)
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -160,7 +160,7 @@ describe("start-work hook", () => {
 
     test("should auto-select when only one incomplete plan among multiple plans", async () => {
       // given - multiple plans but only one incomplete
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       // Plan 1: complete (all checked)
@@ -190,7 +190,7 @@ describe("start-work hook", () => {
 
     test("should wrap multiple plans message in system-reminder tag", async () => {
       // given - multiple incomplete plans
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const plan1Path = join(plansDir, "plan-a.md")
@@ -218,7 +218,7 @@ describe("start-work hook", () => {
 
     test("should use 'ask user' prompt style for multiple plans", async () => {
       // given - multiple incomplete plans
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const plan1Path = join(plansDir, "plan-x.md")
@@ -245,7 +245,7 @@ describe("start-work hook", () => {
 
     test("should select explicitly specified plan name from user-request, ignoring existing boulder state", async () => {
       // given - existing boulder state pointing to old plan
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       // Old plan (in boulder state)
@@ -257,13 +257,13 @@ describe("start-work hook", () => {
       writeFileSync(newPlanPath, "# New Plan\n- [ ] New Task 1")
 
       // Set up stale boulder state pointing to old plan
-      const staleState: BoulderState = {
+      const staleState: PlanState = {
         active_plan: oldPlanPath,
         started_at: "2026-01-01T10:00:00Z",
         session_ids: ["old-session"],
         plan_name: "old-plan",
       }
-      writeBoulderState(testDir, staleState)
+      writePlanState(testDir, staleState)
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -291,7 +291,7 @@ describe("start-work hook", () => {
 
     test("should strip ultrawork/ulw keywords from plan name argument", async () => {
       // given - plan with ultrawork keyword in user-request
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const planPath = join(plansDir, "my-feature-plan.md")
@@ -322,7 +322,7 @@ describe("start-work hook", () => {
 
     test("should strip ulw keyword from plan name argument", async () => {
       // given - plan with ulw keyword in user-request
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const planPath = join(plansDir, "api-refactor.md")
@@ -353,7 +353,7 @@ describe("start-work hook", () => {
 
     test("should match plan by partial name", async () => {
       // given - user specifies partial plan name
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const planPath = join(plansDir, "2026-01-15-feature-implementation.md")
@@ -395,12 +395,12 @@ describe("start-work hook", () => {
 
       // when
       await hook["chat.message"](
-        { sessionID: "ses-prometheus-to-sisyphus" },
+        { sessionID: "ses-prometheus-to-yac" },
         output
       )
 
       // then
-      expect(updateSpy).toHaveBeenCalledWith("ses-prometheus-to-sisyphus", "atlas")
+      expect(updateSpy).toHaveBeenCalledWith("ses-prometheus-to-yac", "atlas")
       updateSpy.mockRestore()
     })
   })
@@ -418,7 +418,7 @@ describe("start-work hook", () => {
 
     test("should NOT inject worktree instructions when no --worktree flag", async () => {
       // given - single plan, no worktree flag
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
       writeFileSync(join(plansDir, "my-plan.md"), "# Plan\n- [ ] Task 1")
 
@@ -438,7 +438,7 @@ describe("start-work hook", () => {
 
     test("should inject worktree path when --worktree flag is valid", async () => {
       // given - single plan + valid worktree path
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
       writeFileSync(join(plansDir, "my-plan.md"), "# Plan\n- [ ] Task 1")
       detectSpy.mockReturnValue("/validated/worktree")
@@ -460,7 +460,7 @@ describe("start-work hook", () => {
 
     test("should store worktree_path in boulder when --worktree is valid", async () => {
       // given - plan + valid worktree
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
       writeFileSync(join(plansDir, "my-plan.md"), "# Plan\n- [ ] Task 1")
       detectSpy.mockReturnValue("/valid/wt")
@@ -474,13 +474,13 @@ describe("start-work hook", () => {
       await hook["chat.message"]({ sessionID: "session-123" }, output)
 
       // then - boulder.json has worktree_path
-      const state = readBoulderState(testDir)
+      const state = readPlanState(testDir)
       expect(state?.worktree_path).toBe("/valid/wt")
     })
 
     test("should NOT store worktree_path when --worktree path is invalid", async () => {
       // given - plan + invalid worktree path (detectWorktreePath returns null)
-      const plansDir = join(testDir, ".sisyphus", "plans")
+      const plansDir = join(testDir, ".yac", "plans")
       mkdirSync(plansDir, { recursive: true })
       writeFileSync(join(plansDir, "my-plan.md"), "# Plan\n- [ ] Task 1")
       // detectSpy already returns null by default
@@ -494,7 +494,7 @@ describe("start-work hook", () => {
       await hook["chat.message"]({ sessionID: "session-123" }, output)
 
       // then - worktree_path absent, setup instructions present
-      const state = readBoulderState(testDir)
+      const state = readPlanState(testDir)
       expect(state?.worktree_path).toBeUndefined()
       expect(output.parts[0].text).toContain("needs setup")
       expect(output.parts[0].text).toContain("git worktree add /nonexistent/wt")
@@ -504,14 +504,14 @@ describe("start-work hook", () => {
       // given - existing boulder with old worktree, user provides new worktree
       const planPath = join(testDir, "plan.md")
       writeFileSync(planPath, "# Plan\n- [ ] Task 1")
-      const existingState: BoulderState = {
+      const existingState: PlanState = {
         active_plan: planPath,
         started_at: "2026-01-01T00:00:00Z",
         session_ids: ["old-session"],
         plan_name: "plan",
         worktree_path: "/old/wt",
       }
-      writeBoulderState(testDir, existingState)
+      writePlanState(testDir, existingState)
       detectSpy.mockReturnValue("/new/wt")
 
       const hook = createStartWorkHook(createMockPluginInput())
@@ -523,7 +523,7 @@ describe("start-work hook", () => {
       await hook["chat.message"]({ sessionID: "session-456" }, output)
 
       // then - boulder reflects updated worktree and new session appended
-      const state = readBoulderState(testDir)
+      const state = readPlanState(testDir)
       expect(state?.worktree_path).toBe("/new/wt")
       expect(state?.session_ids).toContain("session-456")
     })
@@ -532,14 +532,14 @@ describe("start-work hook", () => {
       // given - existing boulder already has worktree_path, no flag given
       const planPath = join(testDir, "plan.md")
       writeFileSync(planPath, "# Plan\n- [ ] Task 1")
-      const existingState: BoulderState = {
+      const existingState: PlanState = {
         active_plan: planPath,
         started_at: "2026-01-01T00:00:00Z",
         session_ids: ["old-session"],
         plan_name: "plan",
         worktree_path: "/existing/wt",
       }
-      writeBoulderState(testDir, existingState)
+      writePlanState(testDir, existingState)
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {

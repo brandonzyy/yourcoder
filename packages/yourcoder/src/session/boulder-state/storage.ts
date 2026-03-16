@@ -1,20 +1,20 @@
 /**
- * Boulder State Storage
+ * Plan state storage
  *
- * Handles reading/writing boulder.json for active plan tracking.
+ * Handles reading/writing the active plan state file.
  */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs"
 import { dirname, join, basename } from "node:path"
-import type { BoulderState, PlanProgress } from "./types"
-import { BOULDER_DIR, BOULDER_FILE, PROMETHEUS_PLANS_DIR } from "./constants"
+import type { PlanState, PlanProgress } from "./types"
+import { STATE_DIR, STATE_FILE, PLAN_DIR } from "./constants"
 
-export function getBoulderFilePath(directory: string): string {
-  return join(directory, BOULDER_DIR, BOULDER_FILE)
+export function getStatePath(directory: string): string {
+  return join(directory, STATE_DIR, STATE_FILE)
 }
 
-export function readBoulderState(directory: string): BoulderState | null {
-  const filePath = getBoulderFilePath(directory)
+export function readPlanState(directory: string): PlanState | null {
+  const filePath = getStatePath(directory)
 
   if (!existsSync(filePath)) {
     return null
@@ -29,14 +29,14 @@ export function readBoulderState(directory: string): BoulderState | null {
     if (!Array.isArray(parsed.session_ids)) {
       parsed.session_ids = []
     }
-    return parsed as BoulderState
+    return parsed as PlanState
   } catch {
     return null
   }
 }
 
-export function writeBoulderState(directory: string, state: BoulderState): boolean {
-  const filePath = getBoulderFilePath(directory)
+export function writePlanState(directory: string, state: PlanState): boolean {
+  const filePath = getStatePath(directory)
 
   try {
     const dir = dirname(filePath)
@@ -51,8 +51,8 @@ export function writeBoulderState(directory: string, state: BoulderState): boole
   }
 }
 
-export function appendSessionId(directory: string, sessionId: string): BoulderState | null {
-  const state = readBoulderState(directory)
+export function appendPlanSession(directory: string, sessionId: string): PlanState | null {
+  const state = readPlanState(directory)
   if (!state) return null
 
   if (!state.session_ids?.includes(sessionId)) {
@@ -60,7 +60,7 @@ export function appendSessionId(directory: string, sessionId: string): BoulderSt
       state.session_ids = []
     }
     state.session_ids.push(sessionId)
-    if (writeBoulderState(directory, state)) {
+    if (writePlanState(directory, state)) {
       return state
     }
   }
@@ -68,8 +68,8 @@ export function appendSessionId(directory: string, sessionId: string): BoulderSt
   return state
 }
 
-export function clearBoulderState(directory: string): boolean {
-  const filePath = getBoulderFilePath(directory)
+export function clearPlanState(directory: string): boolean {
+  const filePath = getStatePath(directory)
 
   try {
     if (existsSync(filePath)) {
@@ -83,11 +83,10 @@ export function clearBoulderState(directory: string): boolean {
 }
 
 /**
- * Find Prometheus plan files for this project.
- * Prometheus stores plans at: {project}/.sisyphus/plans/{name}.md
+ * Find plan files for this project.
  */
-export function findPrometheusPlans(directory: string): string[] {
-  const plansDir = join(directory, PROMETHEUS_PLANS_DIR)
+export function findPlanFiles(directory: string): string[] {
+  const plansDir = join(directory, PLAN_DIR)
 
   if (!existsSync(plansDir)) {
     return []
@@ -145,14 +144,14 @@ export function getPlanName(planPath: string): string {
 }
 
 /**
- * Create a new boulder state for a plan.
+ * Create a new plan state for a plan.
  */
-export function createBoulderState(
+export function createPlanState(
   planPath: string,
   sessionId: string,
   agent?: string,
   worktreePath?: string,
-): BoulderState {
+): PlanState {
   return {
     active_plan: planPath,
     started_at: new Date().toISOString(),

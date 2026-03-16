@@ -3,20 +3,20 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
 import {
-  readBoulderState,
-  writeBoulderState,
-  appendSessionId,
-  clearBoulderState,
+  readPlanState,
+  writePlanState,
+  appendPlanSession,
+  clearPlanState,
   getPlanProgress,
   getPlanName,
-  createBoulderState,
-  findPrometheusPlans,
+  createPlanState,
+  findPlanFiles,
 } from "./storage"
-import type { BoulderState } from "./types"
+import type { PlanState } from "./types"
 
 describe("boulder-state", () => {
   const TEST_DIR = join(tmpdir(), "boulder-state-test-" + Date.now())
-  const SISYPHUS_DIR = join(TEST_DIR, ".sisyphus")
+  const SISYPHUS_DIR = join(TEST_DIR, ".yac")
 
   beforeEach(() => {
     if (!existsSync(TEST_DIR)) {
@@ -25,7 +25,7 @@ describe("boulder-state", () => {
     if (!existsSync(SISYPHUS_DIR)) {
       mkdirSync(SISYPHUS_DIR, { recursive: true })
     }
-    clearBoulderState(TEST_DIR)
+    clearPlanState(TEST_DIR)
   })
 
   afterEach(() => {
@@ -34,11 +34,11 @@ describe("boulder-state", () => {
     }
   })
 
-  describe("readBoulderState", () => {
+describe("readPlanState", () => {
     test("should return null when no boulder.json exists", () => {
       // given - no boulder.json file
       // when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
       // then
       expect(result).toBeNull()
     })
@@ -49,7 +49,7 @@ describe("boulder-state", () => {
       writeFileSync(boulderFile, "null")
 
       //#when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       //#then
       expect(result).toBeNull()
@@ -61,7 +61,7 @@ describe("boulder-state", () => {
       writeFileSync(boulderFile, '"just a string"')
 
       //#when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       //#then
       expect(result).toBeNull()
@@ -77,7 +77,7 @@ describe("boulder-state", () => {
       }))
 
       //#when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       //#then
       expect(result).not.toBeNull()
@@ -95,7 +95,7 @@ describe("boulder-state", () => {
       }))
 
       //#when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       //#then
       expect(result).not.toBeNull()
@@ -108,7 +108,7 @@ describe("boulder-state", () => {
       writeFileSync(boulderFile, JSON.stringify({}))
 
       //#when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       //#then
       expect(result).not.toBeNull()
@@ -117,16 +117,16 @@ describe("boulder-state", () => {
 
     test("should read valid boulder state", () => {
       // given - valid boulder.json
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: "/path/to/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1", "session-2"],
         plan_name: "my-plan",
       }
-      writeBoulderState(TEST_DIR, state)
+      writePlanState(TEST_DIR, state)
 
       // when
-      const result = readBoulderState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       // then
       expect(result).not.toBeNull()
@@ -136,10 +136,10 @@ describe("boulder-state", () => {
     })
   })
 
-  describe("writeBoulderState", () => {
-    test("should write state and create .sisyphus directory if needed", () => {
+describe("writePlanState", () => {
+    test("should write state and create .yac directory if needed", () => {
       // given - state to write
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: "/test/plan.md",
         started_at: "2026-01-02T12:00:00Z",
         session_ids: ["ses-123"],
@@ -147,8 +147,8 @@ describe("boulder-state", () => {
       }
 
       // when
-      const success = writeBoulderState(TEST_DIR, state)
-      const readBack = readBoulderState(TEST_DIR)
+      const success = writePlanState(TEST_DIR, state)
+      const readBack = readPlanState(TEST_DIR)
 
       // then
       expect(success).toBe(true)
@@ -157,19 +157,19 @@ describe("boulder-state", () => {
     })
   })
 
-  describe("appendSessionId", () => {
+describe("appendPlanSession", () => {
     test("should append new session id to existing state", () => {
       // given - existing state with one session
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       }
-      writeBoulderState(TEST_DIR, state)
+      writePlanState(TEST_DIR, state)
 
       // when
-      const result = appendSessionId(TEST_DIR, "session-2")
+      const result = appendPlanSession(TEST_DIR, "session-2")
 
       // then
       expect(result).not.toBeNull()
@@ -178,17 +178,17 @@ describe("boulder-state", () => {
 
     test("should not duplicate existing session id", () => {
       // given - state with session-1 already
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       }
-      writeBoulderState(TEST_DIR, state)
+      writePlanState(TEST_DIR, state)
 
       // when
-      appendSessionId(TEST_DIR, "session-1")
-      const result = readBoulderState(TEST_DIR)
+      appendPlanSession(TEST_DIR, "session-1")
+      const result = readPlanState(TEST_DIR)
 
       // then
       expect(result?.session_ids).toEqual(["session-1"])
@@ -197,7 +197,7 @@ describe("boulder-state", () => {
     test("should return null when no state exists", () => {
       // given - no boulder.json
       // when
-      const result = appendSessionId(TEST_DIR, "new-session")
+      const result = appendPlanSession(TEST_DIR, "new-session")
       // then
       expect(result).toBeNull()
     })
@@ -212,7 +212,7 @@ describe("boulder-state", () => {
       }))
 
       //#when
-      const result = appendSessionId(TEST_DIR, "ses-new")
+      const result = appendPlanSession(TEST_DIR, "ses-new")
 
       //#then - should not crash and should contain the new session
       expect(result).not.toBeNull()
@@ -220,20 +220,20 @@ describe("boulder-state", () => {
     })
   })
 
-  describe("clearBoulderState", () => {
+describe("clearPlanState", () => {
     test("should remove boulder.json", () => {
       // given - existing state
-      const state: BoulderState = {
+      const state: PlanState = {
         active_plan: "/plan.md",
         started_at: "2026-01-02T10:00:00Z",
         session_ids: ["session-1"],
         plan_name: "plan",
       }
-      writeBoulderState(TEST_DIR, state)
+      writePlanState(TEST_DIR, state)
 
       // when
-      const success = clearBoulderState(TEST_DIR)
-      const result = readBoulderState(TEST_DIR)
+      const success = clearPlanState(TEST_DIR)
+      const result = readPlanState(TEST_DIR)
 
       // then
       expect(success).toBe(true)
@@ -243,7 +243,7 @@ describe("boulder-state", () => {
     test("should succeed even when no file exists", () => {
       // given - no boulder.json
       // when
-      const success = clearBoulderState(TEST_DIR)
+      const success = clearPlanState(TEST_DIR)
       // then
       expect(success).toBe(true)
     })
@@ -377,7 +377,7 @@ describe("boulder-state", () => {
   describe("getPlanName", () => {
     test("should extract plan name from path", () => {
       // given
-      const path = "/home/user/.sisyphus/plans/project/my-feature.md"
+      const path = "/home/user/.yac/plans/project/my-feature.md"
       // when
       const name = getPlanName(path)
       // then
@@ -385,14 +385,14 @@ describe("boulder-state", () => {
     })
   })
 
-  describe("createBoulderState", () => {
+describe("createPlanState", () => {
     test("should create state with correct fields", () => {
       // given
       const planPath = "/path/to/auth-refactor.md"
       const sessionId = "ses-abc123"
 
       // when
-      const state = createBoulderState(planPath, sessionId)
+      const state = createPlanState(planPath, sessionId)
 
       // then
       expect(state.active_plan).toBe(planPath)
@@ -407,8 +407,8 @@ describe("boulder-state", () => {
       const sessionId = "ses-xyz789"
       const agent = "atlas"
 
-      //#when - createBoulderState is called with agent
-      const state = createBoulderState(planPath, sessionId, agent)
+      //#when - createPlanState is called with agent
+      const state = createPlanState(planPath, sessionId, agent)
 
       //#then - state should include the agent field
       expect(state.agent).toBe("atlas")
@@ -422,8 +422,8 @@ describe("boulder-state", () => {
       const planPath = "/path/to/legacy.md"
       const sessionId = "ses-legacy"
 
-      //#when - createBoulderState is called without agent
-      const state = createBoulderState(planPath, sessionId)
+      //#when - createPlanState is called without agent
+      const state = createPlanState(planPath, sessionId)
 
       //#then - state should not have agent field (backward compatible)
       expect(state.agent).toBeUndefined()

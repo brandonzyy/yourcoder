@@ -1,10 +1,11 @@
 import { tool, type ToolDefinition } from "../../plugin/sdk"
 import type { DelegateTaskArgs, ToolContextWithMetadata, DelegateTaskToolOptions } from "./types"
 import { CATEGORY_DESCRIPTIONS } from "./constants"
-import { SISYPHUS_JUNIOR_AGENT } from "./sisyphus-junior-agent"
+import { CODERHAND_AGENT } from "./coderhand-agent"
 import { mergeCategories } from "../../config/plugin-utils/merge-categories"
 import { log } from "../../util/logger"
 import { buildSystemContent } from "./prompt-builder"
+import { listBuiltinAgentNames, renderBuiltinAgentList } from "../../agent/builtin/catalog"
 import type {
   AvailableCategory,
   AvailableSkill,
@@ -52,6 +53,8 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
     const desc = userDesc || builtinDesc
     return desc ? `  - ${name}: ${desc}` : `  - ${name}`
   }).join("\n")
+  const agentList = renderBuiltinAgentList()
+  const agentExamples = listBuiltinAgentNames().join(", ")
 
   const description = `Spawn agent task with category-based or direct agent selection.
   
@@ -69,20 +72,22 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
   
   **CORRECT - Using subagent_type:**
   \`\`\`
-  task(subagent_type="explore", load_skills=[], description="Find patterns", prompt="...", run_in_background=true)
+  task(subagent_type="codersearch", load_skills=[], description="Find patterns", prompt="...", run_in_background=true)
   \`\`\`
   
   REQUIRED: Provide ONE of:
-  - category: For task delegation (uses Sisyphus-Junior with category-optimized model)
-  - subagent_type: For direct agent invocation (explore, librarian, oracle, etc.)
+  - category: For task delegation (uses CoderHand with category-optimized model)
+  - subagent_type: For direct agent invocation (${agentExamples})
   
   **DO NOT provide both.** If category is provided, subagent_type is ignored.
   
   - load_skills: ALWAYS REQUIRED. Pass [] if no skills needed, or ["skill-1", "skill-2"] for category tasks.
-  - category: Use predefined category → Spawns Sisyphus-Junior with category config
+  - category: Use predefined category → Spawns CoderHand with category config
     Available categories:
   ${categoryList}
-  - subagent_type: Use specific agent directly (explore, librarian, oracle, metis, momus)
+  - subagent_type: Use specific agent directly
+    Available agents:
+  ${agentList}
   - run_in_background: true=async (returns task_id), false=sync (waits). Default: false. Use background=true ONLY for parallel exploration with 5+ independent queries.
   - session_id: Existing Task session to continue (from previous task output). Continues agent with FULL CONTEXT PRESERVED - saves tokens, maintains continuity.
   - command: The command that triggered this task (optional, for slash command tracking).
@@ -110,20 +115,13 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       const ctx = toolContext as ToolContextWithMetadata
 
       if (args.category) {
-        if (args.subagent_type && args.subagent_type !== SISYPHUS_JUNIOR_AGENT) {
-          log("[task] category provided - overriding subagent_type to sisyphus-junior", {
+        if (args.subagent_type && args.subagent_type !== CODERHAND_AGENT) {
+          log("[task] category provided - overriding subagent_type to coderhand", {
             category: args.category,
             subagent_type: args.subagent_type,
           })
         }
-        args.subagent_type = SISYPHUS_JUNIOR_AGENT
-      }
-      await ctx.metadata?.({
-        title: args.description,
-      })
-
-      if (args.run_in_background === undefined) {
-        throw new Error(`Invalid arguments: 'run_in_background' parameter is REQUIRED. Use run_in_background=false for task delegation, run_in_background=true only for parallel exploration.`)
+        args.subagent_type = CODERHAND_AGENT
       }
       if (typeof args.load_skills === "string") {
         try {
@@ -133,16 +131,25 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
           args.load_skills = []
         }
       }
-      if (args.load_skills === undefined) {
+      const task = args
+
+      await ctx.metadata?.({
+        title: task.description,
+      })
+
+      if (task.run_in_background === undefined) {
+        throw new Error(`Invalid arguments: 'run_in_background' parameter is REQUIRED. Use run_in_background=false for task delegation, run_in_background=true only for parallel exploration.`)
+      }
+      if (task.load_skills === undefined) {
         throw new Error(`Invalid arguments: 'load_skills' parameter is REQUIRED. Pass [] if no skills needed.`)
       }
-      if (args.load_skills === null) {
+      if (task.load_skills === null) {
         throw new Error(`Invalid arguments: load_skills=null is not allowed. Pass [] if no skills needed.`)
       }
 
-      const runInBackground = args.run_in_background === true
+      const runInBackground = task.run_in_background === true
 
-      const { content: skillContent, contents: skillContents, error: skillError } = await resolveSkillContent(args.load_skills, {
+      const { content: skillContent, contents: skillContents, error: skillError } = await resolveSkillContent(task.load_skills, {
         gitMasterConfig: options.gitMasterConfig,
         browserProvider: options.browserProvider,
         disabledSkills: options.disabledSkills,
@@ -154,14 +161,14 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
 
       const parentContext = await resolveParentContext(ctx, options.client)
 
-      if (args.session_id) {
+      if (task.session_id) {
         if (runInBackground) {
-          return executeBackgroundContinuation(args, ctx, options, parentContext)
+          return executeBackgroundContinuation(task, ctx, options, parentContext)
         }
-        return executeSyncContinuation(args, ctx, options)
+        return executeSyncContinuation(task, ctx, options)
       }
 
-      if (!args.category && !args.subagent_type) {
+      if (!task.category && !task.subagent_type) {
         return `Invalid arguments: Must provide either category or subagent_type.`
       }
 
@@ -186,8 +193,8 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       let fallbackChain: import("../../model/model-requirements").FallbackEntry[] | undefined
       let maxPromptTokens: number | undefined
 
-      if (args.category) {
-        const resolution = await resolveCategoryExecution(args, options, inheritedModel, systemDefaultModel)
+      if (task.category) {
+        const resolution = await resolveCategoryExecution(task, options, inheritedModel, systemDefaultModel)
         if (resolution.error) {
           return resolution.error
         }
@@ -200,14 +207,14 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
         fallbackChain = resolution.fallbackChain
         maxPromptTokens = resolution.maxPromptTokens
 
-        const isRunInBackgroundExplicitlyFalse = args.run_in_background === false || args.run_in_background === "false" as unknown as boolean
+        const isRunInBackgroundExplicitlyFalse = task.run_in_background === false || task.run_in_background === "false" as unknown as boolean
 
         log("[task] unstable agent detection", {
-          category: args.category,
+          category: task.category,
           actualModel,
           isUnstableAgent,
-          run_in_background_value: args.run_in_background,
-          run_in_background_type: typeof args.run_in_background,
+          run_in_background_value: task.run_in_background,
+          run_in_background_type: typeof task.run_in_background,
           isRunInBackgroundExplicitlyFalse,
           willForceBackground: isUnstableAgent && isRunInBackgroundExplicitlyFalse,
         })
@@ -223,10 +230,10 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
             availableCategories,
             availableSkills,
           })
-          return executeUnstableAgentTask(args, ctx, options, parentContext, agentToUse, categoryModel, systemContent, actualModel)
+          return executeUnstableAgentTask(task, ctx, options, parentContext, agentToUse, categoryModel, systemContent, actualModel)
         }
       } else {
-        const resolution = await resolveSubagentExecution(args, options, parentContext.agent, categoryExamples)
+        const resolution = await resolveSubagentExecution(task, options, parentContext.agent, categoryExamples)
         if (resolution.error) {
           return resolution.error
         }
@@ -247,10 +254,10 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       })
 
       if (runInBackground) {
-        return executeBackgroundTask(args, ctx, options, parentContext, agentToUse, categoryModel, systemContent, fallbackChain)
+        return executeBackgroundTask(task, ctx, options, parentContext, agentToUse, categoryModel, systemContent, fallbackChain)
       }
 
-      return executeSyncTask(args, ctx, options, parentContext, agentToUse, categoryModel, systemContent, modelInfo, fallbackChain)
+      return executeSyncTask(task, ctx, options, parentContext, agentToUse, categoryModel, systemContent, modelInfo, fallbackChain)
     },
   })
 }
