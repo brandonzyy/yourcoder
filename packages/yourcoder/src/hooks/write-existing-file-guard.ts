@@ -1,9 +1,9 @@
-import type { Hooks, PluginInput } from "../../plugin/sdk"
+import type { Hooks, PluginInput } from "../plugin/sdk"
 
 import { existsSync, realpathSync } from "fs"
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from "path"
 
-import { log } from "../../util/logger"
+import { log } from "../util/logger"
 
 type GuardArgs = {
   filePath?: string

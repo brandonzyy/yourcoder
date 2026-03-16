@@ -1,6 +1,6 @@
 // Merged from: types.ts, detector.ts, switcher.ts, hook.ts
-import { normalizeModelID } from "../../../model/normalize"
-import { log } from "../../../util/logger"
+import { normalizeModelID } from "../../model/normalize"
+import { log } from "../../util/logger"
 
 // --- types ---
 

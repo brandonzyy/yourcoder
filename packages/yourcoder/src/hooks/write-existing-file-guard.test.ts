@@ -3,8 +3,8 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync 
 import { tmpdir } from "node:os"
 import { dirname, join, resolve } from "node:path"
 
-import { MAX_TRACKED_PATHS_PER_SESSION } from "./hook"
-import { createWriteExistingFileGuardHook } from "./hook"
+import { MAX_TRACKED_PATHS_PER_SESSION } from "./write-existing-file-guard"
+import { createWriteExistingFileGuardHook } from "./write-existing-file-guard"
 
 const BLOCK_MESSAGE = "File already exists. Use edit tool instead."
 

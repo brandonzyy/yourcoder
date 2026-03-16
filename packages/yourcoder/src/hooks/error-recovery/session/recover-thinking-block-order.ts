@@ -1,9 +1,8 @@
 import type { createYcClient } from "@yourcoder/sdk"
 import type { MessageData } from "./types"
 import { extractMessageIndex } from "./types"
-import { findMessageByIndexNeedingThinking, findMessagesWithOrphanThinking, prependThinkingPart } from "./storage"
+import { findMessageByIndexNeedingThinking, findMessagesWithOrphanThinking, prependThinkingPart, prependThinkingPartAsync } from "./storage"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import { prependThinkingPartAsync } from "./storage/thinking-prepend"
 import { THINKING_TYPES } from "./types"
 import { normalizeSDKResponse } from "../../../model/normalize"
 

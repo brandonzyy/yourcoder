@@ -2,9 +2,9 @@ import { afterEach, describe, expect, test } from "bun:test"
 import { mkdtempSync, rmSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
-import type { BackgroundManager, BackgroundTask } from "../../../agent/background"
-import { readContinuationMarker } from "../../shared/continuation-state"
-import { createStopContinuationGuardHook } from "./hook"
+import type { BackgroundManager, BackgroundTask } from "../../agent/background"
+import { readContinuationMarker } from "../shared/continuation-state"
+import { createStopContinuationGuardHook } from "./stop-guard"
 
 type CancelCall = {
   taskId: string

@@ -1,5 +1,5 @@
 // Merged from: patterns.ts + guidance.ts + hook.ts
-import type { PluginInput } from "../../plugin/sdk"
+import type { PluginInput } from "../plugin/sdk"
 
 // --- patterns ---
 

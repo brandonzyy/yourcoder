@@ -21,7 +21,7 @@ import { setSessionTools } from "../../session/session-tools-store"
 import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import { getMessageDir } from "../../util/opencode-message-dir"
 import { findNearestMessageWithFields } from "../../hooks/context-injection/message-injector"
-import { setSessionFallbackChain, clearSessionFallbackChain } from "../../hooks/model-switching/model-fallback/hook"
+import { setSessionFallbackChain, clearSessionFallbackChain } from "../../hooks/model-switching/model-fallback"
 
 // --- Sync Session Creator ---
 

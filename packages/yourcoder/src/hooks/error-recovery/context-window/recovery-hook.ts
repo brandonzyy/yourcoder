@@ -1,6 +1,5 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import type { Client } from "./client"
-import type { AutoCompactState, ParsedTokenLimitError } from "./types"
+import type { AutoCompactState, Client, ParsedTokenLimitError } from "./types"
 import type { ExperimentalConfig, PluginConfig } from "../../../config/plugin-schema"
 import { parseAnthropicTokenLimitError } from "./parser"
 import { executeCompact, getLastAssistant } from "./executor"

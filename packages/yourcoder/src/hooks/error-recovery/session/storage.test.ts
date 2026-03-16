@@ -1,7 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { readMessagesFromSDK, readPartsFromSDK } from "../storage"
-import { readMessages } from "./messages-reader"
-import { readParts } from "./parts-reader"
+import { readMessagesFromSDK, readPartsFromSDK, readMessages, readParts } from "./storage"
 
 function createMockClient(handlers: {
   messages?: (sessionID: string) => unknown[]

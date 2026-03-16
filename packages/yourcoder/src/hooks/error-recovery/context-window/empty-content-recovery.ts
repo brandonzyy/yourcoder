@@ -5,10 +5,9 @@ import {
   replaceEmptyTextParts,
 } from "../session/storage"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import type { AutoCompactState } from "./types"
-import type { Client } from "./client"
-import { PLACEHOLDER_TEXT } from "./message-builder"
+import type { AutoCompactState, Client } from "./types"
 import { incrementEmptyContentAttempt } from "./types"
+import { PLACEHOLDER_TEXT } from "./message-builder"
 import { fixEmptyMessagesWithSDK } from "./empty-content-recovery-sdk"
 
 export async function fixEmptyMessages(params: {

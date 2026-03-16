@@ -1,8 +1,8 @@
 import { describe, expect, it, afterAll, mock } from "bun:test"
-import type { PluginInput } from "../../../plugin/sdk"
+import type { PluginInput } from "../../plugin/sdk"
 import { createYcClient } from "@yourcoder/sdk"
 import type { Todo } from "@yourcoder/sdk"
-import { createCompactionTodoPreserverHook } from "./hook"
+import { createCompactionTodoPreserverHook } from "./compaction-todo-preserver"
 
 const updateMock = mock(async () => {})
 

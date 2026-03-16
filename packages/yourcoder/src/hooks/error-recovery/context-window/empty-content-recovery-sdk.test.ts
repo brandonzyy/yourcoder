@@ -4,10 +4,8 @@ import { fixEmptyMessagesWithSDK } from "./empty-content-recovery-sdk"
 const mockReplaceEmptyTextParts = mock(() => Promise.resolve(false))
 const mockInjectTextPart = mock(() => Promise.resolve(false))
 
-mock.module("../session/storage/empty-text", () => ({
+mock.module("../session/storage", () => ({
   replaceEmptyTextPartsAsync: mockReplaceEmptyTextParts,
-}))
-mock.module("../session/storage/text-part-injector", () => ({
   injectTextPartAsync: mockInjectTextPart,
 }))
 

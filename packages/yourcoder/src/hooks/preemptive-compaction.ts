@@ -1,7 +1,7 @@
-import { log } from "../../util/logger"
-import type { PluginConfig } from "../../config/plugin-schema"
+import { log } from "../util/logger"
+import type { PluginConfig } from "../config/plugin-schema"
 
-import { resolveCompactionModel } from "../shared/compaction-model-resolver"
+import { resolveCompactionModel } from "./shared/compaction-model-resolver"
 const DEFAULT_ACTUAL_LIMIT = 200_000
 const PREEMPTIVE_COMPACTION_TIMEOUT_MS = 120_000
 

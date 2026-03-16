@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "bun:test"
 
-const { clearThinkModeState, createThinkModeHook } = await import("./hook")
+const { clearThinkModeState, createThinkModeHook } = await import("./think-mode")
 
 type ThinkModeHookInput = {
   sessionID: string

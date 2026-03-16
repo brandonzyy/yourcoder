@@ -22,12 +22,12 @@ const transformModelForProviderMock = mock((provider: string, model: string) => 
   return model
 })
 
-mock.module("../../shared/connected-providers-cache", () => ({
+mock.module("../shared/connected-providers-cache", () => ({
   readConnectedProvidersCache: readConnectedProvidersCacheMock,
   readProviderModelsCache: readProviderModelsCacheMock,
 }))
 
-mock.module("../../shared/provider-model-id-transform", () => ({
+mock.module("../shared/provider-model-id-transform", () => ({
   transformModelForProvider: transformModelForProviderMock,
 }))
 
@@ -36,7 +36,7 @@ import {
   createModelFallbackHook,
   setSessionFallbackChain,
   setPendingModelFallback,
-} from "./hook"
+} from "./model-fallback"
 
 describe("model fallback hook", () => {
   beforeEach(() => {

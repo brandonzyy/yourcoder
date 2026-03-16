@@ -1,12 +1,12 @@
-import type { FallbackEntry } from "../../../model/model-requirements"
-import { getAgentConfigKey } from "../../../util/agent-display-names"
-import { AGENT_MODEL_REQUIREMENTS } from "../../../model/model-requirements"
-import { readConnectedProvidersCache, readProviderModelsCache } from "../../../util/connected-providers-cache"
-import { selectFallbackProvider } from "../../../model/model-error-classifier"
-import { transformModelForProvider } from "../../../util/provider-model-id-transform"
-import { log } from "../../../util/logger"
-import { getTaskToastManager } from "../../../cli/toast"
-import type { ChatMessageInput, ChatMessageHandlerOutput } from "../../../plugin/handlers/chat-message"
+import type { FallbackEntry } from "../../model/model-requirements"
+import { getAgentConfigKey } from "../../util/agent-display-names"
+import { AGENT_MODEL_REQUIREMENTS } from "../../model/model-requirements"
+import { readConnectedProvidersCache, readProviderModelsCache } from "../../util/connected-providers-cache"
+import { selectFallbackProvider } from "../../model/model-error-classifier"
+import { transformModelForProvider } from "../../util/provider-model-id-transform"
+import { log } from "../../util/logger"
+import { getTaskToastManager } from "../../cli/toast"
+import type { ChatMessageInput, ChatMessageHandlerOutput } from "../../plugin/handlers/chat-message"
 
 type FallbackToast = (input: {
   title: string

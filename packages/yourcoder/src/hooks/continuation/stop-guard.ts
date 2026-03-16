@@ -1,11 +1,11 @@
-import type { PluginInput } from "../../../plugin/sdk"
-import type { BackgroundManager } from "../../../agent/background"
+import type { PluginInput } from "../../plugin/sdk"
+import type { BackgroundManager } from "../../agent/background"
 
 import {
   clearContinuationMarker,
   setContinuationMarkerSource,
-} from "../../shared/continuation-state"
-import { log } from "../../../util/logger"
+} from "../shared/continuation-state"
+import { log } from "../../util/logger"
 
 const HOOK_NAME = "stop-continuation-guard"
 

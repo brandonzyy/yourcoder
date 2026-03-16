@@ -1,10 +1,6 @@
-import type { AutoCompactState } from "./types";
-import type { PluginConfig } from "../../../config/plugin-schema";
-import type { ExperimentalConfig } from "../../../config/plugin-schema";
-import { TRUNCATE_CONFIG } from "./types";
-
-import type { Client } from "./client";
-import { getOrCreateTruncateState } from "./types";
+import type { AutoCompactState, Client } from "./types";
+import { TRUNCATE_CONFIG, getOrCreateTruncateState } from "./types";
+import type { PluginConfig, ExperimentalConfig } from "../../../config/plugin-schema";
 import { runAggressiveTruncationStrategy } from "./aggressive-truncation-strategy";
 import { runSummarizeRetryStrategy } from "./summarize-retry-strategy";
 

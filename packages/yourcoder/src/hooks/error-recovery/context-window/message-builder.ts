@@ -6,10 +6,10 @@ import {
   findEmptyMessages,
   injectTextPart,
   replaceEmptyTextParts,
+  replaceEmptyTextPartsAsync,
+  injectTextPartAsync,
 } from "../session/storage"
-import { replaceEmptyTextPartsAsync } from "../session/storage/empty-text"
-import { injectTextPartAsync } from "../session/storage/text-part-injector"
-import type { Client } from "./client"
+import type { Client } from "./types"
 
 export const PLACEHOLDER_TEXT = "[user interrupted]"
 

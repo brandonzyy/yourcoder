@@ -1,6 +1,5 @@
-import { replaceEmptyTextPartsAsync } from "../session/storage/empty-text"
-import { injectTextPartAsync } from "../session/storage/text-part-injector"
-import type { Client } from "./client"
+import { replaceEmptyTextPartsAsync, injectTextPartAsync } from "../session/storage"
+import type { Client } from "./types"
 
 interface SDKPart {
   id?: string

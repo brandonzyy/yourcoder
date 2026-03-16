@@ -1,13 +1,25 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 
-import { getMessageIds } from "./message-storage-directory"
 import { PART_STORAGE_DIR, TRUNCATION_MESSAGE } from "./types"
+import { getMessageDir } from "../../../util/opencode-message-dir"
 import type { StoredToolPart, ToolResultInfo } from "./pruning-types"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import { log } from "../../../util/logger"
 
 let hasLoggedTruncateWarning = false
+
+function getMessageIds(sessionID: string): string[] {
+	const messageDir = getMessageDir(sessionID)
+	if (!messageDir || !existsSync(messageDir)) return []
+
+	const messageIds: string[] = []
+	for (const file of readdirSync(messageDir)) {
+		if (!file.endsWith(".json")) continue
+		messageIds.push(file.replace(".json", ""))
+	}
+	return messageIds
+}
 
 export function findToolResultsBySize(sessionID: string): ToolResultInfo[] {
 	const messageIds = getMessageIds(sessionID)

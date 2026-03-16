@@ -1,5 +1,5 @@
-import type { PluginInput } from "../../../plugin/sdk"
-import { log } from "../../../util/logger"
+import type { PluginInput } from "../../plugin/sdk"
+import { log } from "../../util/logger"
 
 interface TodoSnapshot {
   id: string
