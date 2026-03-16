@@ -1,13 +1,9 @@
+// Merged from: constants.ts, types.ts, look-at-arguments.ts, assistant-message-extractor.ts, tools.ts
 import { basename } from "node:path"
 import { pathToFileURL } from "node:url"
 import { tool, type PluginInput, type ToolDefinition } from "../../plugin/sdk"
-import { LOOK_AT_DESCRIPTION, MULTIMODAL_LOOKER_AGENT } from "./constants"
-import type { LookAtArgs } from "./types"
 import {log} from "../../util/logger"
 import {promptSyncWithModelSuggestionRetry} from "../../model/model-suggestion-retry"
-import { extractLatestAssistantText } from "./assistant-message-extractor"
-import type { LookAtArgsWithAlias } from "./look-at-arguments"
-import { normalizeArgs, validateArgs } from "./look-at-arguments"
 import {
   extractBase64Data,
   inferMimeTypeFromBase64,
@@ -20,6 +16,127 @@ import {
   convertBase64ImageToJpeg,
   cleanupConvertedImage,
 } from "./image-converter"
+
+// --- constants ---
+
+export const MULTIMODAL_LOOKER_AGENT = "multimodal-looker" as const
+
+export const LOOK_AT_DESCRIPTION = `Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extracts specific information or summaries from documents, describes visual content. Use when you need analyzed/extracted data rather than literal file contents.`
+
+// --- types ---
+
+export interface LookAtArgs {
+  file_path?: string
+  image_data?: string  // base64 encoded image data (for clipboard images)
+  goal: string
+}
+
+// --- look-at-arguments ---
+
+export interface LookAtArgsWithAlias extends LookAtArgs {
+  path?: string
+}
+
+export function normalizeArgs(args: LookAtArgsWithAlias): LookAtArgs {
+  return {
+    file_path: args.file_path ?? args.path,
+    image_data: args.image_data,
+    goal: args.goal ?? "",
+  }
+}
+
+export function validateArgs(args: LookAtArgs): string | null {
+  const hasFilePath = Boolean(args.file_path && args.file_path.length > 0)
+  const hasImageData = Boolean(args.image_data && args.image_data.length > 0)
+
+  if (hasFilePath && /^https?:\/\//i.test(args.file_path!)) {
+    return "Error: Remote URLs are not supported for file_path. Download the file first or use a local path."
+  }
+  if (!hasFilePath && !hasImageData) {
+    return `Error: Must provide either 'file_path' or 'image_data'. Usage:
+- look_at(file_path="/path/to/file", goal="what to extract")
+- look_at(image_data="base64_encoded_data", goal="what to extract")`
+  }
+  if (hasFilePath && hasImageData) {
+    return "Error: Provide only one of 'file_path' or 'image_data', not both."
+  }
+  if (!args.goal) {
+    return "Error: Missing required parameter 'goal'. Usage: look_at(file_path=\"/path/to/file\", goal=\"what to extract\")"
+  }
+  return null
+}
+
+// --- assistant-message-extractor ---
+
+type MessageTime = { created?: number }
+
+type MessageInfo = {
+  role?: string
+  time?: MessageTime
+}
+
+type MessagePart = {
+  type?: string
+  text?: string
+}
+
+type SessionMessage = {
+  info?: MessageInfo
+  parts?: unknown
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null
+}
+
+function asSessionMessage(value: unknown): SessionMessage | null {
+  if (!isObject(value)) return null
+  const info = value["info"]
+  const parts = value["parts"]
+  return {
+    info: isObject(info)
+      ? {
+          role: typeof info["role"] === "string" ? info["role"] : undefined,
+          time: isObject(info["time"]) ? { created: typeof info["time"]["created"] === "number" ? info["time"]["created"] : undefined } : undefined,
+        }
+      : undefined,
+    parts,
+  }
+}
+
+function getCreatedTime(message: SessionMessage): number {
+  return message.info?.time?.created ?? 0
+}
+
+function getTextParts(message: SessionMessage): MessagePart[] {
+  if (!Array.isArray(message.parts)) return []
+  return message.parts
+    .filter((part): part is Record<string, unknown> => isObject(part))
+    .map((part) => ({
+      type: typeof part["type"] === "string" ? part["type"] : undefined,
+      text: typeof part["text"] === "string" ? part["text"] : undefined,
+    }))
+    .filter((part) => part.type === "text" && Boolean(part.text))
+}
+
+export function extractLatestAssistantText(messages: unknown): string | null {
+  if (!Array.isArray(messages) || messages.length === 0) return null
+
+  const assistantMessages = messages
+    .map(asSessionMessage)
+    .filter((message): message is SessionMessage => message !== null)
+    .filter((message) => message.info?.role === "assistant")
+    .sort((a, b) => getCreatedTime(b) - getCreatedTime(a))
+
+  const lastAssistantMessage = assistantMessages[0]
+  if (!lastAssistantMessage) return null
+
+  const textParts = getTextParts(lastAssistantMessage)
+  const responseText = textParts.map((part) => part.text).join("\n")
+  return responseText
+}
+
+// --- tools ---
 
 function getTemporaryConversionPath(error: unknown): string | null {
   if (!(error instanceof Error)) {
@@ -38,8 +155,6 @@ function getTemporaryConversionPath(error: unknown): string | null {
 
   return null
 }
-
-export { normalizeArgs, validateArgs } from "./look-at-arguments"
 
 export function createLookAt(ctx: PluginInput): ToolDefinition {
   return tool({
@@ -73,10 +188,10 @@ export function createLookAt(ctx: PluginInput): ToolDefinition {
       try {
         if (imageData) {
           mimeType = inferMimeTypeFromBase64(imageData)
-          
+
           let finalBase64Data = extractBase64Data(imageData)
           let finalMimeType = mimeType
-          
+
           if (needsConversion(mimeType)) {
             log(`[look_at] Detected unsupported Base64 format: ${mimeType}, converting to JPEG...`)
             try {
@@ -90,7 +205,7 @@ export function createLookAt(ctx: PluginInput): ToolDefinition {
               return `Error: Failed to convert Base64 image format. ${conversionError}`
             }
           }
-          
+
           filePart = {
             type: "file",
             mime: finalMimeType,
@@ -99,7 +214,7 @@ export function createLookAt(ctx: PluginInput): ToolDefinition {
           }
         } else if (filePath) {
         mimeType = inferMimeTypeFromFilePath(filePath)
-        
+
         let actualFilePath = filePath
         if (needsConversion(mimeType)) {
           log(`[look_at] Detected unsupported format: ${mimeType}, converting to JPEG...`)

@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
-import { createCategorySkillReminderHook } from "./index"
+import { createCategorySkillReminderHook } from "./hook"
 import { updateSessionAgent, clearSessionAgent, _resetForTesting } from "../../session/state"
 import type { AvailableSkill } from "../../agent/dynamic-agent-prompt-builder"
 import * as logger from "../../util/logger"

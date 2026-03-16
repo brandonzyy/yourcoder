@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test"
 import { executeCompact } from "./executor"
 import type { AutoCompactState } from "./types"
-import * as recoveryStrategy from "./recovery-strategy"
+import * as recoveryStrategy from "./aggressive-truncation-strategy"
 import * as messagesReader from "../session/storage/messages-reader"
 
 type TimerCallback = (...args: any[]) => void

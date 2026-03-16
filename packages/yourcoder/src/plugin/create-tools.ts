@@ -1,6 +1,6 @@
 import type { AvailableCategory, AvailableSkill } from "../agent/dynamic-agent-prompt-builder"
 import type { PluginConfig } from "../config/plugin-schema"
-import type { BrowserAutomationProvider } from "../config/plugin-schema/browser-automation"
+import type { BrowserAutomationProvider } from "../config/plugin-schema/schemas"
 import type { LoadedSkill } from "../skill/loader/types"
 import type { PluginContext, ToolsRecord } from "./handlers/types"
 import type { Managers } from "./create-managers"

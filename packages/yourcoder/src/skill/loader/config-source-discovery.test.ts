@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from "bun:test"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { join } from "path"
 import { tmpdir } from "os"
-import { SkillsConfigSchema } from "../../config/plugin-schema/skills"
+import { SkillsConfigSchema } from "../../config/plugin-schema/schemas"
 import { discoverConfigSourceSkills, normalizePathForGlob } from "./config-source-discovery"
 
 const TEST_DIR = join(tmpdir(), `config-source-discovery-test-${Date.now()}`)

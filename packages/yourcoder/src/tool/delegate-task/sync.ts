@@ -54,13 +54,6 @@ export async function createSyncSession(
 
 // --- Sync Prompt Sender ---
 
-  promptSyncWithModelSuggestionRetry,
-  promptWithModelSuggestionRetry,
-} from "../../model/model-suggestion-retry"
-import { formatDetailedError } from "./util"
-import { setSessionTools } from "../../session/session-tools-store"
-import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
-
 type SendSyncPromptDeps = {
   promptWithModelSuggestionRetry: typeof promptWithModelSuggestionRetry
   promptSyncWithModelSuggestionRetry: typeof promptSyncWithModelSuggestionRetry

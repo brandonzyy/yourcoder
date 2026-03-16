@@ -4,8 +4,5 @@ export type {
   YcClient,
   DelegateTaskArgs,
   ToolContextWithMetadata,
-  SyncSessionCreatedEvent,
-  DelegateTaskToolOptions,
-  BuildSystemContentInput,
 } from "./types"
 export * from "./constants"

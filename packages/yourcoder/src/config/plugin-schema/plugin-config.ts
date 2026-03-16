@@ -1,21 +1,55 @@
 import { z } from "zod"
 const AnyMcpNameSchema = z.string().min(1)
-import { BuiltinAgentNameSchema, BuiltinSkillNameSchema } from "./agent-names"
-import { AgentOverridesSchema } from "./agent-overrides"
-import { BabysittingConfigSchema, CommentCheckerConfigSchema, NotificationConfigSchema, StartWorkConfigSchema, GitMasterConfigSchema } from "./feature-configs"
-import { BackgroundTaskConfigSchema } from "./background-task"
-import { BrowserAutomationConfigSchema } from "./browser-automation"
-import { CategoriesConfigSchema } from "./categories"
-import { ClaudeCodeConfigSchema } from "./claude-code"
-import { BuiltinCommandNameSchema } from "./commands"
-import { ExperimentalConfigSchema } from "./experimental"
+import { BuiltinAgentNameSchema, BuiltinSkillNameSchema } from "./schemas"
+import { AgentOverridesSchema } from "./schemas"
+import { BackgroundTaskConfigSchema } from "./schemas"
+import { BrowserAutomationConfigSchema } from "./schemas"
+import { CategoriesConfigSchema } from "./schemas"
+import { ClaudeCodeConfigSchema } from "./schemas"
+import { BuiltinCommandNameSchema } from "./schemas"
+import { ExperimentalConfigSchema } from "./schemas"
 import { HookNameSchema } from "./hooks"
-import { RalphLoopConfigSchema } from "./ralph-loop"
-import { RuntimeFallbackConfigSchema } from "./runtime-fallback"
-import { SkillsConfigSchema } from "./skills"
-import { YcConfigSchema, YcAgentConfigSchema } from "./yc"
-import { TmuxConfigSchema } from "./tmux"
-import { WebsearchConfigSchema } from "./websearch"
+import { RalphLoopConfigSchema } from "./schemas"
+import { RuntimeFallbackConfigSchema } from "./schemas"
+import { SkillsConfigSchema } from "./schemas"
+import { YcConfigSchema, YcAgentConfigSchema } from "./schemas"
+import { TmuxConfigSchema } from "./schemas"
+import { WebsearchConfigSchema } from "./schemas"
+
+// --- feature-configs (absorbed from feature-configs.ts) ---
+
+export const BabysittingConfigSchema = z.object({
+  timeout_ms: z.number().default(120000),
+})
+export type BabysittingConfig = z.infer<typeof BabysittingConfigSchema>
+
+export const CommentCheckerConfigSchema = z.object({
+  /** Custom prompt to replace the default warning message. Use {{comments}} placeholder for detected comments XML. */
+  custom_prompt: z.string().optional(),
+})
+export type CommentCheckerConfig = z.infer<typeof CommentCheckerConfigSchema>
+
+export const NotificationConfigSchema = z.object({
+  /** Force enable session-notification even if external notification plugins are detected (default: false) */
+  force_enable: z.boolean().optional(),
+})
+export type NotificationConfig = z.infer<typeof NotificationConfigSchema>
+
+export const StartWorkConfigSchema = z.object({
+  /** Enable auto-commit after each atomic task completion (default: true) */
+  auto_commit: z.boolean().default(true),
+})
+export type StartWorkConfig = z.infer<typeof StartWorkConfigSchema>
+
+export const GitMasterConfigSchema = z.object({
+  /** Add "Crafted with YourCoder" footer to commit messages (default: true). Can be boolean or custom string. */
+  commit_footer: z.union([z.boolean(), z.string()]).default(true),
+  /** Add "Co-authored-by: Yac" trailer to commit messages (default: true) */
+  include_co_authored_by: z.boolean().default(true),
+})
+export type GitMasterConfig = z.infer<typeof GitMasterConfigSchema>
+
+// --- plugin-config ---
 
 export const PluginConfigSchema = z.object({
   $schema: z.string().optional(),

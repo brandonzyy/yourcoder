@@ -2,7 +2,7 @@ import { describe, expect, it } from "bun:test"
 import {
   getHighVariant,
   isAlreadyHighVariant,
-} from "./switcher"
+} from "./hook"
 
 describe("think-mode switcher", () => {
   describe("Model ID normalization", () => {

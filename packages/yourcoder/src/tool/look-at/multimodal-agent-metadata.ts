@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../plugin/sdk"
-import { MULTIMODAL_LOOKER_AGENT } from "./constants"
+import { MULTIMODAL_LOOKER_AGENT } from "./tools"
 import { log } from "../../util/logger"
 
 type AgentModel = { providerID: string; modelID: string }

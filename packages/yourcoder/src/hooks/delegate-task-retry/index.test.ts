@@ -2,8 +2,8 @@ import { describe, expect, it } from "bun:test"
 import {
   DELEGATE_TASK_ERROR_PATTERNS,
   detectDelegateTaskError,
-  buildRetryGuidance,
-} from "./index"
+} from "./hook"
+import { buildRetryGuidance } from "./hook"
 
 describe("yac-task-retry", () => {
   describe("DELEGATE_TASK_ERROR_PATTERNS", () => {

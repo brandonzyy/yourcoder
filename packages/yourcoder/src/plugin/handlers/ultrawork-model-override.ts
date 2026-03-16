@@ -1,5 +1,5 @@
 import type { PluginConfig } from "../../config/plugin-schema"
-import type { AgentOverrides } from "../../config/plugin-schema/agent-overrides"
+import type { AgentOverrides } from "../../config/plugin-schema/schemas"
 import { getSessionAgent } from "../../session/state"
 import { log } from "../../util/logger"
 import { getAgentConfigKey } from "../../util/agent-display-names"

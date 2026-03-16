@@ -4,7 +4,7 @@ import { join } from "node:path"
 import { tmpdir } from "node:os"
 import type { BackgroundManager, BackgroundTask } from "../../../agent/background"
 import { readContinuationMarker } from "../../shared/continuation-state"
-import { createStopContinuationGuardHook } from "./index"
+import { createStopContinuationGuardHook } from "./hook"
 
 type CancelCall = {
   taskId: string

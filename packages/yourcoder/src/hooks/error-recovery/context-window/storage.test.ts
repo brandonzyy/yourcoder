@@ -1,39 +1,39 @@
 import { describe, test, expect, mock, beforeEach, afterAll } from "bun:test"
-import { truncateUntilTargetTokens } from "./storage"
-import * as storage from "./storage"
+import { truncateUntilTargetTokens } from "./target-token-truncation"
+import * as toolResultStorage from "./tool-result-storage"
 
 // Mock the entire module
-mock.module("./storage", () => {
+mock.module("./tool-result-storage", () => {
   return {
-    ...storage,
+    ...toolResultStorage,
     findToolResultsBySize: mock(() => []),
     truncateToolResult: mock(() => ({ success: false })),
   }
 })
 
 afterAll(() => {
-  mock.module("./storage", () => storage)
+  mock.module("./tool-result-storage", () => toolResultStorage)
 })
 
 describe("truncateUntilTargetTokens", () => {
   const sessionID = "test-session"
-  
+
   beforeEach(() => {
     // Reset mocks
-    const { findToolResultsBySize, truncateToolResult } = require("./storage")
+    const { findToolResultsBySize, truncateToolResult } = require("./tool-result-storage")
     findToolResultsBySize.mockReset()
     truncateToolResult.mockReset()
   })
 
   test("truncates only until target is reached", async () => {
-    const { findToolResultsBySize, truncateToolResult } = require("./storage")
-    
+    const { findToolResultsBySize, truncateToolResult } = require("./tool-result-storage")
+
     // given: Two tool results, each 1000 chars. Target reduction is 500 chars.
     const results = [
       { partPath: "path1", partId: "id1", messageID: "m1", toolName: "tool1", outputSize: 1000 },
       { partPath: "path2", partId: "id2", messageID: "m2", toolName: "tool2", outputSize: 1000 },
     ]
-    
+
     findToolResultsBySize.mockReturnValue(results)
     truncateToolResult.mockImplementation((path: string) => ({
       success: true,
@@ -54,14 +54,14 @@ describe("truncateUntilTargetTokens", () => {
   })
 
   test("truncates all if target not reached", async () => {
-    const { findToolResultsBySize, truncateToolResult } = require("./storage")
-    
+    const { findToolResultsBySize, truncateToolResult } = require("./tool-result-storage")
+
     // given: Two tool results, each 100 chars. Target reduction is 500 chars.
     const results = [
       { partPath: "path1", partId: "id1", messageID: "m1", toolName: "tool1", outputSize: 100 },
       { partPath: "path2", partId: "id2", messageID: "m2", toolName: "tool2", outputSize: 100 },
     ]
-    
+
     findToolResultsBySize.mockReturnValue(results)
     truncateToolResult.mockImplementation((path: string) => ({
       success: true,

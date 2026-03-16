@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { ZodError } from "zod/v4"
-import { BackgroundTaskConfigSchema } from "./background-task"
+import { BackgroundTaskConfigSchema } from "./schemas"
 
 describe("BackgroundTaskConfigSchema", () => {
   describe("syncPollTimeoutMs", () => {

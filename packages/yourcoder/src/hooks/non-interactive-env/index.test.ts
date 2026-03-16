@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
-import { createNonInteractiveEnvHook, NON_INTERACTIVE_ENV } from "./index"
+import { createNonInteractiveEnvHook, NON_INTERACTIVE_ENV } from "./non-interactive-env-hook"
 
 describe("non-interactive-env hook", () => {
   const mockCtx = {} as Parameters<typeof createNonInteractiveEnvHook>[0]

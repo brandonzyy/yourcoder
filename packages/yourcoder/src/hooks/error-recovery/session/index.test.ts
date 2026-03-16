@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { detectErrorType } from "./index"
+import { detectErrorType } from "./types"
 
 describe("detectErrorType", () => {
   describe("thinking_block_order errors", () => {
