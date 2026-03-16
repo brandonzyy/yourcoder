@@ -3,6 +3,8 @@ import type { DelegateTaskArgs, ToolContextWithMetadata, DelegateTaskToolOptions
 import { CATEGORY_DESCRIPTIONS } from "./constants"
 import { CODERHAND_AGENT } from "./coderhand-agent"
 import { mergeCategories } from "../../config/plugin-utils/merge-categories"
+import type { ModelFallbackInfo } from "../../cli/toast/types"
+import type { FallbackEntry } from "../../model/model-requirements"
 import { log } from "../../util/logger"
 import { buildSystemContent } from "./prompt-builder"
 import { listBuiltinAgentNames, renderBuiltinAgentList } from "../../agent/builtin/catalog"
@@ -187,10 +189,10 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
       let agentToUse: string
       let categoryModel: { providerID: string; modelID: string; variant?: string } | undefined
       let categoryPromptAppend: string | undefined
-      let modelInfo: import("../../cli/toast/types").ModelFallbackInfo | undefined
+      let modelInfo: ModelFallbackInfo | undefined
       let actualModel: string | undefined
       let isUnstableAgent = false
-      let fallbackChain: import("../../model/model-requirements").FallbackEntry[] | undefined
+      let fallbackChain: FallbackEntry[] | undefined
       let maxPromptTokens: number | undefined
 
       if (task.category) {

@@ -1,4 +1,5 @@
 import type { ModelFallbackInfo } from "../../cli/toast/types"
+import type { FallbackEntry } from "../../model/model-requirements"
 import type { DelegateTaskArgs, ToolContextWithMetadata } from "./types"
 import type { ExecutorContext, ParentContext } from "./executor-types"
 import { getTaskToastManager } from "../../cli/toast"
@@ -20,7 +21,7 @@ export async function executeSyncTask(
   categoryModel: { providerID: string; modelID: string; variant?: string } | undefined,
   systemContent: string | undefined,
   modelInfo?: ModelFallbackInfo,
-  fallbackChain?: import("../../model/model-requirements").FallbackEntry[],
+  fallbackChain?: FallbackEntry[],
   deps: SyncTaskDeps = syncTaskDeps
 ): Promise<string> {
   const { client, directory, onSyncSessionCreated, syncPollTimeoutMs } = executorCtx
