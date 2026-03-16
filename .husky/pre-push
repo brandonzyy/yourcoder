@@ -17,4 +17,12 @@ if (process.versions.bun !== expectedBunVersion) {
   console.warn(`Warning: Bun version ${process.versions.bun} differs from expected ${expectedBunVersion}`);
 }
 '
-bun typecheck
+# tsgo (native TypeScript) has no Windows binary — skip typecheck on Windows
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*|Windows_NT)
+    echo "Skipping typecheck on Windows (tsgo not available)"
+    ;;
+  *)
+    bun typecheck
+    ;;
+esac
