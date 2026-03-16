@@ -3,9 +3,9 @@ import type { MessageData } from "./types"
 import { findMessagesWithThinkingBlocks, stripThinkingParts } from "./storage"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import { stripThinkingPartsAsync } from "./storage/thinking-strip"
-import { THINKING_TYPES } from "./constants"
+import { THINKING_TYPES } from "./types"
 import { log } from "../../../util/logger"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type Client = ReturnType<typeof createYcClient>
 

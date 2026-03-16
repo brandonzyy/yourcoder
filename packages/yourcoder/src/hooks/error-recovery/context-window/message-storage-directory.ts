@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from "node:fs"
 import type { PluginInput } from "../../../plugin/sdk"
 import { getMessageDir } from "../../../util/opencode-message-dir"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

@@ -1,6 +1,6 @@
 /// <reference types="bun" />
 import { describe, expect, it } from "bun:test"
-import { detectErrorType, extractMessageIndex, extractUnavailableToolName } from "./detect-error-type"
+import { detectErrorType, extractMessageIndex, extractUnavailableToolName } from "./types"
 
 describe("detectErrorType", () => {
   it("#given a tool_use/tool_result error #when detecting #then returns tool_result_missing", () => {

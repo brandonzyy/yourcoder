@@ -17,7 +17,7 @@ import {
   buildSystemContentWithTokenLimit,
   estimateTokenCount,
   truncateToTokenBudget,
-} from "./token-limiter"
+} from "./util"
 
 const TRUNCATION_MARKER_TOKEN_OVERHEAD = estimateTokenCount("\n[TRUNCATED]")
 

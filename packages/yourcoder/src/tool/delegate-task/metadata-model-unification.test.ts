@@ -1,7 +1,7 @@
 const { describe, test, expect, mock } = require("bun:test")
 
 import type { DelegateTaskArgs, ToolContextWithMetadata } from "./types"
-import type { ParentContext } from "./executor-types"
+import type { ParentContext } from "./types"
 
 const MODEL = { providerID: "anthropic", modelID: "claude-sonnet-4-6" }
 

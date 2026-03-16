@@ -1,7 +1,7 @@
 import { promises as fs } from "fs"
 import { basename } from "path"
 import { parseFrontmatter } from "../../util/frontmatter"
-import { sanitizeModelField } from "../../model/model-sanitizer"
+import { sanitizeModelField } from "../../model/normalize"
 import { resolveSkillPathReferences } from "../../util/skill-path-resolver"
 import type { CommandDefinition } from "../../cli/commands/command-types"
 import { loadMcpJsonFromDir, parseSkillMcpConfigFromFrontmatter } from "./skill-mcp-config"

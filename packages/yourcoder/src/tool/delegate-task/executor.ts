@@ -1,16 +1,13 @@
-export type { ExecutorContext, ParentContext } from "./executor-types"
+export type { ExecutorContext, ParentContext } from "./types"
 
-export { resolveSkillContent } from "./skill-resolver"
-export { resolveParentContext } from "./parent-context-resolver"
+export { resolveSkillContent, resolveCategoryExecution, resolveSubagentExecution, CODERHAND_AGENT } from "./task-resolver"
+export type { CategoryResolutionResult } from "./task-resolver"
+export { resolveParentContext } from "./util"
 
-export { executeBackgroundContinuation } from "./background-continuation"
-export { executeSyncContinuation } from "./sync-continuation"
+export { executeBackgroundContinuation, executeBackgroundTask } from "./background"
+export { executeSyncContinuation, executeSyncTask } from "./sync"
+export type { SyncTaskDeps, SyncContinuationDeps } from "./sync"
+export { syncTaskDeps, syncContinuationDeps } from "./sync"
+export { createSyncSession, sendSyncPrompt, pollSyncSession, fetchSyncResult, isSessionComplete } from "./sync"
 
 export { executeUnstableAgentTask } from "./unstable-agent-task"
-export { executeBackgroundTask } from "./background-task"
-export { executeSyncTask } from "./sync-task"
-
-export { resolveCategoryExecution } from "./category-resolver"
-export type { CategoryResolutionResult } from "./category-resolver"
-
-export { resolveSubagentExecution } from "./subagent-resolver"

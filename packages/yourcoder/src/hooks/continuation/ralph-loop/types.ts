@@ -1,4 +1,12 @@
+// Merged from: types.ts + constants.ts
 import type { RalphLoopConfig } from "../../../config/plugin-schema"
+
+export const HOOK_NAME = "ralph-loop"
+export const DEFAULT_STATE_FILE = ".yac/ralph-loop.local.md"
+export const COMPLETION_TAG_PATTERN = /<promise>(.*?)<\/promise>/is
+export const DEFAULT_MAX_ITERATIONS = 100
+export const DEFAULT_COMPLETION_PROMISE = "DONE"
+export const ULTRAWORK_VERIFICATION_PROMISE = "VERIFIED"
 
 export interface RalphLoopState {
   active: boolean

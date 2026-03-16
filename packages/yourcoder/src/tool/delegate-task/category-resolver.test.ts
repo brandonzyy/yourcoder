@@ -1,7 +1,7 @@
 declare const require: (name: string) => any
 const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("bun:test")
-import { resolveCategoryExecution } from "./category-resolver"
-import type { ExecutorContext } from "./executor-types"
+import { resolveCategoryExecution } from "./task-resolver"
+import type { ExecutorContext } from "./types"
 import * as connectedProvidersCache from "../../util/connected-providers-cache"
 
 describe("resolveCategoryExecution", () => {

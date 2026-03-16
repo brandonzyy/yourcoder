@@ -1,5 +1,5 @@
 import { log } from "../../util/logger"
-import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../model/normalize"
 
 interface SessionMessage {
   info?: {

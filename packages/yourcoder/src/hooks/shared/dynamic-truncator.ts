@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../plugin/sdk";
-import { normalizeSDKResponse } from "../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../model/normalize"
 
 const DEFAULT_ANTHROPIC_ACTUAL_LIMIT = 200_000;
 const CHARS_PER_TOKEN_ESTIMATE = 4;

@@ -1,25 +1,28 @@
+// Merged from: model-availability.ts + fallback-model-availability.ts
+
 import { existsSync, readFileSync } from "fs"
 import { join } from "path"
 import { log } from "../util/logger"
 import { getOpenCodeCacheDir } from "../config/data-path"
 import * as connectedProvidersCache from "../util/connected-providers-cache"
-import { normalizeSDKResponse } from "./normalize-sdk-response"
+import { readConnectedProvidersCache } from "../util/connected-providers-cache"
+import { normalizeSDKResponse } from "./normalize"
 
 /**
  * Fuzzy match a target model name against available models
- * 
+ *
  * @param target - The model name or substring to search for (e.g., "gpt-5.4", "claude-opus")
  * @param available - Set of available model names in format "provider/model-name"
  * @param providers - Optional array of provider names to filter by (e.g., ["openai", "anthropic"])
  * @returns The matched model name or null if no match found
- * 
+ *
  * Matching priority:
  * 1. Exact match (if exists)
  * 2. Shorter model name (more specific)
- * 
+ *
  * Matching is case-insensitive substring match.
  * If providers array is given, only models starting with "provider/" are considered.
- * 
+ *
  * @example
  * const available = new Set(["openai/gpt-5.4", "openai/gpt-5.3-codex", "anthropic/claude-opus-4-6"])
  * fuzzyMatchModel("gpt-5.4", available) // → "openai/gpt-5.4"
@@ -81,8 +84,6 @@ export function fuzzyMatchModel(
 	}
 
 	// Priority 2: Exact model ID match (part after provider/)
-	// This ensures "big-pickle" matches "zai-coding-plan/big-pickle" over "zai-coding-plan/glm-5"
-	// Use filter + shortest to handle multi-provider cases (e.g., openai/gpt-5.4 + opencode/gpt-5.4)
 	const exactModelIdMatches = matches.filter((model) => {
 		const modelId = model.split("/").slice(1).join("/")
 		return normalizeModelName(modelId) === targetNormalized
@@ -105,10 +106,6 @@ export function fuzzyMatchModel(
 
 /**
  * Check if a target model is available (fuzzy match by model name, no provider filtering)
- * 
- * @param targetModel - Model name to check (e.g., "gpt-5.3-codex")
- * @param availableModels - Set of available models in "provider/model" format
- * @returns true if model is available, false otherwise
  */
 export function isModelAvailable(
 	targetModel: string,
@@ -141,9 +138,9 @@ export async function fetchAvailableModels(
 	let connectedProviders = options?.connectedProviders ?? null
 	let connectedProvidersUnknown = connectedProviders === null
 
-	log("[fetchAvailableModels] CALLED", { 
+	log("[fetchAvailableModels] CALLED", {
 		connectedProvidersUnknown,
-		connectedProviders: options?.connectedProviders 
+		connectedProviders: options?.connectedProviders
 	})
 
 	if (connectedProvidersUnknown && client) {
@@ -189,18 +186,17 @@ export async function fetchAvailableModels(
 			log("[fetchAvailableModels] provider-models cache empty, falling back to models.json")
 		} else {
 		log("[fetchAvailableModels] using provider-models cache (whitelist-filtered)")
-		
+
 		const modelsByProvider = providerModelsCache.models as Record<string, Array<string | { id?: string }>>
 		for (const [providerId, modelIds] of Object.entries(modelsByProvider)) {
 			if (!connectedSet.has(providerId)) {
 				continue
 			}
 			for (const modelItem of modelIds) {
-				// Handle both string[] (legacy) and object[] (with metadata) formats
-				const modelId = typeof modelItem === 'string' 
-					? modelItem 
+				const modelId = typeof modelItem === 'string'
+					? modelItem
 					: modelItem?.id
-				
+
 				if (modelId) {
 					modelSet.add(`${providerId}/${modelId}`)
 				}
@@ -291,4 +287,105 @@ export function isModelCacheAvailable(): boolean {
 	}
 	const cacheFile = join(getOpenCodeCacheDir(), "models.json")
 	return existsSync(cacheFile)
+}
+
+// --- Fallback model availability (merged from fallback-model-availability.ts) ---
+
+type FallbackEntry = { providers: string[]; model: string }
+
+type ResolvedFallbackModel = {
+	provider: string
+	model: string
+}
+
+export function resolveFirstAvailableFallback(
+	fallbackChain: FallbackEntry[],
+	availableModels: Set<string>,
+): ResolvedFallbackModel | null {
+	for (const entry of fallbackChain) {
+		for (const provider of entry.providers) {
+			const matchedModel = fuzzyMatchModel(entry.model, availableModels, [provider])
+			log("[resolveFirstAvailableFallback] attempt", {
+				provider,
+				requestedModel: entry.model,
+				resolvedModel: matchedModel,
+			})
+
+			if (matchedModel !== null) {
+				log("[resolveFirstAvailableFallback] resolved", {
+					provider,
+					requestedModel: entry.model,
+					resolvedModel: matchedModel,
+				})
+				return { provider, model: matchedModel }
+			}
+		}
+	}
+
+	log("[resolveFirstAvailableFallback] WARNING: no fallback model resolved", {
+		chain: fallbackChain.map((entry) => ({
+			model: entry.model,
+			providers: entry.providers,
+		})),
+		availableCount: availableModels.size,
+	})
+
+	return null
+}
+
+export function isAnyFallbackModelAvailable(
+	fallbackChain: FallbackEntry[],
+	availableModels: Set<string>,
+): boolean {
+	if (resolveFirstAvailableFallback(fallbackChain, availableModels) !== null) {
+		return true
+	}
+
+	const connectedProviders = readConnectedProvidersCache()
+	if (connectedProviders) {
+		const connectedSet = new Set(connectedProviders)
+		for (const entry of fallbackChain) {
+			if (entry.providers.some((p) => connectedSet.has(p))) {
+				log(
+					"[isAnyFallbackModelAvailable] WARNING: No fuzzy match found for any model in fallback chain, but provider is connected. Agent may fail at runtime.",
+					{ chain: fallbackChain.map((entryItem) => entryItem.model), availableCount: availableModels.size },
+				)
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+export function isAnyProviderConnected(
+	providers: string[],
+	availableModels: Set<string>,
+): boolean {
+	if (availableModels.size > 0) {
+		const providerSet = new Set(providers)
+		for (const model of availableModels) {
+			const [provider] = model.split("/")
+			if (providerSet.has(provider)) {
+				log("[isAnyProviderConnected] found model from required provider", {
+					provider,
+					model,
+				})
+				return true
+			}
+		}
+	}
+
+	const connectedProviders = readConnectedProvidersCache()
+	if (connectedProviders) {
+		const connectedSet = new Set(connectedProviders)
+		for (const provider of providers) {
+			if (connectedSet.has(provider)) {
+				log("[isAnyProviderConnected] provider connected via cache", { provider })
+				return true
+			}
+		}
+	}
+
+	return false
 }

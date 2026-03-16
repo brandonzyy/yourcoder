@@ -2,7 +2,7 @@ import type { AutoCompactState } from "./types"
 import type { PluginConfig } from "../../../config/plugin-schema"
 import { RETRY_CONFIG } from "./types"
 import type { Client } from "./client"
-import { clearSessionState, getEmptyContentAttempt, getOrCreateRetryState } from "./state"
+import { clearSessionState, getEmptyContentAttempt, getOrCreateRetryState } from "./types"
 import { sanitizeEmptyMessagesBeforeSummarize } from "./message-builder"
 import { fixEmptyMessages } from "./empty-content-recovery"
 

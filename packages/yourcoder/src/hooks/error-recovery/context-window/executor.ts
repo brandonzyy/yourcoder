@@ -4,11 +4,9 @@ import type { ExperimentalConfig } from "../../../config/plugin-schema";
 import { TRUNCATE_CONFIG } from "./types";
 
 import type { Client } from "./client";
-import { getOrCreateTruncateState } from "./state";
-import {
-  runAggressiveTruncationStrategy,
-  runSummarizeRetryStrategy,
-} from "./recovery-strategy";
+import { getOrCreateTruncateState } from "./types";
+import { runAggressiveTruncationStrategy } from "./aggressive-truncation-strategy";
+import { runSummarizeRetryStrategy } from "./summarize-retry-strategy";
 
 export { getLastAssistant } from "./message-builder";
 

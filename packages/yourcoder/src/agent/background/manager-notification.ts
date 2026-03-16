@@ -1,5 +1,5 @@
 import { join } from "node:path"
-import { normalizeSDKResponse } from "../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../model/normalize"
 import { MESSAGE_STORAGE } from "../../hooks/context-injection/message-injector"
 import { createInternalAgentTextPart } from "../../util/internal-initiator-marker"
 import { normalizePromptTools, resolveInheritedPromptTools } from "../../util/prompt-tools"

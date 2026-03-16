@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import { isModelCacheAvailable } from "../../../model/model-availability"
+import { isModelCacheAvailable } from "../../../model/availability"
 import { log } from "../../../util/logger"
 
 export async function showModelCacheWarningIfNeeded(ctx: PluginInput): Promise<void> {

@@ -16,7 +16,7 @@
  * inconsistencies defensively while maintaining backwards compatibility.
  */
 
-import {normalizeModelID} from "../../../model/model-normalization"
+import {normalizeModelID} from "../../../model/normalize"
 
 /**
  * Extracts provider-specific prefix from model ID (if present).

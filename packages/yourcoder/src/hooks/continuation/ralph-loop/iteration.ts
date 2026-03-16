@@ -1,10 +1,14 @@
+// Merged from: iteration-continuation.ts + loop-session-recovery.ts
+
 import type { PluginInput } from "../../../plugin/sdk"
 import type { RalphLoopState } from "./types"
 import { log } from "../../../util/logger"
-import { HOOK_NAME } from "./constants"
+import { HOOK_NAME } from "./types"
 import { buildContinuationPrompt } from "./continuation-prompt-builder"
 import { injectContinuationPrompt } from "./continuation-prompt-injector"
 import { createIterationSession, selectSessionInTui } from "./session-reset-strategy"
+
+// --- Iteration Continuation ---
 
 type ContinuationOptions = {
   directory: string
@@ -61,4 +65,40 @@ export async function continueIteration(
     directory: options.directory,
     apiTimeoutMs: options.apiTimeoutMs,
   })
+}
+
+// --- Loop Session Recovery ---
+
+type SessionState = {
+	isRecovering?: boolean
+}
+
+export function createLoopSessionRecovery(options?: { recoveryWindowMs?: number }) {
+	const recoveryWindowMs = options?.recoveryWindowMs ?? 5000
+	const sessions = new Map<string, SessionState>()
+
+	function getSessionState(sessionID: string): SessionState {
+		let state = sessions.get(sessionID)
+		if (!state) {
+			state = {}
+			sessions.set(sessionID, state)
+		}
+		return state
+	}
+
+	return {
+		isRecovering(sessionID: string): boolean {
+			return getSessionState(sessionID).isRecovering === true
+		},
+		markRecovering(sessionID: string): void {
+			const state = getSessionState(sessionID)
+			state.isRecovering = true
+			setTimeout(() => {
+				state.isRecovering = false
+			}, recoveryWindowMs)
+		},
+		clear(sessionID: string): void {
+			sessions.delete(sessionID)
+		},
+	}
 }

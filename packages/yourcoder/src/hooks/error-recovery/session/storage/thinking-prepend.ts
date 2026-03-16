@@ -1,14 +1,14 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import type { PluginInput } from "../../../../plugin/sdk"
-import { PART_STORAGE, THINKING_TYPES } from "../constants"
+import { PART_STORAGE, THINKING_TYPES } from "../types"
 import type { MessageData } from "../types"
 import { readMessages } from "./messages-reader"
 import { readParts } from "./parts-reader"
 import { log } from "../../../../util/logger"
 import { patchPart } from "../../../shared/opencode-http-api"
 import { isSqliteBackend } from "../../../../config/opencode-storage-detection"
-import { normalizeSDKResponse } from "../../../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

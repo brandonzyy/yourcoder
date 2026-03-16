@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import type { PluginInput } from "../../../../plugin/sdk"
-import { PART_STORAGE } from "../constants"
+import { PART_STORAGE } from "../types"
 import type { StoredPart } from "../types"
 import { isSqliteBackend } from "../../../../config/opencode-storage-detection"
 import { isRecord } from "../../../shared/record-type-guard"

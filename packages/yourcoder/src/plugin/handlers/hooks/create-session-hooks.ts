@@ -22,7 +22,7 @@ import {
   createThinkModeHook,
 } from "../../../hooks"
 import { createAnthropicEffortHook } from "../../../hooks/model-switching/anthropic-effort"
-import { normalizeSDKResponse } from "../../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../../model/normalize"
 import { log } from "../../../util/logger"
 import type { ModelCacheState } from "../../plugin-state"
 import { detectExternalNotificationPlugin, getNotificationConflictWarning } from "../../external-plugin-detector"

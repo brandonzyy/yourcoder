@@ -1,8 +1,8 @@
 declare const require: (name: string) => any
 const { describe, test, expect, beforeEach, afterEach, spyOn, mock } = require("bun:test")
-import { resolveSubagentExecution } from "./subagent-resolver"
+import { resolveSubagentExecution } from "./task-resolver"
 import type { DelegateTaskArgs } from "./types"
-import type { ExecutorContext } from "./executor-types"
+import type { ExecutorContext } from "./types"
 import * as logger from "../../util/logger"
 import * as connectedProvidersCache from "../../util/connected-providers-cache"
 

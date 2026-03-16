@@ -1,9 +1,9 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import { TRUNCATION_MESSAGE } from "./storage-paths"
-import type { ToolResultInfo } from "./tool-part-types"
+import { TRUNCATION_MESSAGE } from "./types"
+import type { ToolResultInfo } from "./pruning-types"
 import { patchPart } from "../../shared/opencode-http-api"
 import { log } from "../../../util/logger"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

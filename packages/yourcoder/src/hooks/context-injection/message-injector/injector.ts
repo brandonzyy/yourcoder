@@ -7,7 +7,7 @@ import type { MessageMeta, OriginalMessageContext, TextPart, ToolPermission } fr
 import { log } from "../../../util/logger"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import { createInternalAgentTextPart } from "../../../util/internal-initiator-marker"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 export interface StoredMessage {
   agent?: string

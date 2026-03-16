@@ -1,9 +1,29 @@
+// Merged from: model-resolver.ts + model-resolution-pipeline.ts
+
 import { log } from "../util/logger"
 import * as connectedProvidersCache from "../util/connected-providers-cache"
-import { fuzzyMatchModel } from "./model-availability"
+import { fuzzyMatchModel } from "./availability"
 import type { FallbackEntry } from "./model-requirements"
 import { transformModelForProvider } from "../util/provider-model-id-transform"
-import { normalizeModel } from "./model-normalization"
+import { normalizeModel } from "./normalize"
+
+// --- Types ---
+
+export type ModelResolutionInput = {
+	userModel?: string
+	inheritedModel?: string
+	systemDefault?: string
+}
+
+export type ExtendedModelResolutionInput = {
+	uiSelectedModel?: string
+	userModel?: string
+	userFallbackModels?: string[]
+	categoryDefaultModel?: string
+	fallbackChain?: FallbackEntry[]
+	availableModels: Set<string>
+	systemDefaultModel?: string
+}
 
 export type ModelResolutionRequest = {
   intent?: {
@@ -35,6 +55,39 @@ export type ModelResolutionResult = {
   attempted?: string[]
   reason?: string
 }
+
+// --- Simple resolver ---
+
+export function resolveModel(input: ModelResolutionInput): string | undefined {
+	return (
+		normalizeModel(input.userModel) ??
+		normalizeModel(input.inheritedModel) ??
+		input.systemDefault
+	)
+}
+
+export function resolveModelWithFallback(
+	input: ExtendedModelResolutionInput,
+) {
+	const { uiSelectedModel, userModel, userFallbackModels, categoryDefaultModel, fallbackChain, availableModels, systemDefaultModel } = input
+	return resolveModelPipeline({
+		intent: { uiSelectedModel, userModel, userFallbackModels, categoryDefaultModel },
+		constraints: { availableModels },
+		policy: { fallbackChain, systemDefaultModel },
+	})
+}
+
+/**
+ * Normalizes fallback_models config (which can be string or string[]) to string[]
+ * Centralized helper to avoid duplicated normalization logic
+ */
+export function normalizeFallbackModels(models: string | string[] | undefined): string[] | undefined {
+	if (!models) return undefined
+	if (typeof models === "string") return [models]
+	return models
+}
+
+// --- Pipeline internals ---
 
 function getProviderHint(model: string): string[] | undefined {
   const parts = model.split("/")
@@ -164,6 +217,8 @@ function resolveFallbackModel(
     }
   }
 }
+
+// --- Pipeline entry ---
 
 export function resolveModelPipeline(
   request: ModelResolutionRequest,

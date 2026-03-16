@@ -8,7 +8,7 @@ import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import type { AutoCompactState } from "./types"
 import type { Client } from "./client"
 import { PLACEHOLDER_TEXT } from "./message-builder"
-import { incrementEmptyContentAttempt } from "./state"
+import { incrementEmptyContentAttempt } from "./types"
 import { fixEmptyMessagesWithSDK } from "./empty-content-recovery-sdk"
 
 export async function fixEmptyMessages(params: {

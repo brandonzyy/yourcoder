@@ -4,7 +4,7 @@ import type { PluginInput } from "../../../../plugin/sdk"
 import type { StoredMessageMeta } from "../types"
 import { getMessageDir } from "../../../../util/opencode-message-dir"
 import {isSqliteBackend} from "../../../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../../model/normalize"
 import { isRecord } from "../../../shared/record-type-guard"
 
 type YcClient = PluginInput["client"]

@@ -1,7 +1,7 @@
 import { consumeToolMetadata } from "../../tool/metadata-store"
 import type { CreatedHooks } from "../create-hooks"
 import type { PluginContext } from "./types"
-import { readState, writeState } from "../../hooks/continuation/ralph-loop/storage"
+import { readState, writeState } from "../../hooks/continuation/ralph-loop/state"
 
 const VERIFICATION_ATTEMPT_PATTERN = /<ulw_verification_attempt_id>(.*?)<\/ulw_verification_attempt_id>/i
 

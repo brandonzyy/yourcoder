@@ -1,8 +1,8 @@
 import type { PluginInput } from "../../../plugin/sdk"
 import type { RalphLoopOptions, RalphLoopState } from "./types"
 import { getTranscriptPath as getDefaultTranscriptPath } from "../../claude-code-hooks/transcript"
-import { createLoopSessionRecovery } from "./loop-session-recovery"
-import { createLoopStateController } from "./loop-state-controller"
+import { createLoopSessionRecovery } from "./iteration"
+import { createLoopStateController } from "./state"
 import { createRalphLoopEventHandler } from "./ralph-loop-event-handler"
 
 export interface RalphLoopHook {

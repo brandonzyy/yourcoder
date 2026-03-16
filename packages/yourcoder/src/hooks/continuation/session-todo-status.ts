@@ -1,5 +1,5 @@
 import type { PluginInput } from "../../plugin/sdk"
-import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../model/normalize"
 
 interface Todo {
   content: string

@@ -4,9 +4,9 @@ export { createSessionNotification, sendSessionNotification, playSessionNotifica
 export { hasIncompleteTodos } from "./continuation/session-todo-status";
 export { createSessionRecoveryHook, type SessionRecoveryHook, type SessionRecoveryOptions } from "./error-recovery/session";
 export { createCommentCheckerHooks } from "./comment-checker";
-export { createToolOutputTruncatorHook } from "./agent-guardrails/tool-output-truncator";
+export { createToolOutputTruncatorHook } from "./agent-guardrails/simple-guards";
 export { createDirectoryAgentsInjectorHook, createDirectoryReadmeInjectorHook } from "./context-injection/file-content-injector";
-export { createEmptyTaskResponseDetectorHook } from "./agent-guardrails/empty-task-response-detector";
+export { createEmptyTaskResponseDetectorHook } from "./agent-guardrails/simple-guards";
 export { createAnthropicContextWindowLimitRecoveryHook, type AnthropicContextWindowLimitRecoveryOptions } from "./error-recovery/context-window";
 
 export { createThinkModeHook } from "./model-switching/think-mode";
@@ -25,20 +25,20 @@ export { createSubagentHealthCheckHook } from "./agent-guardrails/health-check";
 export { createThinkingBlockValidatorHook } from "./model-switching/thinking-block-validator";
 export { createCategorySkillReminderHook } from "./category-skill-reminder";
 export { createRalphLoopHook, type RalphLoopHook } from "./continuation/ralph-loop";
-export { createNoYcGptHook } from "./agent-guardrails/no-yc-gpt";
+export { createNoYcGptHook } from "./agent-guardrails/simple-guards";
 export { createAutoSlashCommandHook } from "./auto-slash-command";
 export { createEditErrorRecoveryHook } from "./error-recovery/edit";
 
 export { createTaskResumeInfoHook } from "./continuation/task-resume-info";
 export { createStartWorkHook } from "./start-work";
 export { createDelegateTaskRetryHook } from "./delegate-task-retry";
-export { createQuestionLabelTruncatorHook } from "./agent-guardrails/question-label-truncator";
+export { createQuestionLabelTruncatorHook } from "./agent-guardrails/simple-guards";
 export { createStopContinuationGuardHook, type StopContinuationGuard } from "./continuation/stop-guard";
 export { createCompactionContextInjector } from "./context-injection/compaction";
 export { createCompactionTodoPreserverHook } from "./context-injection/compaction-todo-preserver";
 export { createUnstableAgentBabysitterHook } from "./agent-guardrails/babysitter";
 export { createPreemptiveCompactionHook } from "./preemptive-compaction/hook";
-export { createTasksTodowriteDisablerHook } from "./agent-guardrails/tasks-todowrite-disabler";
+export { createTasksTodowriteDisablerHook } from "./agent-guardrails/simple-guards";
 export { createRuntimeFallbackHook, type RuntimeFallbackHook, type RuntimeFallbackOptions } from "./model-switching/runtime-fallback";
 export { createWriteExistingFileGuardHook } from "./write-existing-file-guard";
 export { createHashlineReadEnhancerHook } from "./hashline-read-enhancer";

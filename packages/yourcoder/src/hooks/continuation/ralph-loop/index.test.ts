@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
 import { createRalphLoopHook } from "./index"
-import { readState, writeState, clearState } from "./storage"
+import { readState, writeState, clearState } from "./state"
 import type { RalphLoopState } from "./types"
 import { parseRalphLoopArguments } from "./command-arguments"
 

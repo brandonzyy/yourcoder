@@ -1,8 +1,8 @@
 import type { createYcClient } from "@yourcoder/sdk"
 import type { MessageData } from "./types"
-import { extractMessageIndex } from "./detect-error-type"
-import { META_TYPES, THINKING_TYPES } from "./constants"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import { extractMessageIndex } from "./types"
+import { META_TYPES, THINKING_TYPES } from "./types"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type Client = ReturnType<typeof createYcClient>
 

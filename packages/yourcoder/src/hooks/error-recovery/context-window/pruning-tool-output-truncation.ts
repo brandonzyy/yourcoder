@@ -2,12 +2,12 @@ import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import type { PluginInput } from "../../../plugin/sdk"
 import { getOpenCodeStorageDir } from "../../../config/data-path"
-import { truncateToolResult } from "./storage"
+import { truncateToolResult } from "./tool-result-storage"
 import { truncateToolResultAsync } from "./tool-result-storage-sdk"
 import { log } from "../../../util/logger"
 import { getMessageDir } from "../../../util/opencode-message-dir"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

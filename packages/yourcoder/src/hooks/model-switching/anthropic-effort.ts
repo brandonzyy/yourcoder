@@ -1,5 +1,5 @@
 import {log} from "../../util/logger"
-import {normalizeModelID} from "../../model/model-normalization"
+import {normalizeModelID} from "../../model/normalize"
 
 const OPUS_4_6_PATTERN = /claude-opus-4[-.]6/i
 

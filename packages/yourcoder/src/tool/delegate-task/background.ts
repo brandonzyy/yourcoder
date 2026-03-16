@@ -1,12 +1,15 @@
+// Merged from: background-task.ts + background-continuation.ts
+
 import type { DelegateTaskArgs, ToolContextWithMetadata } from "./types"
-import type { ExecutorContext, ParentContext } from "./executor-types"
+import type { ExecutorContext, ParentContext } from "./types"
 import type { FallbackEntry } from "../../model/model-requirements"
-import { getTimingConfig } from "./timing"
+import { getTimingConfig, formatDetailedError } from "./util"
 import { buildTaskPrompt } from "./prompt-builder"
 import { storeToolMetadata } from "../../tool/metadata-store"
-import { formatDetailedError } from "./error-formatting"
 import { getSessionTools } from "../../session/session-tools-store"
 import { SessionCategoryRegistry } from "../../session/session-category-registry"
+
+// --- Background Task ---
 
 export async function executeBackgroundTask(
   args: DelegateTaskArgs,
@@ -97,6 +100,67 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
       args,
       agent: agentToUse,
       category: args.category,
+    })
+  }
+}
+
+// --- Background Continuation ---
+
+export async function executeBackgroundContinuation(
+  args: DelegateTaskArgs,
+  ctx: ToolContextWithMetadata,
+  executorCtx: ExecutorContext,
+  parentContext: ParentContext
+): Promise<string> {
+  const { manager } = executorCtx
+
+  try {
+    const task = await manager.resume({
+      sessionId: args.session_id!,
+      prompt: args.prompt,
+      parentSessionID: parentContext.sessionID,
+      parentMessageID: parentContext.messageID,
+      parentModel: parentContext.model,
+      parentAgent: parentContext.agent,
+      parentTools: getSessionTools(parentContext.sessionID),
+    })
+
+    const bgContMeta = {
+      title: `Continue: ${task.description}`,
+      metadata: {
+        prompt: args.prompt,
+        agent: task.agent,
+        load_skills: args.load_skills,
+        description: args.description,
+        run_in_background: args.run_in_background,
+        sessionId: task.sessionID,
+        command: args.command,
+        model: task.model ? { providerID: task.model.providerID, modelID: task.model.modelID } : undefined,
+      },
+    }
+    await ctx.metadata?.(bgContMeta)
+    if (ctx.callID) {
+      storeToolMetadata(ctx.sessionID, ctx.callID, bgContMeta)
+    }
+
+    return `Background task continued.
+
+Task ID: ${task.id}
+Description: ${task.description}
+Agent: ${task.agent}
+Status: ${task.status}
+
+Agent continues with full previous context preserved.
+Use \`background_output\` with task_id="${task.id}" to check progress.
+
+<task_metadata>
+session_id: ${task.sessionID}
+${task.agent ? `subagent: ${task.agent}\n` : ""}</task_metadata>`
+  } catch (error) {
+    return formatDetailedError(error, {
+      operation: "Continue background task",
+      args,
+      sessionID: args.session_id,
     })
   }
 }

@@ -1,8 +1,8 @@
 import type { createYcClient } from "@yourcoder/sdk"
-import { extractUnavailableToolName } from "./detect-error-type"
+import { extractUnavailableToolName } from "./types"
 import { readParts } from "./storage"
 import type { MessageData } from "./types"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 
 type Client = ReturnType<typeof createYcClient>

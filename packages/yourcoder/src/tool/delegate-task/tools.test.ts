@@ -4,9 +4,9 @@ import { DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS, CATEGORY_DESCRIPTIONS, isP
 import { resolveCategoryConfig } from "./tools"
 import type { CategoryConfig } from "../../config/plugin-schema"
 import type { DelegateTaskArgs } from "./types"
-import { __resetModelCache } from "../../model/model-availability"
+import { __resetModelCache } from "../../model/availability"
 import { clearSkillCache } from "../../skill/loader/skill-discovery"
-import { __setTimingConfig, __resetTimingConfig } from "./timing"
+import { __setTimingConfig, __resetTimingConfig } from "./util"
 import * as connectedProvidersCache from "../../util/connected-providers-cache"
 import * as executor from "./executor"
 

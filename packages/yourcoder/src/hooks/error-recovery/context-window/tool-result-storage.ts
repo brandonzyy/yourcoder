@@ -2,8 +2,8 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 
 import { getMessageIds } from "./message-storage-directory"
-import { PART_STORAGE_DIR, TRUNCATION_MESSAGE } from "./storage-paths"
-import type { StoredToolPart, ToolResultInfo } from "./tool-part-types"
+import { PART_STORAGE_DIR, TRUNCATION_MESSAGE } from "./types"
+import type { StoredToolPart, ToolResultInfo } from "./pruning-types"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import { log } from "../../../util/logger"
 

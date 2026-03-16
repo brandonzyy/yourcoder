@@ -1,7 +1,7 @@
 /// <reference types="bun" />
 import { describe, expect, test } from "bun:test"
 import type { PluginInput } from "../../../plugin/sdk"
-import { detectCompletionInSessionMessages } from "./completion-promise-detector"
+import { detectCompletionInSessionMessages } from "./completion"
 
 type SessionMessage = {
   info?: { role?: string }

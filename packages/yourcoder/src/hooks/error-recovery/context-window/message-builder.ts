@@ -1,6 +1,6 @@
 import { log } from "../../../util/logger"
 import type { PluginInput } from "../../../plugin/sdk"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import {
   findEmptyMessages,

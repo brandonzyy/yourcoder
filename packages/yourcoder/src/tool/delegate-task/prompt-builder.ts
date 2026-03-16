@@ -1,6 +1,6 @@
 import type { BuildSystemContentInput } from "./types"
 import { buildPlanAgentSystemPrepend, isPlanAgent } from "./constants"
-import { buildSystemContentWithTokenLimit } from "./token-limiter"
+import { buildSystemContentWithTokenLimit } from "./util"
 
 const FREE_OR_LOCAL_PROMPT_TOKEN_LIMIT = 24000
 const PLAN_AGENT_PROMPT_APPEND = `

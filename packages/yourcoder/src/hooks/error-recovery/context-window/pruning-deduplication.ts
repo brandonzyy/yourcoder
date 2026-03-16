@@ -6,7 +6,7 @@ import { estimateTokens } from "./pruning-types"
 import { log } from "../../../util/logger"
 import { getMessageDir } from "../../../util/opencode-message-dir"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

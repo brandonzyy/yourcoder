@@ -1,6 +1,6 @@
 import type { PluginInput } from "../../../plugin/sdk"
 import { updateConnectedProvidersCache } from "../../../util/connected-providers-cache"
-import { isModelCacheAvailable } from "../../../model/model-availability"
+import { isModelCacheAvailable } from "../../../model/availability"
 import { log } from "../../../util/logger"
 
 const CACHE_UPDATE_TIMEOUT_MS = 10000

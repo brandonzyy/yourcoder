@@ -1,7 +1,7 @@
 import type { PluginInput } from "../../../plugin/sdk"
 import { log } from "../../../util/logger"
 import { buildVerificationFailurePrompt } from "./continuation-prompt-builder"
-import { HOOK_NAME } from "./constants"
+import { HOOK_NAME } from "./types"
 import { injectContinuationPrompt } from "./continuation-prompt-injector"
 import { getMessageCountFromResponse } from "./ralph-loop-hook"
 import type { RalphLoopState } from "./types"

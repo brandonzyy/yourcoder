@@ -1,10 +1,10 @@
 import type { PluginInput } from "../../../plugin/sdk"
-import type { AggressiveTruncateResult } from "./tool-part-types"
-import type { ToolResultInfo } from "./tool-part-types"
+import type { AggressiveTruncateResult } from "./pruning-types"
+import type { ToolResultInfo } from "./pruning-types"
 import { findToolResultsBySize, truncateToolResult } from "./tool-result-storage"
 import { truncateToolResultAsync } from "./tool-result-storage-sdk"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import { normalizeSDKResponse } from "../../../model/normalize-sdk-response"
+import { normalizeSDKResponse } from "../../../model/normalize"
 
 type YcClient = PluginInput["client"]
 

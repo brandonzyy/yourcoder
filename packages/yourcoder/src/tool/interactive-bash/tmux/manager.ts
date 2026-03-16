@@ -2,7 +2,7 @@ import type { PluginInput } from "../../../plugin/sdk"
 import type { TmuxConfig } from "../../../config/plugin-schema"
 import type { TrackedSession, CapacityConfig } from "./types"
 import {log} from "../../../util/logger"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 import {
   isInsideTmux as defaultIsInsideTmux,
   getCurrentPaneId as defaultGetCurrentPaneId,

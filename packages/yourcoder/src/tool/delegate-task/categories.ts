@@ -1,7 +1,7 @@
 import type { CategoryConfig, CategoriesConfig } from "../../config/plugin-schema"
 import { DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./constants"
-import { resolveModel } from "../../model/model-resolver"
-import { isModelAvailable } from "../../model/model-availability"
+import { resolveModel } from "../../model/resolver"
+import { isModelAvailable } from "../../model/availability"
 import { CATEGORY_MODEL_REQUIREMENTS } from "../../model/model-requirements"
 import { log } from "../../util/logger"
 

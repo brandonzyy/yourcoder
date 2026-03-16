@@ -1,4 +1,4 @@
-import { THINKING_TYPES } from "../constants"
+import { THINKING_TYPES } from "../types"
 import { readMessages } from "./messages-reader"
 import { readParts } from "./parts-reader"
 

@@ -1,12 +1,12 @@
 import type { DelegateTaskArgs, ToolContextWithMetadata } from "./types"
-import type { ExecutorContext, ParentContext, SessionMessage } from "./executor-types"
-import { DEFAULT_SYNC_POLL_TIMEOUT_MS, getTimingConfig } from "./timing"
+import type { ExecutorContext, ParentContext, SessionMessage } from "./types"
+import { DEFAULT_SYNC_POLL_TIMEOUT_MS, getTimingConfig } from "./util"
 import { buildTaskPrompt } from "./prompt-builder"
 import { storeToolMetadata } from "../../tool/metadata-store"
-import { formatDuration } from "./time-formatter"
-import { formatDetailedError } from "./error-formatting"
+import { formatDuration } from "./util"
+import { formatDetailedError } from "./util"
 import { getSessionTools } from "../../session/session-tools-store"
-import {normalizeSDKResponse} from "../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../model/normalize"
 
 export async function executeUnstableAgentTask(
   args: DelegateTaskArgs,

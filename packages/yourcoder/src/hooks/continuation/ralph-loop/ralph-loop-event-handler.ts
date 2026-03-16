@@ -1,13 +1,13 @@
 import type { PluginInput } from "../../../plugin/sdk"
 import { log } from "../../../util/logger"
 import type { RalphLoopOptions, RalphLoopState } from "./types"
-import { HOOK_NAME } from "./constants"
-import { handleDetectedCompletion } from "./completion-handler"
+import { HOOK_NAME } from "./types"
+import { handleDetectedCompletion } from "./completion"
 import {
 	detectCompletionInSessionMessages,
 	detectCompletionInTranscript,
-} from "./completion-promise-detector"
-import { continueIteration } from "./iteration-continuation"
+} from "./completion"
+import { continueIteration } from "./iteration"
 import { handleDeletedLoopSession, handleErroredLoopSession } from "./session-event-handler"
 import { handleFailedVerification } from "./verification-failure-handler"
 

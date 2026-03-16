@@ -2,7 +2,7 @@ import type { PluginInput } from "../../../plugin/sdk"
 
 import type { BackgroundManager } from "../../../agent/background"
 import type { ToolPermission } from "../../context-injection/message-injector"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 import { log } from "../../../util/logger"
 import { getAgentConfigKey } from "../../../util/agent-display-names"
 

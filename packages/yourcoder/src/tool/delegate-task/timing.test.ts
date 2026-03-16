@@ -1,6 +1,6 @@
 declare const require: (name: string) => any
 const { describe, expect, test } = require("bun:test")
-import { __resetTimingConfig, __setTimingConfig, getDefaultSyncPollTimeoutMs } from "./timing"
+import { __resetTimingConfig, __setTimingConfig, getDefaultSyncPollTimeoutMs } from "./util"
 
 describe("timing sync poll timeout defaults", () => {
   test("default sync timeout accessor follows MAX_POLL_TIME_MS config", () => {

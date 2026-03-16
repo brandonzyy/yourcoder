@@ -3,8 +3,8 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { createRalphLoopHook } from "./index"
-import { ULTRAWORK_VERIFICATION_PROMISE } from "./constants"
-import { clearState, writeState } from "./storage"
+import { ULTRAWORK_VERIFICATION_PROMISE } from "./types"
+import { clearState, writeState } from "./state"
 
 describe("ulw-loop verification", () => {
 	const testDir = join(tmpdir(), `ulw-loop-verification-${Date.now()}`)

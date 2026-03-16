@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from "fs"
 import { dirname, isAbsolute, resolve } from "path"
 import { homedir } from "os"
 import { parseFrontmatter } from "../../../util/frontmatter"
-import { sanitizeModelField } from "../../../model/model-sanitizer"
+import { sanitizeModelField } from "../../../model/normalize"
 import { resolveSkillPathReferences } from "../../../util/skill-path-resolver"
 import { parseAllowedTools } from "../loaded-skill-from-path"
 

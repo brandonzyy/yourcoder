@@ -5,7 +5,7 @@ import { getMessageDir } from "../../../util/opencode-message-dir"
 import { withTimeout } from "./with-timeout"
 import { createInternalAgentTextPart } from "../../../util/internal-initiator-marker"
 import { resolveInheritedPromptTools } from "../../../util/prompt-tools"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type MessageInfo = {
 	agent?: string

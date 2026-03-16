@@ -3,6 +3,13 @@ export type { AnthropicContextWindowLimitRecoveryOptions } from "./recovery-hook
 export type { AutoCompactState, ParsedTokenLimitError, TruncateState } from "./types"
 export { parseAnthropicTokenLimitError } from "./parser"
 export { executeCompact, getLastAssistant } from "./executor"
-export * from "./state"
+export {
+  getOrCreateRetryState,
+  getOrCreateTruncateState,
+  clearSessionState,
+  getEmptyContentAttempt,
+  incrementEmptyContentAttempt,
+} from "./types"
 export * from "./message-builder"
-export * from "./recovery-strategy"
+export { runAggressiveTruncationStrategy } from "./aggressive-truncation-strategy"
+export { runSummarizeRetryStrategy } from "./summarize-retry-strategy"

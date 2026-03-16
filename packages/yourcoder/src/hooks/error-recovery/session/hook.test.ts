@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { createSessionRecoveryHook } from "./hook"
-import * as detect from "./detect-error-type"
+import * as detect from "./types"
 import * as toolResult from "./recover-tool-result-missing"
 import * as unavailable from "./recover-unavailable-tool"
 import * as thinkingOrder from "./recover-thinking-block-order"

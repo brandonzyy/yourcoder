@@ -1,5 +1,5 @@
 import { describe, expect, it, mock } from "bun:test"
-import { createSyncSession } from "./sync-session-creator"
+import { createSyncSession } from "./sync"
 
 describe("createSyncSession", () => {
   it("creates a child session in the parent directory when available", async () => {

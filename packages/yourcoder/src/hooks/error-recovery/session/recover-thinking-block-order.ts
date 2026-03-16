@@ -1,11 +1,11 @@
 import type { createYcClient } from "@yourcoder/sdk"
 import type { MessageData } from "./types"
-import { extractMessageIndex } from "./detect-error-type"
+import { extractMessageIndex } from "./types"
 import { findMessageByIndexNeedingThinking, findMessagesWithOrphanThinking, prependThinkingPart } from "./storage"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
 import { prependThinkingPartAsync } from "./storage/thinking-prepend"
-import { THINKING_TYPES } from "./constants"
-import { normalizeSDKResponse } from "../../../model/normalize-sdk-response"
+import { THINKING_TYPES } from "./types"
+import { normalizeSDKResponse } from "../../../model/normalize"
 
 type Client = ReturnType<typeof createYcClient>
 

@@ -2,7 +2,7 @@ import type { createYcClient } from "@yourcoder/sdk"
 import type { MessageData } from "./types"
 import { readParts } from "./storage"
 import { isSqliteBackend } from "../../../config/opencode-storage-detection"
-import {normalizeSDKResponse} from "../../../model/normalize-sdk-response"
+import {normalizeSDKResponse} from "../../../model/normalize"
 
 type Client = ReturnType<typeof createYcClient>
 type ClientWithPromptAsync = {

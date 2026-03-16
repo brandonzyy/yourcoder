@@ -1,7 +1,7 @@
 import { tool, type ToolDefinition } from "../../plugin/sdk"
 import type { DelegateTaskArgs, ToolContextWithMetadata, DelegateTaskToolOptions } from "./types"
 import { CATEGORY_DESCRIPTIONS } from "./constants"
-import { CODERHAND_AGENT } from "./coderhand-agent"
+import { CODERHAND_AGENT, resolveSkillContent, resolveCategoryExecution, resolveSubagentExecution } from "./task-resolver"
 import { mergeCategories } from "../../config/plugin-utils/merge-categories"
 import type { ModelFallbackInfo } from "../../cli/toast/types"
 import type { FallbackEntry } from "../../model/model-requirements"
@@ -12,17 +12,10 @@ import type {
   AvailableCategory,
   AvailableSkill,
 } from "../../agent/dynamic-agent-prompt-builder"
-import {
-  resolveSkillContent,
-  resolveParentContext,
-  executeBackgroundContinuation,
-  executeSyncContinuation,
-  resolveCategoryExecution,
-  resolveSubagentExecution,
-  executeUnstableAgentTask,
-  executeBackgroundTask,
-  executeSyncTask,
-} from "./executor"
+import { resolveParentContext } from "./util"
+import { executeBackgroundContinuation, executeBackgroundTask } from "./background"
+import { executeSyncContinuation, executeSyncTask } from "./sync"
+import { executeUnstableAgentTask } from "./unstable-agent-task"
 
 export { resolveCategoryConfig } from "./categories"
 export type { SyncSessionCreatedEvent, DelegateTaskToolOptions, BuildSystemContentInput } from "./types"

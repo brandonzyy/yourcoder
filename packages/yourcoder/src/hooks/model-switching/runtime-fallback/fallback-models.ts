@@ -3,7 +3,7 @@ import { AGENT_NAMES, agentPattern } from "./agent-resolver"
 import { HOOK_NAME } from "./constants"
 import { log } from "../../../util/logger"
 import { SessionCategoryRegistry } from "../../../session/session-category-registry"
-import { normalizeFallbackModels } from "../../../model/model-resolver"
+import { normalizeFallbackModels } from "../../../model/resolver"
 
 export function getFallbackModelsForSession(
   sessionID: string,

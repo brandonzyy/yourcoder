@@ -25,11 +25,11 @@ beforeAll(async () => {
     fuzzyMatchModel,
     isModelAvailable,
     getConnectedProviders,
-  } = await import("./model-availability"))
+  } = await import("./availability"))
 	;({
 		isAnyFallbackModelAvailable,
 		resolveFirstAvailableFallback,
-	} = await import("./fallback-model-availability"))
+	} = await import("./availability"))
 })
 
 describe("fetchAvailableModels", () => {
