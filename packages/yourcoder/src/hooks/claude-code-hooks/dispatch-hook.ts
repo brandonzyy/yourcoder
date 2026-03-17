@@ -2,7 +2,13 @@ import type { HookAction } from "./types"
 import type { CommandResult } from "../shared/command-executor/execute-hook-command"
 import { executeHookCommand } from "../shared/command-executor/execute-hook-command"
 import { executeHttpHook } from "./execute-http-hook"
-import { DEFAULT_CONFIG } from "./plugin-config"
+
+const isWindows = process.platform === "win32"
+
+const DEFAULT_CONFIG = {
+  forceZsh: !isWindows,
+  zshPath: "/bin/zsh",
+}
 
 export function getHookIdentifier(hook: HookAction): string {
   if (hook.type === "http") return hook.url

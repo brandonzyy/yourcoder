@@ -6,7 +6,7 @@ import type {
 import { findMatchingHooks } from "../shared/pattern-matcher"
 import { log } from "../../util/logger"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
-import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"
+import { isHookCommandDisabled, type PluginExtendedConfig } from "./config"
 
 const USER_PROMPT_SUBMIT_TAG_OPEN = "<user-prompt-submit-hook>"
 const USER_PROMPT_SUBMIT_TAG_CLOSE = "</user-prompt-submit-hook>"

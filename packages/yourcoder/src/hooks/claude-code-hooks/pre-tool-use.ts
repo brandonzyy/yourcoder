@@ -9,7 +9,7 @@ import { log } from "../../util/logger"
 import { objectToSnakeCase } from "../shared/snake-case"
 import { transformToolName } from "../shared/tool-name"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
-import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"
+import { isHookCommandDisabled, type PluginExtendedConfig } from "./config"
 
 export interface PreToolUseContext {
   sessionId: string

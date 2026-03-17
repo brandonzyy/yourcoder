@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import * as hooks from "../../../src/hooks"
-import * as effort from "../../../src/hooks/model-switching/anthropic-effort"
+import * as effort from "../../../src/model-switching/anthropic-effort"
 import * as logger from "../../../src/util/logger"
 import * as detector from "../../../src/plugin/external-plugin-detector"
 import { createSessionHooks } from "../../../src/plugin/handlers/hooks/create-session-hooks"

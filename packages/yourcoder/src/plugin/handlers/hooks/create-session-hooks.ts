@@ -21,7 +21,7 @@ import {
   createTaskResumeInfoHook,
   createThinkModeHook,
 } from "../../../hooks"
-import { createAnthropicEffortHook } from "../../../hooks/model-switching/anthropic-effort"
+import { createAnthropicEffortHook } from "../../../model-switching/anthropic-effort"
 import { normalizeSDKResponse } from "../../../model/normalize"
 import { log } from "../../../util/logger"
 import type { ModelCacheState } from "../../plugin-state"

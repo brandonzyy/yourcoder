@@ -7,7 +7,7 @@ import { findMatchingHooks } from "../shared/pattern-matcher"
 import { log } from "../../util/logger"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { getTodoPath } from "./todo"
-import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"
+import { isHookCommandDisabled, type PluginExtendedConfig } from "./config"
 
 // Module-level state to track stop_hook_active per session
 const stopHookActiveState = new Map<string, boolean>()

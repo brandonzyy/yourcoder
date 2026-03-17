@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it, mock, spyOn } from "bun:test"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import * as commandExecutor from "../shared/command-executor/execute-hook-command"
 import * as http from "./execute-http-hook"
-import { DEFAULT_CONFIG } from "./plugin-config"
+const isWindows = process.platform === "win32"
+const DEFAULT_CONFIG = { forceZsh: !isWindows, zshPath: "/bin/zsh" }
 
 const spies: Array<{ mockRestore(): void }> = []
 

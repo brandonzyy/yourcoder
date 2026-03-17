@@ -9,7 +9,7 @@ import { objectToSnakeCase } from "../shared/snake-case"
 import { transformToolName } from "../shared/tool-name"
 import { dispatchHook, getHookIdentifier } from "./dispatch-hook"
 import { buildTranscriptFromSession, deleteTempTranscript } from "./transcript"
-import { isHookCommandDisabled, type PluginExtendedConfig } from "./config-loader"
+import { isHookCommandDisabled, type PluginExtendedConfig } from "./config"
 
 export interface PostToolUseClient {
   session: {
