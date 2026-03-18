@@ -1,8 +1,5 @@
-import {getOpenCodeConfigPaths} from "../opencode-config-dir"
-import type {
-  OpenCodeBinaryType,
-  OpenCodeConfigPaths,
-} from "../../config/opencode-config-dir-types"
+import { getOpenCodeConfigPaths } from "../opencode-config-dir"
+import type { OpenCodeBinaryType, OpenCodeConfigPaths } from "../opencode-config-dir"
 
 export interface ConfigContext {
   binary: OpenCodeBinaryType
