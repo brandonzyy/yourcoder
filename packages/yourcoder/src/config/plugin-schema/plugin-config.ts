@@ -1,6 +1,6 @@
 import { z } from "zod"
 const AnyMcpNameSchema = z.string().min(1)
-import { BuiltinAgentNameSchema, BuiltinSkillNameSchema } from "./schemas"
+import { BuiltinSkillNameSchema } from "./schemas"
 import { AgentOverridesSchema } from "./schemas"
 import { BackgroundTaskConfigSchema } from "./schemas"
 import { BrowserAutomationConfigSchema } from "./schemas"
