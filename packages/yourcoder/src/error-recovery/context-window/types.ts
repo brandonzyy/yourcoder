@@ -1,5 +1,8 @@
 import type { PluginInput } from "../../plugin/sdk"
 
+export const IGNORE_TYPES = new Set(["thinking", "redacted_thinking", "meta"])
+export const TOOL_TYPES = new Set(["tool", "tool_use", "tool_result"])
+
 export type Client = PluginInput["client"] & {
   session: {
     promptAsync: (opts: {

@@ -8,7 +8,7 @@ import {
 } from "../session/storage"
 import { isSqliteBackend } from "../../config/opencode-storage-detection"
 import type { AutoCompactState, Client } from "./types"
-import { incrementEmptyContentAttempt } from "./types"
+import { incrementEmptyContentAttempt, IGNORE_TYPES, TOOL_TYPES } from "./types"
 import { PLACEHOLDER_TEXT } from "./message-builder"
 
 // --- SDK helpers (merged from empty-content-recovery-sdk.ts) ---
@@ -23,9 +23,6 @@ interface SDKMessage {
   info?: { id?: string }
   parts?: SDKPart[]
 }
-
-const IGNORE_TYPES = new Set(["thinking", "redacted_thinking", "meta"])
-const TOOL_TYPES = new Set(["tool", "tool_use", "tool_result"])
 
 function messageHasContentFromSDK(message: SDKMessage): boolean {
   const parts = message.parts

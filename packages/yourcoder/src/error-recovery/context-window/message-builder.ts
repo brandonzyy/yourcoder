@@ -10,6 +10,7 @@ import {
   injectTextPartAsync,
 } from "../session/storage"
 import type { Client } from "./types"
+import { IGNORE_TYPES, TOOL_TYPES } from "./types"
 
 export const PLACEHOLDER_TEXT = "[user interrupted]"
 
@@ -24,9 +25,6 @@ interface SDKMessage {
   info?: { id?: string }
   parts?: SDKPart[]
 }
-
-const IGNORE_TYPES = new Set(["thinking", "redacted_thinking", "meta"])
-const TOOL_TYPES = new Set(["tool", "tool_use", "tool_result"])
 
 function messageHasContentFromSDK(message: SDKMessage): boolean {
   const parts = message.parts
