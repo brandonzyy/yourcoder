@@ -11,8 +11,7 @@ import matter from "gray-matter"
 import { Instance } from "../../project/instance"
 import { EOL } from "os"
 import type { Argv } from "yargs"
-
-type AgentMode = "all" | "primary" | "subagent"
+import type { AgentMode } from "../../agent/plugin-agent-types"
 
 const AVAILABLE_TOOLS = [
   "bash",

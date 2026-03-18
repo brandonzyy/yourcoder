@@ -1,6 +1,5 @@
 import type { AgentConfig } from "@yourcoder/sdk"
-
-export type AgentMode = "subagent" | "primary" | "all"
+import type { AgentMode } from "../../plugin-agent-types"
 
 const MODE: AgentMode = "subagent"
 
