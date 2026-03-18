@@ -8,26 +8,12 @@ import { BUILTIN_COMMAND_NAMES } from "../../cli/commands/names"
 
 // --- agent-names ---
 
-export const BuiltinAgentNameSchema = z.enum([
-  "yc",
-  "codersearch",
-])
-
 export const BuiltinSkillNameSchema = z.enum([
   "playwright",
   "agent-browser",
   "dev-browser",
   "frontend-ui-ux",
   "git-master",
-])
-
-export const OverridableAgentNameSchema = z.enum([
-  "build",
-  "plan",
-  "yc",
-  "coderhand",
-  "OpenCode-Builder",
-  "codersearch",
 ])
 
 export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>
