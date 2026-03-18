@@ -30,9 +30,6 @@ export const OverridableAgentNameSchema = z.enum([
   "codersearch",
 ])
 
-export const AgentNameSchema = BuiltinAgentNameSchema
-export type AgentName = z.infer<typeof AgentNameSchema>
-
 export type BuiltinSkillName = z.infer<typeof BuiltinSkillNameSchema>
 
 // --- runtime-fallback ---
@@ -151,7 +148,6 @@ export const AgentOverridesSchema = z.object({
 })
 
 export type AgentOverrideConfig = z.infer<typeof AgentOverrideConfigSchema>
-export type AgentOverrides = z.infer<typeof AgentOverridesSchema>
 
 // --- background-task ---
 
@@ -249,8 +245,6 @@ export const ClaudeCodeConfigSchema = z.object({
   plugins: z.boolean().optional(),
   plugins_override: z.record(z.string(), z.boolean()).optional(),
 })
-
-export type ClaudeCodeConfig = z.infer<typeof ClaudeCodeConfigSchema>
 
 // --- commands ---
 
@@ -437,8 +431,6 @@ export const YcAgentConfigSchema = z.object({
   planner_enabled: z.boolean().optional(),
   replace_plan: z.boolean().optional(),
 })
-
-export type YcAgentConfig = z.infer<typeof YcAgentConfigSchema>
 
 export const YcTasksConfigSchema = z.object({
   /** Absolute or relative storage path override. When set, bypasses global config dir. */
