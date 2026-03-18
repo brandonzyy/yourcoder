@@ -256,8 +256,6 @@ export type ClaudeCodeConfig = z.infer<typeof ClaudeCodeConfigSchema>
 
 export const BuiltinCommandNameSchema = z.enum(BUILTIN_COMMAND_NAMES)
 
-export type BuiltinCommandName = z.infer<typeof BuiltinCommandNameSchema>
-
 // --- dynamic-context-pruning ---
 
 export const DynamicContextPruningConfigSchema = z.object({
