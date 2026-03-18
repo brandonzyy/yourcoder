@@ -1,7 +1,7 @@
 import { Agent } from "../../agent/agent"
 import { Provider } from "../../provider/provider"
 import { LLM } from "../llm"
-import { iife } from "@/util/iife"
+import { iife } from "@yourcoder/util/iife"
 import { MessageV2 } from "../message-v2"
 import { Session } from ".."
 import { Log } from "../../util/log"

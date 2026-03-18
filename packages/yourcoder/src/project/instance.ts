@@ -2,7 +2,7 @@ import { Log } from "@/util/log"
 import { Context } from "../util/context"
 import { Project } from "./project"
 import { State } from "./state"
-import { iife } from "@/util/iife"
+import { iife } from "@yourcoder/util/iife"
 import { GlobalBus } from "@/util/bus/global"
 import { Filesystem } from "@/util/filesystem"
 
