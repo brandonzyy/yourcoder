@@ -43,7 +43,6 @@ export type RuntimeFallbackConfig = z.infer<typeof RuntimeFallbackConfigSchema>
 // --- internal/permission ---
 
 export const PermissionValueSchema = z.enum(["ask", "allow", "deny"])
-export type PermissionValue = z.infer<typeof PermissionValueSchema>
 
 const BashPermissionSchema = z.union([
   PermissionValueSchema,
@@ -58,8 +57,6 @@ export const AgentPermissionSchema = z.object({
   doom_loop: PermissionValueSchema.optional(),
   external_directory: PermissionValueSchema.optional(),
 })
-
-export type AgentPermission = z.infer<typeof AgentPermissionSchema>
 
 // --- agent-overrides ---
 
@@ -276,10 +273,6 @@ export const DynamicContextPruningConfigSchema = z.object({
     .optional(),
 })
 
-export type DynamicContextPruningConfig = z.infer<
-  typeof DynamicContextPruningConfigSchema
->
-
 // --- experimental ---
 
 export const ExperimentalConfigSchema = z.object({
@@ -394,7 +387,6 @@ export const WebsearchConfigSchema = z.object({
   provider: WebsearchProviderSchema.optional(),
 })
 
-export type WebsearchProvider = z.infer<typeof WebsearchProviderSchema>
 export type WebsearchConfig = z.infer<typeof WebsearchConfigSchema>
 
 // --- yc ---
@@ -419,5 +411,4 @@ export const YcConfigSchema = z.object({
   tasks: YcTasksConfigSchema.optional(),
 })
 
-export type YcTasksConfig = z.infer<typeof YcTasksConfigSchema>
 export type YcConfig = z.infer<typeof YcConfigSchema>
