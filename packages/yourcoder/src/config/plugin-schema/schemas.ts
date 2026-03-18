@@ -217,22 +217,10 @@ export const CategoryConfigSchema = z.object({
   disable: z.boolean().optional(),
 })
 
-export const BuiltinCategoryNameSchema = z.enum([
-  "visual-engineering",
-  "ultrabrain",
-  "deep",
-  "artistry",
-  "quick",
-  "unspecified-low",
-  "unspecified-high",
-  "writing",
-])
-
 export const CategoriesConfigSchema = z.record(z.string(), CategoryConfigSchema)
 
 export type CategoryConfig = z.infer<typeof CategoryConfigSchema>
 export type CategoriesConfig = z.infer<typeof CategoriesConfigSchema>
-export type BuiltinCategoryName = z.infer<typeof BuiltinCategoryNameSchema>
 
 // --- claude-code ---
 
