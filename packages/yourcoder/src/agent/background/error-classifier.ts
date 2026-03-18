@@ -1,5 +1,4 @@
 import { isRecord } from "../../hooks/shared/record-type-guard"
-export { isRecord }
 
 export function isAbortedSessionError(error: unknown): boolean {
   const message = getErrorText(error)

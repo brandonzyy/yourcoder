@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test"
+import { isRecord } from "../../hooks/shared/record-type-guard"
 import {
-  isRecord,
   isAbortedSessionError,
   getErrorText,
   extractErrorName,
