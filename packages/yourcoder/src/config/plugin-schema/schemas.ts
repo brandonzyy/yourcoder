@@ -11,7 +11,6 @@ import { BUILTIN_COMMAND_NAMES } from "../../cli/commands/names"
 export const BuiltinAgentNameSchema = z.enum([
   "yc",
   "codersearch",
-  "codereye",
 ])
 
 export const BuiltinSkillNameSchema = z.enum([
@@ -29,7 +28,6 @@ export const OverridableAgentNameSchema = z.enum([
   "coderhand",
   "OpenCode-Builder",
   "codersearch",
-  "codereye",
 ])
 
 export const AgentNameSchema = BuiltinAgentNameSchema

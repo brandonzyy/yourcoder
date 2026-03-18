@@ -1,7 +1,6 @@
 import type { AvailableAgent } from "./yc/prompt-builder"
 import type { AgentPromptMetadata } from "../plugin-agent-types"
 import { CODERSEARCH_PROMPT_METADATA } from "./codersearch"
-import { CODEREYE_PROMPT_METADATA } from "./codereye"
 
 export const CODERHAND_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -14,11 +13,6 @@ const AGENTS = [
     name: "codersearch",
     description: "Open-source documentation and codebase search specialist",
     metadata: CODERSEARCH_PROMPT_METADATA,
-  },
-  {
-    name: "codereye",
-    description: "Semantic code search via Manon knowledge graph",
-    metadata: CODEREYE_PROMPT_METADATA,
   },
   {
     name: "coderhand",

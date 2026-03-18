@@ -142,7 +142,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       queuedAt: new Date(),
       description: "test task",
       prompt: "test prompt",
-      agent: "codereye",
+      agent: "codersearch",
       parentSessionID: "parent-session",
       parentMessageID: "parent-message",
     }
@@ -192,7 +192,7 @@ describe("BackgroundManager - tool permission spread order", () => {
       parentMessageID: "parent-message",
       description: "resume task",
       prompt: "resume prompt",
-      agent: "codereye",
+      agent: "codersearch",
       status: "completed",
       startedAt: new Date(),
       completedAt: new Date(),

@@ -8,14 +8,14 @@ describe("mergeConfigs", () => {
         enabled_hooks: ["auto-update-checker", "session-notification"],
       },
       {
-        enabled_hooks: ["session-notification", "category-skill-reminder"],
+        enabled_hooks: ["session-notification", "start-work"],
       },
     )
 
     expect(res.enabled_hooks).toEqual([
       "auto-update-checker",
       "session-notification",
-      "category-skill-reminder",
+      "start-work",
     ])
   })
 })

@@ -68,7 +68,6 @@ const NativePlugin: Plugin = async (ctx) => {
     isHookEnabled,
     safeHookEnabled,
     mergedSkills: toolsResult.mergedSkills,
-    availableSkills: toolsResult.availableSkills,
   })
 
   const pluginInterface = createPluginInterface({

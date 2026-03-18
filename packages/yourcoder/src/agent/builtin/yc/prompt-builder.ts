@@ -41,107 +41,24 @@ export function categorizeTools(toolNames: string[]): AvailableTool[] {
   })
 }
 
-function formatToolsForPrompt(tools: AvailableTool[]): string {
-  const lspTools = tools.filter((t) => t.category === "lsp")
-  const astTools = tools.filter((t) => t.category === "ast")
-  const searchTools = tools.filter((t) => t.category === "search")
+export function buildManonSection(): string {
+  return `### Manon MCP = ALL Code Search (Direct)
 
-  const parts: string[] = []
+**Use Manon MCP tools directly for ALL code search tasks.** No subagent needed — call these tools in your own turn:
 
-  if (searchTools.length > 0) {
-    parts.push(...searchTools.map((t) => `\`${t.name}\``))
-  }
+- \`manon_search\` — Semantic search for code entities, functions, classes, modules
+- \`manon_graph\` — Trace call graphs: who calls a symbol, what does it call (callers/callees/both)
+- \`manon_deep_query\` — Multi-round deep queries for complex questions spanning multiple concepts
 
-  if (lspTools.length > 0) {
-    parts.push("`lsp_*`")
-  }
-
-  if (astTools.length > 0) {
-    parts.push("`ast_grep`")
-  }
-
-  return parts.join(", ")
-}
-
-export function buildKeyTriggersSection(agents: AvailableAgent[], _skills: AvailableSkill[] = []): string {
-  const keyTriggers = agents
-    .filter((a) => a.metadata.keyTrigger)
-    .map((a) => `- ${a.metadata.keyTrigger}`)
-
-  if (keyTriggers.length === 0) return ""
-
-  return `### Key Triggers (check BEFORE classification):
-
-${keyTriggers.join("\n")}
-- **"Look into" + "create PR"** → Not just research. Full implementation cycle expected.`
-}
-
-export function buildToolSelectionTable(
-  agents: AvailableAgent[],
-  tools: AvailableTool[] = [],
-  _skills: AvailableSkill[] = []
-): string {
-  const rows: string[] = [
-    "### Tool & Agent Selection:",
-    "",
-  ]
-
-  if (tools.length > 0) {
-    const toolsDisplay = formatToolsForPrompt(tools)
-    rows.push(`- ${toolsDisplay} — **FREE** — Not Complex, Scope Clear, No Implicit Assumptions`)
-  }
-
-  const costOrder = { FREE: 0, CHEAP: 1, EXPENSIVE: 2 }
-  const sortedAgents = [...agents]
-    .filter((a) => a.metadata.category !== "utility")
-    .sort((a, b) => costOrder[a.metadata.cost] - costOrder[b.metadata.cost])
-
-  for (const agent of sortedAgents) {
-    const shortDesc = agent.description.split(".")[0] || agent.description
-    rows.push(`- \`${agent.name}\` agent — **${agent.metadata.cost}** — ${shortDesc}`)
-  }
-
-  rows.push("")
-  rows.push("**Default flow**: codereye/codersearch (background) + tools → task (if implementation needed)")
-
-  return rows.join("\n")
-}
-
-export function buildCodereyeSection(agents: AvailableAgent[]): string {
-  const manonAgent = agents.find((a) => a.name === "codereye")
-  if (!manonAgent) return ""
-
-  const useWhen = manonAgent.metadata.useWhen || []
-
-  return `### CoderEye Agent = ALL Code Search
-
-**MANDATORY for ALL code search tasks.** Uses Manon knowledge graph for semantic search, call graphs, and dependency analysis.
-
-**Fire codereye for:**
-${useWhen.map((w) => `- ${w}`).join("\n")}
+**Use Manon for:**
 - Finding files, functions, classes, modules
 - Understanding code structure and architecture
 - Tracing dependencies and call relationships
 - ANY question about "where is X" or "who uses Y"
+- Multiple search angles or cross-layer pattern discovery
 
-**Never use grep/glob/ast_grep directly** — delegate ALL code search to codereye agent.`
-}
-
-export function buildCodersearchSection(agents: AvailableAgent[]): string {
-  const codersearchAgent = agents.find((a) => a.name === "codersearch")
-  if (!codersearchAgent) return ""
-
-  const useWhen = codersearchAgent.metadata.useWhen || []
-
-  return `### CoderSearch Agent = Reference Grep
-
-Search **external references** (docs, OSS, web). Fire proactively when unfamiliar libraries are involved.
-
-**Contextual Grep (Internal)** — search OUR codebase, find patterns in THIS repo, project-specific logic.
-**Reference Grep (External)** — search EXTERNAL resources, official API docs, library best practices, OSS implementation examples.
-
-**Trigger phrases** (fire codersearch immediately):
-${useWhen.map((w) => `- "${w}"`).join("\n")}`
+**Launch 2-3 Manon calls simultaneously** for broad searches. Cross-validate findings.
+Fall back to grep/glob only when Manon graph has no coverage.`
 }
 
 export function buildDelegationTable(agents: AvailableAgent[]): string {
@@ -158,7 +75,6 @@ export function buildDelegationTable(agents: AvailableAgent[]): string {
 
   return rows.join("\n")
 }
-
 
 export function buildCategorySkillsDelegationGuide(categories: AvailableCategory[], skills: AvailableSkill[]): string {
   if (categories.length === 0 && skills.length === 0) return ""
@@ -217,150 +133,6 @@ ${skillsSection}
 Visual (UI/CSS/layout/animation) → ALWAYS \`visual-engineering\`. Hard logic → \`ultrabrain\`. Trivial → \`quick\`.`
 }
 
-export function buildPlanQualitySection(): string {
-  return `## Plan Quality Standard (MANDATORY for non-trivial tasks)
-
-A plan is NOT a TODO list. Every plan MUST contain:
-
-1. **Precise file paths** — Absolute paths to every file that will be created/modified/deleted
-2. **Complete code snippets** — Show the exact changes (before/after or new code), not vague descriptions
-3. **Test commands + expected output** — Specific commands to verify each step, with expected results
-4. **2-5 minute atomic steps** — Each step completable in one focused session, independently verifiable
-
-### Plan-Review Cycle (MANDATORY)
-
-After creating a plan, run a **plan-document-reviewer** pass before execution:
-
-1. **Completeness**: Does every step have file paths, code, and verification?
-2. **Feasibility**: Can each step actually be completed independently?
-3. **Ordering**: Are dependencies correctly sequenced? Can independent steps run in parallel?
-4. **Scope**: Does the plan match the original request — no scope creep, no scope miss?
-5. **Risks**: Are there breaking changes, migration needs, or backwards-compatibility concerns?
-
-If the review reveals gaps → fix the plan BEFORE executing. Never start execution with a vague plan.
-
-\`\`\`
-❌ BAD PLAN:
-Step 1: Update the auth module
-Step 2: Fix the tests
-
-✅ GOOD PLAN:
-Step 1: Add validateToken() to src/auth/middleware.ts
-  - Code: [exact function signature + body]
-  - Verify: lsp_diagnostics src/auth/middleware.ts → 0 errors
-  - Time: ~3 min
-
-Step 2: Update test in src/auth/__tests__/middleware.test.ts
-  - Code: [exact test case]
-  - Verify: bun test src/auth/__tests__/middleware.test.ts → PASS
-  - Time: ~2 min
-\`\`\``
-}
-
-export function buildIntentReviewSection(): string {
-  return `## Post-Delegation Review (MANDATORY)
-
-After EVERY delegated task returns:
-
-### Step 1: Parse Status
-- **DONE** → proceed to Intent Review
-- **DONE_WITH_CONCERNS** → read concerns FIRST, assess if they affect intent
-- **NEEDS_CONTEXT** → provide missing context, re-dispatch (same session_id)
-- **BLOCKED** → assess blocker, decide: provide context / re-dispatch with different approach / escalate to user
-
-### Step 2: Intent Review (for DONE/DONE_WITH_CONCERNS)
-Verify the delegation result against the ORIGINAL user request:
-
-1. Read ALL changed files (parallel)
-2. Check: Does the change address what the user ACTUALLY asked for?
-3. Check: Is there scope creep (changes beyond what was requested)?
-4. Check: Is there scope miss (requested changes not made)?
-5. If intent mismatch → re-dispatch with corrective prompt (same session_id)
-6. If intent match → proceed to Technical Verification
-
-### Step 3: Technical Verification
-Run the standard verification loop: \`lsp_diagnostics\` on all changed files, tests, build.
-NO EVIDENCE = NOT COMPLETE. Never trust self-reports from subagents.`
-}
-
-export function buildHardBlocksSection(): string {
-  const blocks = [
-    "- Type error suppression (`as any`, `@ts-ignore`) — **Never**",
-    "- Commit without explicit request — **Never**",
-    "- Speculate about unread code — **Never**",
-    "- Leave code in broken state after failures — **Never**",
-    "- `background_cancel(all=true)` — **Never.** Always cancel individually by taskId.",
-  ]
-
-  return `## Hard Blocks (NEVER violate)
-
-${blocks.join("\n")}`
-}
-
-export function buildAntiPatternsSection(): string {
-  const patterns = [
-    "- **Type Safety**: `as any`, `@ts-ignore`, `@ts-expect-error`",
-    "- **Error Handling**: Empty catch blocks `catch(e) {}`",
-    "- **Testing**: Deleting failing tests to \"pass\"",
-    "- **Search**: Firing agents for single-line typos or obvious syntax errors",
-    "- **Debugging**: Shotgun debugging, random changes",
-    "- **Background Tasks**: Polling `background_output` on running tasks — end response and wait for notification",
-  ]
-
-  return `## Anti-Patterns (BLOCKING violations)
-
-${patterns.join("\n")}`
-}
-
-export function buildNonClaudePlannerSection(model: string): string {
-  const isNonClaude = !model.toLowerCase().includes('claude')
-  if (!isNonClaude) return ""
-
-  return `### Plan Agent Dependency (Non-Claude)
-
-Multi-step task? **ALWAYS consult Plan Agent first.** Do NOT start implementation without a plan.
-
-- Single-file fix or trivial change → proceed directly
-- Anything else (2+ steps, unclear scope, architecture) → \`task(subagent_type="plan", ...)\` FIRST
-- Use \`session_id\` to resume the same Plan Agent — ask follow-up questions aggressively
-- If ANY part of the task is ambiguous, ask Plan Agent before guessing
-
-Plan Agent returns a structured work breakdown with parallel execution opportunities. Follow it.`
-}
-
-export function buildParallelDelegationSection(model: string, categories: AvailableCategory[]): string {
-  const hasDelegationCategory = categories.some(c => c.name === 'deep' || c.name === 'unspecified-high')
-
-  if (!hasDelegationCategory) return ""
-
-  return `### DECOMPOSE AND DELEGATE — YOU ARE NOT AN IMPLEMENTER
-
-**YOUR FAILURE MODE: You attempt to do work yourself instead of decomposing and delegating.** When you implement directly, the result is measurably worse than when specialized subagents do it. Subagents have domain-specific configurations, loaded skills, and tuned prompts that you lack.
-
-**MANDATORY — for ANY implementation task:**
-
-1. **ALWAYS decompose** the task into independent work units. No exceptions. Even if the task "feels small", decompose it.
-2. **ALWAYS delegate** EACH unit to a \`deep\` or \`unspecified-high\` agent in parallel (\`run_in_background=true\`).
-3. **NEVER work sequentially.** If 4 independent units exist, spawn 4 agents simultaneously. Not 1 at a time. Not 2 then 2.
-4. **NEVER implement directly** when delegation is possible. You write prompts, not code.
-
-**YOUR PROMPT TO EACH AGENT MUST INCLUDE:**
-- GOAL with explicit success criteria (what "done" looks like)
-- File paths and constraints (where to work, what not to touch)
-- Existing patterns to follow (reference specific files the agent should read)
-- Clear scope boundary (what is IN scope, what is OUT of scope)
-
-**Vague delegation = failed delegation.** If your prompt to the subagent is shorter than 5 lines, it is too vague.
-
-| You Want To Do | You MUST Do Instead |
-|---|---|
-| Write code yourself | Delegate to \`deep\` or \`unspecified-high\` agent |
-| Handle 3 changes sequentially | Spawn 3 agents in parallel |
-| "Quickly fix this one thing" | Still delegate — your "quick fix" is slower and worse than a subagent's |
-
-**Your value is orchestration, decomposition, and quality control. Delegating with crystal-clear prompts IS your work.**`
-}
-
 export function buildUltraworkSection(
   agents: AvailableAgent[],
   categories: AvailableCategory[],
@@ -401,7 +173,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["codereye", "codersearch", "plan"]
+    const ultraworkAgentPriority = ["codersearch", "plan"]
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name)
       const bIdx = ultraworkAgentPriority.indexOf(b.name)
@@ -414,7 +186,7 @@ export function buildUltraworkSection(
     lines.push("**Agents** (for specialized consultation/exploration):")
     for (const agent of sortedAgents) {
       const shortDesc = agent.description.length > 120 ? agent.description.slice(0, 120) + "..." : agent.description
-      const suffix = agent.name === "codereye" || agent.name === "codersearch" ? " (multiple)" : ""
+      const suffix = agent.name === "codersearch" ? " (multiple)" : ""
       lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`)
     }
   }

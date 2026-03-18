@@ -25,12 +25,6 @@ export const AGENT_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {
       { providers: ["opencode"], model: "glm-4.7-fp8" },
     ],
   },
-  "codereye": {
-    fallbackChain: [
-      { providers: ["opencode"], model: "claude-haiku-4-5" },
-      { providers: ["opencode"], model: "glm-4.7-fp8" },
-    ],
-  },
 };
 
 export const CATEGORY_MODEL_REQUIREMENTS: Record<string, ModelRequirement> = {

@@ -7,7 +7,6 @@
 
 export { createYcAgent, YC_PROMPT_METADATA } from "./yc"
 export { createCodersearchAgent, CODERSEARCH_PROMPT_METADATA } from "./codersearch"
-export { createCodereyeAgent, CODEREYE_PROMPT_METADATA } from "./codereye"
 export { createCoderhandAgent } from "./coderhand"
 export { BuiltinAgentRegistry } from "./registry"
 

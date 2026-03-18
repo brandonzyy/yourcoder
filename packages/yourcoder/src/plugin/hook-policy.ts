@@ -1,9 +1,7 @@
 import type { HookName, PluginConfig } from "../config/plugin-schema"
 
 const optional = new Set<HookName>([
-  "agent-usage-reminder",
   "auto-update-checker",
-  "category-skill-reminder",
   "no-yc-gpt",
   "question-label-truncator",
   "session-notification",

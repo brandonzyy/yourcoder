@@ -1,6 +1,5 @@
 import type { PluginConfig, HookName } from "../../../config/plugin-schema"
 import {
-  createAgentUsageReminderHook,
   createAnthropicContextWindowLimitRecoveryHook,
   createAutoUpdateCheckerHook,
   createContextWindowMonitorHook,
@@ -17,7 +16,6 @@ import {
   createSessionNotification,
   createSessionRecoveryHook,
   createStartWorkHook,
-  createSubagentHealthCheckHook,
   createTaskResumeInfoHook,
   createThinkModeHook,
 } from "../../../hooks"
@@ -53,7 +51,6 @@ export type SessionHooks = {
   modelFallback: ReturnType<typeof createModelFallbackHook> | null
   anthropicContextWindowLimitRecovery: ReturnType<typeof createAnthropicContextWindowLimitRecoveryHook> | null
   autoUpdateChecker: ReturnType<typeof createAutoUpdateCheckerHook> | null
-  agentUsageReminder: ReturnType<typeof createAgentUsageReminderHook> | null
   nonInteractiveEnv: ReturnType<typeof createNonInteractiveEnvHook> | null
   interactiveBashSession: ReturnType<typeof createInteractiveBashSessionHook> | null
   ralphLoop: ReturnType<typeof createRalphLoopHook> | null
@@ -65,7 +62,6 @@ export type SessionHooks = {
   taskResumeInfo: ReturnType<typeof createTaskResumeInfoHook> | null
   anthropicEffort: ReturnType<typeof createAnthropicEffortHook> | null
   runtimeFallback: ReturnType<typeof createRuntimeFallbackHook> | null
-  subagentHealthCheck: ReturnType<typeof createSubagentHealthCheckHook> | null
 }
 
 function title(args: Pick<Args, "ctx" | "pluginConfig">) {
@@ -195,11 +191,6 @@ function guard(args: Args, onApplied?: Applied) {
         config: cfg,
         pluginConfig: args.pluginConfig,
       })),
-    subagentHealthCheck: mount("subagent-health-check", args.isHookEnabled("subagent-health-check"), args.safeHookEnabled, () =>
-      createSubagentHealthCheckHook(args.ctx, {
-        enabled: true,
-        timeout: 10000,
-      })),
   }
 }
 
@@ -212,8 +203,6 @@ function ux(args: Args) {
         isYcEnabled: args.pluginConfig.yc_agent?.disabled !== true,
         autoUpdate: args.pluginConfig.auto_update ?? true,
       })),
-    agentUsageReminder: mount("agent-usage-reminder", args.isHookEnabled("agent-usage-reminder"), args.safeHookEnabled, () =>
-      createAgentUsageReminderHook(args.ctx)),
     ralphLoop: mount("ralph-loop", args.isHookEnabled("ralph-loop"), args.safeHookEnabled, () =>
       createRalphLoopHook(args.ctx, {
         config: args.pluginConfig.ralph_loop,

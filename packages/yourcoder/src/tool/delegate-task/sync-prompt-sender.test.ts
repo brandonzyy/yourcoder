@@ -45,7 +45,7 @@ bunDescribe("sendSyncPrompt", () => {
     bunExpect(promptArgs.body.tools.question).toBe(false)
   })
 
-  bunTest("keeps call_omo_agent enabled for codereye agent", async () => {
+  bunTest("keeps call_omo_agent enabled for codersearch agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -63,7 +63,7 @@ bunDescribe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "codereye",
+      agentToUse: "codersearch",
       args: {
         description: "test task",
         prompt: "test prompt",

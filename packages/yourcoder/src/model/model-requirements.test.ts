@@ -10,7 +10,6 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
   test("matches the current builtin agent set", () => {
     expect(Object.keys(AGENT_MODEL_REQUIREMENTS).sort()).toEqual([
       "codersearch",
-      "codereye",
       "yc",
     ])
   })
@@ -23,14 +22,11 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     ])
   })
 
-  test("codersearch and codereye share the lightweight search chain", () => {
+  test("codersearch uses the lightweight search chain", () => {
     expect(AGENT_MODEL_REQUIREMENTS.codersearch.fallbackChain).toEqual([
       { providers: ["opencode"], model: "claude-haiku-4-5" },
       { providers: ["opencode"], model: "glm-4.7-fp8" },
     ])
-    expect(AGENT_MODEL_REQUIREMENTS["codereye"].fallbackChain).toEqual(
-      AGENT_MODEL_REQUIREMENTS.codersearch.fallbackChain,
-    )
   })
 })
 

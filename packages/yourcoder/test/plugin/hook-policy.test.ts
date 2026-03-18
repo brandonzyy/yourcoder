@@ -38,6 +38,6 @@ describe("createHookPolicy", () => {
 describe("optionalHooks", () => {
   test("lists patch hooks handled as opt-in", () => {
     expect(optionalHooks()).toContain("auto-update-checker")
-    expect(optionalHooks()).toContain("category-skill-reminder")
+    expect(optionalHooks()).toContain("session-notification")
   })
 })

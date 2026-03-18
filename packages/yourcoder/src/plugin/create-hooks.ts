@@ -1,4 +1,3 @@
-import type { AvailableSkill } from "../agent/dynamic-agent-prompt-builder"
 import type { HookName, PluginConfig } from "../config/plugin-schema"
 import type { LoadedSkill } from "../skill/loader/types"
 import type { BackgroundManager } from "../agent/background"
@@ -21,7 +20,6 @@ export function createHooks(args: {
   isHookEnabled: (hookName: HookName) => boolean
   safeHookEnabled: boolean
   mergedSkills: LoadedSkill[]
-  availableSkills: AvailableSkill[]
 }) {
   const {
     ctx,
@@ -31,7 +29,6 @@ export function createHooks(args: {
     isHookEnabled,
     safeHookEnabled,
     mergedSkills,
-    availableSkills,
   } = args
 
   const session = createSessionHooks({
@@ -72,7 +69,6 @@ export function createHooks(args: {
     isHookEnabled,
     safeHookEnabled,
     mergedSkills,
-    availableSkills,
   })
 
   return {

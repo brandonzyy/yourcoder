@@ -6,7 +6,7 @@ import { loadBuiltinRuntime } from "./runtime"
 
 /**
  * Native builtin agent registry
- * Loads yac, codersearch, codereye directly into yourcoder core
+ * Loads yac, codersearch directly into yourcoder core
  */
 export class BuiltinAgentRegistry {
   private static agents: Map<string, AgentConfig> = new Map()
@@ -38,13 +38,6 @@ export class BuiltinAgentRegistry {
     if (codersearch) {
       agents.codersearch = codersearch
       this.agents.set("codersearch", codersearch)
-    }
-
-    // Load codereye agent
-    const codereye = await this.loadCodereye(model)
-    if (codereye) {
-      agents["codereye"] = codereye
-      this.agents.set("codereye", codereye)
     }
 
     // Load coderhand agent
@@ -141,19 +134,6 @@ export class BuiltinAgentRegistry {
       return createCodersearchAgent(model)
     } catch (error) {
       console.error("Failed to load codersearch agent:", error)
-      return null
-    }
-  }
-
-  /**
-   * Load codereye agent
-   */
-  private static async loadCodereye(model: string): Promise<AgentConfig | null> {
-    try {
-      const { createCodereyeAgent } = await import("./codereye")
-      return createCodereyeAgent(model)
-    } catch (error) {
-      console.error("Failed to load codereye agent:", error)
       return null
     }
   }

@@ -16,14 +16,12 @@ export { createRulesInjectorHook } from "./context-injection/rules-injector";
 export { createBackgroundNotificationHook } from "../continuation/background-notification"
 export { createAutoUpdateCheckerHook } from "./auto-update-checker/hook";
 
-export { createAgentUsageReminderHook } from "./agent-guardrails/usage-reminder/hook";
 export { createKeywordDetectorHook } from "./keyword-detector";
 export { createNonInteractiveEnvHook } from "./non-interactive-env/non-interactive-env-hook";
 export { createInteractiveBashSessionHook } from "./interactive-bash-session";
-export { createSubagentHealthCheckHook } from "./agent-guardrails/health-check/hook";
+
 
 export { createThinkingBlockValidatorHook } from "../model-switching/thinking-block-validator";
-export { createCategorySkillReminderHook } from "./category-skill-reminder/hook";
 export { createRalphLoopHook, type RalphLoopHook } from "../continuation/ralph-loop";
 export { createNoYcGptHook } from "./agent-guardrails/simple-guards";
 export { createAutoSlashCommandHook } from "./auto-slash-command";

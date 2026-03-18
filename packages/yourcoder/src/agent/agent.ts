@@ -189,7 +189,7 @@ export namespace Agent {
       },
     }
 
-    // Load native builtin agents (yac, codersearch, codereye, coderhand)
+    // Load native builtin agents (yac, codersearch, coderhand)
     const builtinAgentNames = new Set<string>()
     try {
       const { BuiltinAgentRegistry } = await import("./builtin")

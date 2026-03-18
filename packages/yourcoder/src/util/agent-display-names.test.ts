@@ -6,7 +6,6 @@ describe("getAgentDisplayName", () => {
     expect(getAgentDisplayName("yc")).toBe("Yc")
     expect(getAgentDisplayName("coderhand")).toBe("CoderHand")
     expect(getAgentDisplayName("codersearch")).toBe("codersearch")
-    expect(getAgentDisplayName("codereye")).toBe("codereye")
   })
 
   it("resolves config keys case-insensitively", () => {
@@ -26,7 +25,7 @@ describe("getAgentConfigKey", () => {
   })
 
   it("passes through known config keys and lowercases unknown names", () => {
-    expect(getAgentConfigKey("codereye")).toBe("codereye")
+    expect(getAgentConfigKey("codersearch")).toBe("codersearch")
     expect(getAgentConfigKey("Custom-Agent")).toBe("custom-agent")
   })
 })
@@ -37,7 +36,6 @@ describe("AGENT_DISPLAY_NAMES", () => {
       yac: "Yc",
       "coderhand": "CoderHand",
       codersearch: "codersearch",
-      "codereye": "codereye",
     })
   })
 })

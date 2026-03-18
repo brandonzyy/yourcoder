@@ -3,7 +3,7 @@ import type { AgentConfig } from "@yourcoder/sdk";
 /**
  * Agent mode determines UI model selection behavior:
  * - "primary": Respects user's UI-selected model (yac)
- * - "subagent": Uses own fallback chain, ignores UI selection (codereye, codersearch, etc.)
+ * - "subagent": Uses own fallback chain, ignores UI selection (codersearch, etc.)
  * - "all": Available in both contexts (OpenCode compatibility)
  */
 export type AgentMode = "primary" | "subagent" | "all";
@@ -53,21 +53,6 @@ export interface AgentPromptMetadata {
 
   /** Domain triggers for Delegation Table */
   triggers: DelegationTrigger[];
-
-  /** When to use this agent (for detailed sections) */
-  useWhen?: string[];
-
-  /** When NOT to use this agent */
-  avoidWhen?: string[];
-
-  /** Optional dedicated prompt section (markdown) - for agents like Oracle that have special sections */
-  dedicatedSection?: string;
-
-  /** Nickname/alias used in prompt (e.g., "Oracle" instead of "oracle") */
-  promptAlias?: string;
-
-  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire codersearch") */
-  keyTrigger?: string;
 }
 
 function extractModelName(model: string): string {
@@ -106,8 +91,7 @@ export function isGeminiModel(model: string): boolean {
 
 export type BuiltinAgentName =
   | "yc"
-  | "codersearch"
-  | "codereye";
+  | "codersearch";
 
 export type OverridableAgentName = "build" | "coderhand" | BuiltinAgentName;
 

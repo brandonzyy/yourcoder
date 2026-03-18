@@ -7,7 +7,6 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   yac: "Yc",
   "coderhand": "CoderHand",
   codersearch: "codersearch",
-  "codereye": "codereye",
 }
 
 /**
