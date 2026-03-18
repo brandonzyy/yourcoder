@@ -102,12 +102,8 @@ export default NativePlugin
 
 export type {
   PluginConfig,
-  AgentName,
   AgentOverrideConfig,
-  AgentOverrides,
-  McpName,
   HookName,
-  BuiltinCommandName,
 } from "../config/plugin-schema"
 
 export type { ConfigLoadError } from "../config/config-errors"

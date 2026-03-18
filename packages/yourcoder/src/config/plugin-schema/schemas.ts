@@ -131,6 +131,7 @@ export const AgentOverridesSchema = z.object({
 })
 
 export type AgentOverrideConfig = z.infer<typeof AgentOverrideConfigSchema>
+export type AgentOverrides = z.infer<typeof AgentOverridesSchema>
 
 // --- background-task ---
 
