@@ -14,7 +14,7 @@ import { readFileSync, readdirSync, existsSync } from "fs"
 import * as schema from "./schema"
 import { Installation } from "../project/installation"
 import { Flag } from "../config/flag"
-import { iife } from "@/util/iife"
+import { iife } from "@yourcoder/util/iife"
 
 declare const YC_MIGRATIONS: { sql: string; timestamp: number; name: string }[] | undefined
 

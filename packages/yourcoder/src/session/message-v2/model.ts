@@ -1,7 +1,7 @@
 import { convertToModelMessages, type ModelMessage, type UIMessage } from "ai"
 import type { Provider } from "@/provider/provider"
 import { Identifier } from "../../util/id"
-import { iife } from "../../util/iife"
+import { iife } from "@yourcoder/util/iife"
 import { MessageV2 } from "../message-v2"
 
 export function toModelMessages(

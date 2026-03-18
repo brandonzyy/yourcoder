@@ -28,7 +28,7 @@ import type { Provider } from "@/provider/provider"
 import { PermissionNext } from "@/capability/permission/next"
 import { Global } from "@/util/global"
 import type { LanguageModelV2Usage } from "@ai-sdk/provider"
-import { iife } from "@/util/iife"
+import { iife } from "@yourcoder/util/iife"
 
 export namespace Session {
   const log = Log.create({ service: "session" })
