@@ -2,6 +2,7 @@ import type { AvailableAgent } from "./yc/prompt-builder"
 import type { AgentPromptMetadata } from "../plugin-agent-types"
 import { CODERSEARCH_PROMPT_METADATA } from "./codersearch"
 import { CODEREYE_PROMPT_METADATA } from "./codereye"
+import { WEBSEARCH_PROMPT_METADATA } from "./websearch"
 
 export const CODERHAND_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -24,6 +25,11 @@ const AGENTS = [
     name: "coderhand",
     description: "Focused task executor without delegation",
     metadata: CODERHAND_PROMPT_METADATA,
+  },
+  {
+    name: "websearch",
+    description: "Web search for current information and online resources",
+    metadata: WEBSEARCH_PROMPT_METADATA,
   },
 ] as const satisfies readonly AvailableAgent[]
 

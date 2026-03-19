@@ -54,6 +54,13 @@ export class BuiltinAgentRegistry {
       this.agents.set("coderhand", coderhand)
     }
 
+    // Load websearch agent
+    const websearch = await this.loadWebsearch(model)
+    if (websearch) {
+      agents["websearch"] = websearch
+      this.agents.set("websearch", websearch)
+    }
+
     // Initialize BackgroundManager and load delegate-task tool
     if (client && directory) {
       const runtime = loadBuiltinRuntime({ client, directory } as any)
@@ -167,6 +174,19 @@ export class BuiltinAgentRegistry {
       return createCoderhandAgent(model, false) // useTaskSystem = false
     } catch (error) {
       console.error("Failed to load coderhand agent:", error)
+      return null
+    }
+  }
+
+  /**
+   * Load websearch agent
+   */
+  private static async loadWebsearch(model: string): Promise<AgentConfig | null> {
+    try {
+      const { createWebsearchAgent } = await import("./websearch")
+      return createWebsearchAgent(model)
+    } catch (error) {
+      console.error("Failed to load websearch agent:", error)
       return null
     }
   }

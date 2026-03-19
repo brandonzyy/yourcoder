@@ -37,6 +37,13 @@ interface McpSearchResponse {
   }
 }
 
+type ParsedSearchResult = {
+  title: string
+  url: string
+  snippet?: string
+  publishedDate?: string
+}
+
 export const WebSearchTool = Tool.define("websearch", async () => {
   return {
     get description() {
@@ -122,10 +129,15 @@ export const WebSearchTool = Tool.define("websearch", async () => {
           if (line.startsWith("data: ")) {
             const data: McpSearchResponse = JSON.parse(line.substring(6))
             if (data.result && data.result.content && data.result.content.length > 0) {
+              const text = data.result.content[0].text
+              const parsedResults = parseSearchTextToResults(text)
               return {
-                output: data.result.content[0].text,
+                output: text,
                 title: `Web search: ${params.query}`,
-                metadata: {},
+                metadata: {
+                  query: params.query,
+                  results: parsedResults,
+                },
               }
             }
           }
@@ -134,7 +146,10 @@ export const WebSearchTool = Tool.define("websearch", async () => {
         return {
           output: "No search results found. Please try a different query.",
           title: `Web search: ${params.query}`,
-          metadata: {},
+          metadata: {
+            query: params.query,
+            results: [],
+          },
         }
       } catch (error) {
         clearTimeout()
@@ -148,3 +163,77 @@ export const WebSearchTool = Tool.define("websearch", async () => {
     },
   }
 })
+
+
+function parseSearchTextToResults(text: string): ParsedSearchResult[] {
+  const results: ParsedSearchResult[] = []
+  const seenUrls = new Set<string>()
+
+  const lines = text.split("\n")
+  for (const rawLine of lines) {
+    const line = rawLine.trim()
+    if (!line) continue
+
+    // a) Markdown link line: - [Title](https://...)
+    const markdownMatch = line.match(/^[-*+]?\s*\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\s*(?:[-–—:]\s*)?(.*)$/i)
+    if (markdownMatch) {
+      const [, rawTitle, url, rest] = markdownMatch
+      const normalizedUrl = normalizeUrl(url)
+      if (seenUrls.has(normalizedUrl)) continue
+      seenUrls.add(normalizedUrl)
+      const title = (rawTitle || "").trim() || normalizedUrl
+      const snippet = cleanSnippet(rest)
+      results.push({ title, url: normalizedUrl, ...(snippet ? { snippet } : {}) })
+      continue
+    }
+
+    // b) Numbered line: 1. Title - https://...
+    const numberedMatch = line.match(/^\d+[.)]\s*(.*?)\s*(?:[-–—:|]\s*)?(https?:\/\/\S+)\s*(.*)$/i)
+    if (numberedMatch) {
+      const [, preTitle, url, rest] = numberedMatch
+      const normalizedUrl = normalizeUrl(url)
+      if (seenUrls.has(normalizedUrl)) continue
+      seenUrls.add(normalizedUrl)
+      const title = (preTitle || "").trim() || normalizedUrl
+      const snippet = cleanSnippet(rest)
+      results.push({ title, url: normalizedUrl, ...(snippet ? { snippet } : {}) })
+      continue
+    }
+
+    // c) Plain URL line: https://...
+    const plainUrlMatch = line.match(/^(https?:\/\/\S+)\s*(.*)$/i)
+    if (plainUrlMatch) {
+      const [, url, rest] = plainUrlMatch
+      const normalizedUrl = normalizeUrl(url)
+      if (seenUrls.has(normalizedUrl)) continue
+      seenUrls.add(normalizedUrl)
+      const snippet = cleanSnippet(rest)
+      results.push({ title: normalizedUrl, url: normalizedUrl, ...(snippet ? { snippet } : {}) })
+      continue
+    }
+
+    // Best-effort fallback: any URL embedded in line
+    const embeddedUrl = line.match(/https?:\/\/\S+/i)?.[0]
+    if (embeddedUrl) {
+      const normalizedUrl = normalizeUrl(embeddedUrl)
+      if (seenUrls.has(normalizedUrl)) continue
+      seenUrls.add(normalizedUrl)
+
+      const withoutUrl = line.replace(embeddedUrl, "").replace(/^[-*+]?\s*\d*[.)]?\s*/, "").trim()
+      const title = withoutUrl || normalizedUrl
+      results.push({ title, url: normalizedUrl })
+    }
+  }
+
+  return results
+}
+
+function normalizeUrl(url: string): string {
+  return url.replace(/[),.;]+$/, "")
+}
+
+function cleanSnippet(text?: string): string | undefined {
+  if (!text) return undefined
+  const snippet = text.trim().replace(/^[-–—:|]\s*/, "")
+  return snippet || undefined
+}

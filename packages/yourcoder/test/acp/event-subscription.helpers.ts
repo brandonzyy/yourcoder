@@ -1,5 +1,5 @@
 import type { AgentSideConnection } from "@agentclientprotocol/sdk"
-import type { Event, EventMessagePartUpdated, ToolStatePending, ToolStateRunning } from "@opencode-ai/sdk/v2"
+import type { Event, EventMessagePartUpdated, ToolStatePending, ToolStateRunning } from "@yourcoder/sdk/v2"
 import { ACP } from "../../src/acp/agent"
 
 export type SessionUpdateParams = Parameters<AgentSideConnection["sessionUpdate"]>[0]
