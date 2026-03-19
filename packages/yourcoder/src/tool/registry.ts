@@ -22,11 +22,8 @@ import z from "zod"
 import { Plugin } from "../plugin"
 import { WebSearchTool } from "./websearch"
 import { WebReadTool } from "./webread"
-import { PageRouterTool } from "./page_router"
-import { BrowserReadTool } from "./browser_read"
 import { WebSearchRankTool } from "./websearch_rank"
 import { VerifySourcesTool } from "./verify_sources"
-import { PdfReadTool } from "./pdf_read"
 import { CodeSearchTool } from "./codesearch"
 import { Flag } from "@/config/flag"
 import { Log } from "@/util/log"
@@ -119,11 +116,8 @@ export namespace ToolRegistry {
       TaskTool,
       WebFetchTool,
       WebReadTool,
-      PageRouterTool,
-      BrowserReadTool,
       WebSearchRankTool,
       VerifySourcesTool,
-      PdfReadTool,
       TodoWriteTool,
       // TodoReadTool,
       WebSearchTool,
@@ -153,11 +147,8 @@ export namespace ToolRegistry {
       GlobTool,
       GrepTool,
       WebReadTool,
-      PageRouterTool,
-      BrowserReadTool,
       WebSearchRankTool,
       VerifySourcesTool,
-      PdfReadTool,
       EditTool,
       WriteTool,
       TaskTool,
